@@ -1,0 +1,93 @@
+{
+  "name": "@advanced-rest-client/app",
+  "description": "Advanced REST Client application sources.",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "module": "index.js",
+  "author": {
+    "name": "Pawel Uchida-Psztyc",
+    "email": "pawel.psztyc@gmail.com"
+  },
+  "contributors": [
+    "Your name can be here!"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/advanced-rest-client/app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/advanced-rest-client/app/issues",
+    "email": "arc@mulesoft.com"
+  },
+  "dependencies": {
+    "@advanced-rest-client/events": "^0.2.22",
+    "@anypoint-web-components/awc": "^1.0.2",
+    "lit-element": "^2.5.1",
+    "lit-html": "^1.4.1"
+  },
+  "devDependencies": {
+    "@advanced-rest-client/arc-demo-helper": "^5.0.0",
+    "@open-wc/eslint-config": "^6.0.0",
+    "@open-wc/testing": "^3.0.1",
+    "@web/dev-server": "^0.1.25",
+    "@web/test-runner": "^0.13.20",
+    "@web/test-runner-playwright": "^0.8.8",
+    "chance": "^1.1.8",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "husky": "^7.0.2",
+    "lint-staged": "^11.2.3",
+    "sinon": "^11.1.2",
+    "typescript": "^4.4.4",
+    "typescript-lit-html-plugin": "^0.9.0"
+  },
+  "scripts": {
+    "start": "web-dev-server --app-index demo/index.html --node-resolve --open --watch --root-dir .",
+    "lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
+    "format:eslint": "eslint --ext .js,.html . --fix --ignore-path .gitignore",
+    "lint:types": "tsc",
+    "lint": "npm run lint:eslint",
+    "format": "npm run format:eslint",
+    "test": "web-test-runner test/**/*.test.js --coverage --node-resolve --playwright --browsers chromium  firefox webkit",
+    "test:watch": "web-test-runner --config wtr-dev.config.mjs",
+    "gen:wc": "wca analyze \"*.js\" --outFile custom-elements.json"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@open-wc/eslint-config",
+      "eslint-config-prettier"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "demo/**/*.js",
+          "test/**/*.js",
+          "test/*.js",
+          "**/demo/**/*.html"
+        ],
+        "rules": {
+          "no-console": "off",
+          "no-unused-expressions": "off",
+          "no-plusplus": "off",
+          "no-continue": "off",
+          "no-param-reassign": "off",
+          "class-methods-use-this": "off",
+          "import/no-extraneous-dependencies": "off",
+          "prefer-destructuring": "off",
+          "no-template-curly-in-string": "off"
+        }
+      }
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix"
+    ]
+  }
+}

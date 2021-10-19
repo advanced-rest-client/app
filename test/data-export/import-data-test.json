@@ -1,0 +1,20 @@
+{
+  "id": -1,
+  "name": null,
+  "project": 0,
+  "url": "http://mulesoft.com",
+  "method": "GET",
+  "encoding": null,
+  "headers": null,
+  "payload": null,
+  "skipProtocol": false,
+  "skipServer": false,
+  "skipParams": false,
+  "skipHistory": false,
+  "skipMethod": false,
+  "skipPayload": false,
+  "skipHeaders": false,
+  "skipPath": false,
+  "time": 1450675637093,
+  "driveId": "0Bzpy9PK_RiBOeWRYUEo0TmRyTzA"
+}
