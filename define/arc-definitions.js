@@ -1,6 +1,6 @@
 /**
 @license
-Copyright 2021 The Advanced REST client authors <arc@mulesoft.com>
+Copyright 2018 The Advanced REST client authors
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
 use this file except in compliance with the License. You may obtain a copy of
 the License at
@@ -12,7 +12,6 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 
-export { ExportOptionsElement } from './src/elements/import-export/ExportOptionsElement.js';
-export { ArcExportFormElement } from './src/elements/import-export/ArcExportFormElement.js';
-export { ImportDataInspectorElement } from './src/elements/import-export/ImportDataInspectorElement.js';
-export { default as ArcDefinitionsElement } from './src/elements/headers/ArcDefinitionsElement.js';
+import Element from '../src/elements/headers/ArcDefinitionsElement.js';
+
+window.customElements.define('arc-definitions', Element);

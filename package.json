@@ -22,18 +22,17 @@
   },
   "dependencies": {
     "@advanced-rest-client/events": "^0.2.22",
-    "@anypoint-web-components/awc": "^1.0.2",
+    "@anypoint-web-components/awc": "^1.0.3",
     "lit-element": "^2.5.1",
     "lit-html": "^1.4.1"
   },
   "devDependencies": {
-    "@advanced-rest-client/arc-demo-helper": "^5.0.0",
+    "@advanced-rest-client/arc-demo-helper": "^5.0.1",
     "@open-wc/eslint-config": "^6.0.0",
     "@open-wc/testing": "^3.0.1",
     "@web/dev-server": "^0.1.25",
     "@web/test-runner": "^0.13.20",
     "@web/test-runner-playwright": "^0.8.8",
-    "chance": "^1.1.8",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.2",

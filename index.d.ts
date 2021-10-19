@@ -15,3 +15,4 @@ the License.
 export { ExportOptionsElement } from './src/elements/import-export/ExportOptionsElement';
 export { ArcExportFormElement } from './src/elements/import-export/ArcExportFormElement';
 export { ImportDataInspectorElement } from './src/elements/import-export/ImportDataInspectorElement';
+export { default as ArcDefinitionsElement } from './src/elements/headers/ArcDefinitionsElement';
