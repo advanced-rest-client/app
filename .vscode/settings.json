@@ -6,10 +6,12 @@
     "itemschange",
     "jsrsasign",
     "openedchange",
+    "pageref",
     "queryheaders",
     "querystatuscodes",
     "selectedvalueschange",
     "suggestionsopenedchange",
+    "tablist",
     "urldecode",
     "urlencode",
     "valuechange"

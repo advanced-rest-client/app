@@ -61,3 +61,11 @@ export { default as CookieEditorElement } from './src/elements/cookies/CookieEdi
 export { default as CookieManagerElement } from './src/elements/cookies/CookieManagerElement.js';
 export { Cookie } from './src/lib/Cookie.js';
 export { Cookies } from './src/lib/Cookies.js';
+export { HarTransformer } from './src/lib/har/HarTransformer.js';
+export { default as HarViewerElement } from './src/elements/har/HarViewerElement.js';
+export { default as RequestTimingsElement } from './src/elements/http/RequestTimingsElement.js';
+export { default as RequestTimingsPanelElement } from './src/elements/http/RequestTimingsPanelElement.js';
+export { default as ResponseViewElement } from './src/elements/http/ResponseViewElement.js';
+export { default as ResponseHighlightElement } from './src/elements/http/ResponseHighlightElement.js';
+export { default as ResponseBodyElement } from './src/elements/http/ResponseBodyElement.js';
+export { default as ResponseErrorElement } from './src/elements/http/ResponseErrorElement.js';

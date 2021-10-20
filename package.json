@@ -23,11 +23,13 @@
   "dependencies": {
     "@advanced-rest-client/events": "^0.2.22",
     "@advanced-rest-client/icons": "^4.0.0",
+    "@advanced-rest-client/libs": "^1.0.0",
     "@advanced-rest-client/uuid": "^4.0.0",
-    "@anypoint-web-components/awc": "^1.0.3",
+    "@anypoint-web-components/awc": "^1.0.4",
     "@github/time-elements": "^3.1.2",
     "lit-element": "^2.5.1",
-    "lit-html": "^1.4.1"
+    "lit-html": "^1.4.1",
+    "prismjs": "^1.25.0"
   },
   "peerDependencies": {
     "jsrsasign": "^10.4.0"
@@ -36,8 +38,9 @@
     "@advanced-rest-client/arc-demo-helper": "^5.0.1",
     "@advanced-rest-client/arc-mock": "^5.0.0",
     "@advanced-rest-client/idb-store": "^1.0.0",
-    "@open-wc/eslint-config": "^6.0.0",
+    "@open-wc/eslint-config": "^7.0.0",
     "@open-wc/testing": "^3.0.1",
+    "@types/har-format": "^1.2.7",
     "@web/dev-server": "^0.1.25",
     "@web/test-runner": "^0.13.20",
     "@web/test-runner-playwright": "^0.8.8",

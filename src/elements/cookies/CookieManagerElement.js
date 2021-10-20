@@ -106,7 +106,7 @@ export default class CookieManagerElement extends LitElement {
       selectedIndexes: { type: Array },
       /**
        * Changes information density of list items.
-       * By default it uses material's paper item with two lines (72px height)
+       * By default it uses material's item with two lines (72px height)
        * Possible values are:
        *
        * - `default` or empty - regular list view

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>Timings demo</title>
+  <style>
+  .centered[role="main"] {
+    max-width: 1400px;
+  }
+
+  body.styled {
+    --arc-font-code-family: 'Roboto Mono', 'Consolas', 'Menlo', monospace;
+  }
+
+  body.styled.dark {
+    --primary-background-color: #373737;
+  }
+
+  body.demo.styled.dark header {
+    background-color: #424242;
+  }
+
+  body.styled.demo.dark {
+    background-color: #212121;
+    color: #fff;
+    --primary-color: #ffcc80;
+    --primary-text-color: #fff;
+    --accent-color: #9c27b0;
+    --secondary-text-color: rgba(255, 255, 255, 0.84);
+    --primary-background-color: #212121;
+
+    /* Timings view styles */
+    --request-timings-total-border-color: #757575;
+    --request-timings-progress-background: #424242;
+    --request-timings-progress-color: #c6f68d;
+  }
+  </style>
+</head>
+
+<body class="demo">
+  <div id="demo"></div>
+  <script type="module" src="timings.js"></script>
+</body>
+
+</html>
