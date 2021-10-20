@@ -1,12 +1,12 @@
 import { fixture, assert, html, nextFrame } from '@open-wc/testing';
 import { DataHelper } from './DataHelper.js';
 import '../../define/import-projects-table.js';
-import { renderValue, selectedRequestsValue, openedProjectsValue } from '../../src/inspector/ImportProjectsTable.js';
+import { renderValue, selectedRequestsValue, openedProjectsValue } from '../../src/elements/inspector/ImportProjectsTable.js';
 
-/** @typedef {import('../../src/inspector/ImportProjectsTable').ImportProjectsTable} ImportProjectsTable */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcProjects} ExportArcProjects */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcSavedRequest} ExportArcSavedRequest */
-/** @typedef {import('@anypoint-web-components/anypoint-collapse').AnypointCollapseElement} AnypointCollapseElement */
+/** @typedef {import('../../src/elements/inspector/ImportProjectsTable').ImportProjectsTable} ImportProjectsTable */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcProjects} ExportArcProjects */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcSavedRequest} ExportArcSavedRequest */
+/** @typedef {import('@anypoint-web-components/awc').AnypointCollapseElement} AnypointCollapseElement */
 
 describe('ImportProjectsTable', () => {
   /**

@@ -1,5 +1,5 @@
 import {LitElement, CSSResult, TemplateResult} from 'lit-element';
-import { DataExport } from '@advanced-rest-client/arc-types';
+import { DataExport } from '@advanced-rest-client/events';
 
 export declare const importHandler: unique symbol;
 export declare const cancelHandler: unique symbol;
@@ -33,10 +33,10 @@ export declare class ImportDataInspectorElement extends LitElement {
   data: DataExport.ArcExportObject;
 
   /**
-   * Enables compatibility with Anypoint platform
+   * Enables Anypoint theme
    * @attribute
    */
-  compatibility?: boolean;
+  anypoint?: boolean;
 
   constructor();
 
@@ -76,12 +76,12 @@ export declare class ImportDataInspectorElement extends LitElement {
   [actionsTemplate](): TemplateResult;
 
   [createdTemplate](data: DataExport.ArcExportObject): boolean;
-  [requestsTableTemplate](data: DataExport.ArcExportObject, compatibility: boolean): TemplateResult|string;
-  [historyTableTemplate](data: DataExport.ArcExportObject, compatibility: boolean): TemplateResult|string;
-  [variablesTableTemplate](data: DataExport.ArcExportObject, compatibility: boolean): TemplateResult|string;
-  [cookiesTableTemplate](data: DataExport.ArcExportObject, compatibility: boolean): TemplateResult|string;
-  [authDataTableTemplate](data: DataExport.ArcExportObject, compatibility: boolean): TemplateResult|string;
-  [urlsTableTemplate](data: DataExport.ArcExportObject, compatibility: boolean): TemplateResult|string;
-  [socketUrlsTableTemplate](data: DataExport.ArcExportObject, compatibility: boolean): TemplateResult|string;
-  [ccTableTemplate](data: DataExport.ArcExportObject, compatibility: boolean): TemplateResult|string;
+  [requestsTableTemplate](data: DataExport.ArcExportObject, anypoint: boolean): TemplateResult|string;
+  [historyTableTemplate](data: DataExport.ArcExportObject, anypoint: boolean): TemplateResult|string;
+  [variablesTableTemplate](data: DataExport.ArcExportObject, anypoint: boolean): TemplateResult|string;
+  [cookiesTableTemplate](data: DataExport.ArcExportObject, anypoint: boolean): TemplateResult|string;
+  [authDataTableTemplate](data: DataExport.ArcExportObject, anypoint: boolean): TemplateResult|string;
+  [urlsTableTemplate](data: DataExport.ArcExportObject, anypoint: boolean): TemplateResult|string;
+  [socketUrlsTableTemplate](data: DataExport.ArcExportObject, anypoint: boolean): TemplateResult|string;
+  [ccTableTemplate](data: DataExport.ArcExportObject, anypoint: boolean): TemplateResult|string;
 }

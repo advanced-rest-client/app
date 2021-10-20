@@ -40,10 +40,10 @@ export abstract declare class ImportBaseTable<T> extends LitElement {
   allSelected: boolean;
 
   /**
-   * Enables compatibility with Anypoint platform
+   * Enables Anypoint theme
    * @attribute
    */
-  compatibility: boolean;
+  anypoint: boolean;
 
   /**
    * If true, the user selected some elements on list. Check the

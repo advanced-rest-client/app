@@ -9,12 +9,12 @@ import '@anypoint-web-components/awc/anypoint-checkbox.js';
 import {
   GoogleDriveEvents,
   GoogleDriveEventTypes,
-} from '@advanced-rest-client/arc-events';
-import '@advanced-rest-client/arc-icons/arc-icon.js';
+} from '@advanced-rest-client/events';
+import '@advanced-rest-client/icons/arc-icon.js';
 
-/** @typedef {import('@advanced-rest-client/arc-types').GoogleDrive.AppFolder} AppFolder */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ProviderOptions} ProviderOptions */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportOptions} ExportOptions */
+/** @typedef {import('@advanced-rest-client/events').GoogleDrive.AppFolder} AppFolder */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ProviderOptions} ProviderOptions */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportOptions} ExportOptions */
 /** @typedef {import('@anypoint-web-components/awc').Suggestion} Suggestion */
 /** @typedef {import('@anypoint-web-components/awc').AnypointInputElement} AnypointInputElement */
 
@@ -76,9 +76,9 @@ export class ExportPanelBase extends LitElement {
        */
       driveFolders: { type: Array },
       /**
-       * Enables Anypoint compatibility
+       * Enables Anypoint theme
        */
-      compatibility: { type: Boolean },
+      anypoint: { type: Boolean },
       /**
        * Enables outlined theme.
        */
@@ -153,7 +153,7 @@ export class ExportPanelBase extends LitElement {
   constructor() {
     super();
     this.isDrive = false;
-    this.compatibility = false;
+    this.anypoint = false;
     this.outlined = false;
     this.encryptFile = false;
     this.withEncrypt = false;
@@ -320,7 +320,7 @@ export class ExportPanelBase extends LitElement {
       return '';
     }
     const {
-      compatibility,
+      anypoint,
       outlined,
     } = this;
     const target = 'parentInput';
@@ -332,14 +332,14 @@ export class ExportPanelBase extends LitElement {
         .value="${this[parentNameValue]}"
         @input="${this[parentsInputHandler]}"
         ?outlined="${outlined}"
-        ?compatibility="${compatibility}"
+        ?anypoint="${anypoint}"
       >
         <label slot="label">Google Drive folder (optional)</label>
       </anypoint-input>
       <anypoint-autocomplete
         .target="${target}"
         .source="${this[driveSuggestionsValue]}"
-        ?compatibility="${compatibility}"
+        ?anypoint="${anypoint}"
         @overlay-opened="${stopEvent}"
         @overlay-closed="${stopEvent}"
       ></anypoint-autocomplete>
@@ -350,14 +350,14 @@ export class ExportPanelBase extends LitElement {
   [destinationTemplate]() {
     const {
       provider,
-      compatibility,
+      anypoint,
       outlined
     } = this;
     return html`<anypoint-dropdown-menu
       class="provider-selector"
       name="provider"
       @select="${this[destinationHandler]}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
       ?outlined="${outlined}"
     >
       <label slot="label">Destination</label>
@@ -365,11 +365,11 @@ export class ExportPanelBase extends LitElement {
         slot="dropdown-content"
         .selected="${provider}"
         attrforselected="data-value"
-        ?compatibility="${compatibility}">
+        ?anypoint="${anypoint}">
         <anypoint-icon-item
           class="menu-item"
           data-value="file"
-          ?compatibility="${compatibility}"
+          ?anypoint="${anypoint}"
         >
           <arc-icon class="icon" icon="archive" slot="item-icon"></arc-icon>
           Export to file
@@ -377,7 +377,7 @@ export class ExportPanelBase extends LitElement {
         <anypoint-icon-item
           class="menu-item"
           data-value="drive"
-          ?compatibility="${compatibility}"
+          ?anypoint="${anypoint}"
         >
           <arc-icon class="icon" icon="driveColor" slot="item-icon"></arc-icon>
           Export to Google Drive
@@ -393,7 +393,7 @@ export class ExportPanelBase extends LitElement {
     <anypoint-checkbox
       .checked="${skipImport}"
       name="skipImport"
-      @checked-changed="${this[checkedHandler]}"
+      @checkedchange="${this[checkedHandler]}"
       title="With this option the file will be read directly to the application instead of showing the import panel."
     >
       Skip import dialog
@@ -409,7 +409,7 @@ export class ExportPanelBase extends LitElement {
     <anypoint-checkbox
       .checked="${encryptFile}"
       name="encryptFile"
-      @checked-changed="${this[checkedHandler]}"
+      @checkedchange="${this[checkedHandler]}"
       title="Encrypts the file with password so it is not store in plain text."
     >
       Encrypt file
@@ -428,7 +428,7 @@ export class ExportPanelBase extends LitElement {
     <anypoint-masked-input
       name="passphrase"
       .value="${passphrase}"
-      @value-changed="${this[inputHandler]}"
+      @valuechange="${this[inputHandler]}"
       required
       autoValidate
       invalidMessage="The passphrase is required"
@@ -440,7 +440,7 @@ export class ExportPanelBase extends LitElement {
   [fileInputTemplate]() {
     const {
       file,
-      compatibility,
+      anypoint,
       outlined
     } = this;
     return html`
@@ -452,7 +452,7 @@ export class ExportPanelBase extends LitElement {
       required
       autoValidate
       invalidMessage="File name is required"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
       ?outlined="${outlined}"
     >
       <label slot="label">File name</label>

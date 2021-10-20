@@ -1,4 +1,4 @@
-import { HeaderDefinition, StatusCodeDefinition } from '../../lib/HeadersData';
+import { HeaderDefinition, StatusCodeDefinition } from '../../lib/headers/HeadersData';
 
 export { HeaderDefinition, StatusCodeDefinition };
 

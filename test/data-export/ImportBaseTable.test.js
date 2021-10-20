@@ -1,13 +1,13 @@
 import { fixture, assert, nextFrame, html } from '@open-wc/testing';
 // import '@advanced-rest-client/arc-data-import/arc-data-import.js';
-import { DataGenerator } from '@advanced-rest-client/arc-data-generator';
+import { ArcMock } from '@advanced-rest-client/arc-mock';
 import '../../define/import-history-table.js';
 
-/** @typedef {import('../../src/inspector/ImportHistoryTable').ImportHistoryTable} ImportHistoryTable */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcHistoryRequest} ExportArcHistoryRequest */
+/** @typedef {import('../../src/elements/inspector/ImportHistoryTable').ImportHistoryTable} ImportHistoryTable */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcHistoryRequest} ExportArcHistoryRequest */
 
 describe('ImportBaseTable', () => {
-  const generator = new DataGenerator();
+  const generator = new ArcMock();
   /**
    * @param {ExportArcHistoryRequest[]=} data
    * @returns {Promise<ImportHistoryTable>}
@@ -44,9 +44,7 @@ describe('ImportBaseTable', () => {
   describe('Selection', () => {
     let element;
     beforeEach(async () => {
-      const data = generator.generateHistoryRequestsData({
-        requestsSize: 5
-      });
+      const data = generator.http.listHistory(5);
       element = await basicFixture(data.map(mapExportKeys));
     });
 
@@ -103,9 +101,7 @@ describe('ImportBaseTable', () => {
     let element;
     let data;
     beforeEach(async () => {
-      data = generator.generateHistoryRequestsData({
-        requestsSize: 5
-      });
+      data = generator.http.listHistory(5);
       element = await basicFixture(data.map(mapExportKeys));
     });
 

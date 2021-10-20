@@ -1,15 +1,15 @@
 /* eslint-disable arrow-body-style */
-import { DataGenerator } from '@advanced-rest-client/arc-data-generator';
+import { ArcMock } from '@advanced-rest-client/arc-mock';
 
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ArcExportObject} ArcExportObject */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcHistoryRequest} ExportArcHistoryRequest */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcCookie} ExportArcCookie */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcVariable} ExportArcVariable */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcUrlHistory} ExportArcUrlHistory */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcWebsocketUrl} ExportArcWebsocketUrl */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcAuthData} ExportArcAuthData */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ArcExportObject} ArcExportObject */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcHistoryRequest} ExportArcHistoryRequest */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcCookie} ExportArcCookie */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcVariable} ExportArcVariable */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcUrlHistory} ExportArcUrlHistory */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcWebsocketUrl} ExportArcWebsocketUrl */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcAuthData} ExportArcAuthData */
 
-const generator = new DataGenerator();
+const generator = new ArcMock();
 
 export const DataHelper = {};
 /**
@@ -185,17 +185,11 @@ function mapExportKeys(item) {
  * @returns {ArcExportObject}
  */
 DataHelper.generateExportData = () => {
-  const saved = generator.generateSavedRequestData({
-    requestsSize: 10,
-    projectsSize: 2,
+  const saved = generator.http.savedData(10, 2, {
     forceProject: true,
   });
-  const historyData = /** @type ExportArcHistoryRequest[] */ (generator.generateHistoryRequestsData({
-    requestsSize: 10
-  })).map(mapExportKeys);
-  const certs = generator.generateExportClientCertificates({
-    size: 2,
-  }).map(mapExportKeys);
+  const historyData = /** @type ExportArcHistoryRequest[] */ (generator.http.listHistory(10)).map(mapExportKeys);
+  const certs = generator.certificates.exportClientCertificates(2).map(mapExportKeys);
   return {
     kind: 'ARC#Import',
     createdAt: '2017-09-28T19:43:09.491',
@@ -203,15 +197,11 @@ DataHelper.generateExportData = () => {
     requests: saved.requests.map(mapExportKeys),
     projects: saved.projects.map(mapExportKeys),
     history: historyData,
-    variables: /** @type ExportArcVariable[] */ (generator.generateVariablesData().map(mapExportKeys)),
-    cookies: /** @type ExportArcCookie[] */ (generator.generateCookiesData().map(mapExportKeys)),
-    urlhistory: /** @type ExportArcUrlHistory[] */ (generator.generateUrlsData({
-      size: 10
-    }).map(mapExportKeys)),
-    websocketurlhistory: /** @type ExportArcWebsocketUrl[] */ (generator.generateUrlsData({
-      size: 5
-    }).map(mapExportKeys)),
-    authdata: /** @type ExportArcAuthData[] */ (generator.generateBasicAuthData().map(mapExportKeys)),
+    variables: /** @type ExportArcVariable[] */ (generator.variables.listVariables().map(mapExportKeys)),
+    cookies: /** @type ExportArcCookie[] */ (generator.cookies.cookies().map(mapExportKeys)),
+    urlhistory: /** @type ExportArcUrlHistory[] */ (generator.urls.urls(10).map(mapExportKeys)),
+    websocketurlhistory: /** @type ExportArcWebsocketUrl[] */ (generator.urls.urls(10).map(mapExportKeys)).map(mapExportKeys),
+    authdata: /** @type ExportArcAuthData[] */ (generator.authorization.basicList().map(mapExportKeys)),
     clientcertificates: certs,
   };
 };

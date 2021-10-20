@@ -1,11 +1,11 @@
 import { fixture, assert, aTimeout, nextFrame, html } from '@open-wc/testing';
 import sinon from 'sinon';
-import { GoogleDriveEventTypes } from '@advanced-rest-client/arc-events';
+import { GoogleDriveEventTypes } from '@advanced-rest-client/events';
 import '../../define/export-options.js';
-import { driveSuggestionsValue, parentNameValue } from '../../src/ExportPanelBase.js'
+import { driveSuggestionsValue, parentNameValue } from '../../src/elements/import-export/ExportPanelBase.js'
 
 /** @typedef {import('../../').ExportOptionsElement} ExportOptionsElement */
-/** @typedef {import('@anypoint-web-components/anypoint-input').AnypointInput} AnypointInput */
+/** @typedef {import('@anypoint-web-components/awc').AnypointInputElement} AnypointInput */
 
 describe('ExportOptionsElement', () => {
   /**

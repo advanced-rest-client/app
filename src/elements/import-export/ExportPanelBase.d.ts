@@ -1,5 +1,5 @@
 import { TemplateResult, LitElement } from 'lit-element';
-import { DataExport, GoogleDrive } from '@advanced-rest-client/arc-types';
+import { DataExport, GoogleDrive } from '@advanced-rest-client/events';
 import { Suggestion } from '@anypoint-web-components/awc';
 
 /** @typedef {import('@advanced-rest-client/arc-types').GoogleDrive.AppFolder} AppFolder */
@@ -62,10 +62,10 @@ export declare class ExportPanelBase extends LitElement {
    */
   driveFolders?: GoogleDrive.AppFolder[]
   /**
-   * Enables Anypoint compatibility
+   * Enables Anypoint theme
    * @attribute
    */
-  compatibility?: boolean;
+  anypoint?: boolean;
   /**
    * Enables outlined theme.
    * @attribute

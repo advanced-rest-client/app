@@ -23,7 +23,7 @@ import '@anypoint-web-components/awc/anypoint-masked-input.js';
 import {
   ExportEvents,
   DataExportEventTypes,
-} from '@advanced-rest-client/arc-events';
+} from '@advanced-rest-client/events';
 import elementStyles from '../styles/ExportForm.js';
 import {
   ExportPanelBase,
@@ -39,10 +39,10 @@ import {
 import { generateFileName } from '../../lib/Utils.js';
 
 /** @typedef {import('@anypoint-web-components/awc').AnypointCheckboxElement} AnypointCheckboxElement */
-/** @typedef {import('@advanced-rest-client/arc-types').GoogleDrive.AppFolder} AppFolder */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ProviderOptions} ProviderOptions */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportOptions} ExportOptions */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ArcExportResult} ArcExportResult */
+/** @typedef {import('@advanced-rest-client/events').GoogleDrive.AppFolder} AppFolder */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ProviderOptions} ProviderOptions */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportOptions} ExportOptions */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ArcExportResult} ArcExportResult */
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
 
 export const loadingProperty = Symbol('loadingProperty');
@@ -252,7 +252,7 @@ export class ArcExportFormElement extends ExportPanelBase {
   }
 
   render() {
-    const { compatibility } = this;
+    const { anypoint } = this;
     return html`
       <div class="toggle-option">
         ${this[skipImportTemplate]()}
@@ -270,7 +270,7 @@ export class ArcExportFormElement extends ExportPanelBase {
         <anypoint-button
           @click="${this[prepare]}"
           emphasis="high"
-          ?compatibility="${compatibility}"
+          ?anypoint="${anypoint}"
           ?disabled="${this[loadingProperty]}"
           class="action-button"
           data-action="export"

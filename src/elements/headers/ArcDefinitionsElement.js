@@ -12,7 +12,7 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 
-import { requestHeaders, responseHeaders, statusCodes } from '../../lib/HeadersData.js';
+import { requestHeaders, responseHeaders, statusCodes } from '../../lib/headers/HeadersData.js';
 
 /* eslint-disable class-methods-use-this */
 

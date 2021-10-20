@@ -13,8 +13,8 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import { LitElement, html } from 'lit-element';
-import '@advanced-rest-client/date-time/date-time.js';
 import '@anypoint-web-components/awc/anypoint-button.js';
+import '@anypoint-web-components/awc/date-time.js';
 import '../../../define/import-projects-table.js';
 import '../../../define/import-requests-table.js';
 import '../../../define/import-history-table.js';
@@ -27,8 +27,8 @@ import '../../../define/import-cc-table.js';
 import styles from '../inspector/InspectorStyles.js';
 
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ArcExportObject} ArcExportObject */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcSavedRequest} ExportArcSavedRequest */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ArcExportObject} ArcExportObject */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcSavedRequest} ExportArcSavedRequest */
 /** @typedef {import('../inspector/ImportBaseTable').ImportBaseTable} ImportBaseTable */
 
 export const importHandler = Symbol('importHandler');
@@ -62,9 +62,9 @@ export class ImportDataInspectorElement extends LitElement {
       // Imported data.
       data: { type: Object },
       /**
-       * Enables compatibility with Anypoint platform
+       * Enables Anypoint theme
        */
-      compatibility: { type: Boolean },
+      anypoint: { type: Boolean },
     };
   }
 
@@ -77,7 +77,7 @@ export class ImportDataInspectorElement extends LitElement {
     /**
      * @type {boolean}
      */
-    this.compatibility = false;
+    this.anypoint = false;
   }
 
   /**
@@ -173,22 +173,22 @@ export class ImportDataInspectorElement extends LitElement {
   }
 
   render() {
-    const { compatibility, data={} } = this;
+    const { anypoint, data={} } = this;
     if (!data) {
       return '';
     }
     const typedData = /** @type ArcExportObject */ (data);
     return html`
     ${this[metaTemplate](typedData)}
-    ${this[projectsTemplate](typedData, compatibility)}
-    ${this[requestsTableTemplate](typedData, compatibility)}
-    ${this[historyTableTemplate](typedData, compatibility)}
-    ${this[variablesTableTemplate](typedData, compatibility)}
-    ${this[cookiesTableTemplate](typedData, compatibility)}
-    ${this[authDataTableTemplate](typedData, compatibility)}
-    ${this[urlsTableTemplate](typedData, compatibility)}
-    ${this[socketUrlsTableTemplate](typedData, compatibility)}
-    ${this[ccTableTemplate](typedData, compatibility)}
+    ${this[projectsTemplate](typedData, anypoint)}
+    ${this[requestsTableTemplate](typedData, anypoint)}
+    ${this[historyTableTemplate](typedData, anypoint)}
+    ${this[variablesTableTemplate](typedData, anypoint)}
+    ${this[cookiesTableTemplate](typedData, anypoint)}
+    ${this[authDataTableTemplate](typedData, anypoint)}
+    ${this[urlsTableTemplate](typedData, anypoint)}
+    ${this[socketUrlsTableTemplate](typedData, anypoint)}
+    ${this[ccTableTemplate](typedData, anypoint)}
     ${this[actionsTemplate]()}
     `;
   }
@@ -197,13 +197,13 @@ export class ImportDataInspectorElement extends LitElement {
    * @returns {TemplateResult} A template for the table actions.
    */
   [actionsTemplate]() {
-    const { compatibility } = this;
+    const { anypoint } = this;
     return html`
     <section class="form-actions">
       <anypoint-button
         @click="${this[cancelHandler]}"
         data-action="cancel-import"
-        ?compatibility="${compatibility}"
+        ?anypoint="${anypoint}"
       >Cancel</anypoint-button>
       <anypoint-button
         class="primary-action"
@@ -273,10 +273,10 @@ export class ImportDataInspectorElement extends LitElement {
 
   /**
    * @param {ArcExportObject} data
-   * @param {boolean} compatibility
+   * @param {boolean} anypoint
    * @returns {string|TemplateResult}
    */
-  [projectsTemplate](data, compatibility) {
+  [projectsTemplate](data, anypoint) {
     if (!data.projects) {
       return '';
     }
@@ -285,17 +285,17 @@ export class ImportDataInspectorElement extends LitElement {
         tableTitle="Projects"
         .data="${data.projects}"
         .requests="${data.requests}"
-        ?compatibility="${compatibility}"
+        ?anypoint="${anypoint}"
       ></import-projects-table>
     `;
   }
 
   /**
    * @param {ArcExportObject} data
-   * @param {boolean} compatibility
+   * @param {boolean} anypoint
    * @returns {string|TemplateResult}
    */
-  [requestsTableTemplate](data, compatibility) {
+  [requestsTableTemplate](data, anypoint) {
     const items = this[readNonProjectsData](data);
     if (!items) {
       return '';
@@ -304,16 +304,16 @@ export class ImportDataInspectorElement extends LitElement {
     <import-requests-table
       tableTitle="Other requests"
       .data="${items}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
     ></import-requests-table>`;
   }
 
   /**
    * @param {ArcExportObject} data
-   * @param {boolean} compatibility
+   * @param {boolean} anypoint
    * @returns {string|TemplateResult}
    */
-  [historyTableTemplate](data, compatibility) {
+  [historyTableTemplate](data, anypoint) {
     if (!data.history || !data.history.length) {
       return '';
     }
@@ -321,16 +321,16 @@ export class ImportDataInspectorElement extends LitElement {
     <import-history-table
       tableTitle="History"
       .data="${data.history}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
     ></import-history-table>`;
   }
 
   /**
    * @param {ArcExportObject} data
-   * @param {boolean} compatibility
+   * @param {boolean} anypoint
    * @returns {string|TemplateResult}
    */
-  [variablesTableTemplate](data, compatibility) {
+  [variablesTableTemplate](data, anypoint) {
     if (!data.variables || !data.variables.length) {
       return '';
     }
@@ -338,17 +338,17 @@ export class ImportDataInspectorElement extends LitElement {
     <import-variables-table
       tableTitle="Variables"
       .data="${data.variables}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
     ></import-variables-table>`;
   }
 
 
   /**
    * @param {ArcExportObject} data
-   * @param {boolean} compatibility
+   * @param {boolean} anypoint
    * @returns {string|TemplateResult}
    */
-  [cookiesTableTemplate](data, compatibility) {
+  [cookiesTableTemplate](data, anypoint) {
     if (!data.cookies || !data.cookies.length) {
       return '';
     }
@@ -356,79 +356,79 @@ export class ImportDataInspectorElement extends LitElement {
     <import-cookies-table
       tableTitle="Cookies"
       .data="${data.cookies}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
     ></import-cookies-table>`;
   }
 
   /**
    * @param {ArcExportObject} data
-   * @param {boolean} compatibility
+   * @param {boolean} anypoint
    * @returns {string|TemplateResult}
    */
-  [authDataTableTemplate](data, compatibility) {
+  [authDataTableTemplate](data, anypoint) {
     const items = data.authdata;
     if (!items || !items.length) {
       return '';
     }
     return html`
     <import-auth-data-table
-      tabletitle="Auth data"
+      tableTitle="Auth data"
       .data="${items}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
     ></import-auth-data-table>`;
   }
 
   /**
    * @param {ArcExportObject} data
-   * @param {boolean} compatibility
+   * @param {boolean} anypoint
    * @returns {string|TemplateResult}
    */
-  [urlsTableTemplate](data, compatibility) {
+  [urlsTableTemplate](data, anypoint) {
     const items = data.urlhistory;
     if (!items || !items.length) {
       return '';
     }
     return html`
     <import-url-history-table
-      tabletitle="URL history for autocomplete"
+      tableTitle="URL history for autocomplete"
       .data="${items}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
     ></import-url-history-table>`;
   }
 
   /**
    * @param {ArcExportObject} data
-   * @param {boolean} compatibility
+   * @param {boolean} anypoint
    * @returns {string|TemplateResult}
    */
-  [socketUrlsTableTemplate](data, compatibility) {
+  [socketUrlsTableTemplate](data, anypoint) {
     const items = data.websocketurlhistory;
     if (!items || !items.length) {
       return '';
     }
     return html`
     <import-websocket-url-history-table
-      tabletitle="Web socket URL history for autocomplete"
+      tableTitle="Web socket URL history for autocomplete"
       .data="${items}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
     ></import-websocket-url-history-table>`;
   }
 
   /**
    * @param {ArcExportObject} data
-   * @param {boolean} compatibility
+   * @param {boolean} anypoint
    * @returns {string|TemplateResult}
    */
-  [ccTableTemplate](data, compatibility) {
+  [ccTableTemplate](data, anypoint) {
     const items = data.clientcertificates;
     if (!items || !items.length) {
       return '';
     }
     return html`
     <import-cc-table
-      tabletitle="Client certificates"
+      tableTitle="Client certificates"
       .data="${items}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
     ></import-cc-table>`;
   }
 }

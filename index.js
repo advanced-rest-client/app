@@ -16,3 +16,9 @@ export { ExportOptionsElement } from './src/elements/import-export/ExportOptions
 export { ArcExportFormElement } from './src/elements/import-export/ArcExportFormElement.js';
 export { ImportDataInspectorElement } from './src/elements/import-export/ImportDataInspectorElement.js';
 export { default as ArcDefinitionsElement } from './src/elements/headers/ArcDefinitionsElement.js';
+export { default as HttpMethodLabelElement } from './src/elements/http/HttpMethodLabelElement.js';
+export * as HttpStyles from './src/elements/styles/HttpLabel.js';
+export { HeadersParser } from './src/lib/headers/HeadersParser.js';
+export { ArcHeaders } from './src/lib/headers/ArcHeaders.js';
+export { default as HeadersEditorElement } from './src/elements/headers/HeadersEditorElement.js';
+export { default as HeadersListElement } from './src/elements/headers/HeadersListElement.js';

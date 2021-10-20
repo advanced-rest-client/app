@@ -2,13 +2,13 @@ import { fixture, assert, html, nextFrame } from '@open-wc/testing';
 import * as sinon from 'sinon';
 import {
   DataExportEventTypes,
-} from '@advanced-rest-client/arc-events';
+} from '@advanced-rest-client/events';
 import '../../define/arc-export-form.js';
-import { loadingProperty } from '../../src/ArcExportFormElement.js';
+import { loadingProperty } from '../../src/elements/import-export/ArcExportFormElement.js';
 
-/** @typedef {import('../../src/ArcExportFormElement').ArcExportFormElement} ArcExportFormElement */
-/** @typedef {import('@anypoint-web-components/anypoint-checkbox').AnypointCheckbox} AnypointCheckbox */
-/** @typedef {import('@advanced-rest-client/arc-events').ArcDataExportEvent} ArcDataExportEvent */
+/** @typedef {import('../../').ArcExportFormElement} ArcExportFormElement */
+/** @typedef {import('@anypoint-web-components/awc').AnypointCheckboxElement} AnypointCheckbox */
+/** @typedef {import('@advanced-rest-client/events').ArcDataExportEvent} ArcDataExportEvent */
 
 describe('ArcDataExport', () => {
   /**

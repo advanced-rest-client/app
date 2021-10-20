@@ -14,13 +14,12 @@ the License.
 */
 import { html } from 'lit-element';
 import '@anypoint-web-components/awc/anypoint-collapse.js';
-import '@advanced-rest-client/arc-icons/ArcIcons.js';
 import '@anypoint-web-components/awc/anypoint-icon-button.js'
-import '@api-components/http-method-label/http-method-label.js';
 import { ImportBaseTable } from './ImportBaseTable.js';
+import '../../../define/http-method-label.js';
 
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcSavedRequest} ExportArcSavedRequest */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcSavedRequest} ExportArcSavedRequest */
 
 /**
  * An element to display list of request objects to import.

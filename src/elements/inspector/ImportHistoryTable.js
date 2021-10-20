@@ -13,13 +13,13 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import { html, css } from 'lit-element';
+import '@anypoint-web-components/awc/date-time.js';
 import { ImportBaseTable } from './ImportBaseTable.js';
-import '@api-components/http-method-label/http-method-label.js';
-import '@advanced-rest-client/date-time/date-time.js';
+import '../../../define/http-method-label.js';
 
 /** @typedef {import('lit-element').CSSResult} CSSResult */
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcHistoryRequest} ExportArcHistoryRequest */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcHistoryRequest} ExportArcHistoryRequest */
 
 /**
  * An element to display list of history objects to import.

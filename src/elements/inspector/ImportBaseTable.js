@@ -16,7 +16,7 @@ License for the specific language governing permissions and limitations under
 the License.
 */
 import { LitElement, html } from 'lit-element';
-import { keyboardArrowDown } from '@advanced-rest-client/arc-icons/ArcIcons.js';
+import { keyboardArrowDown } from '@advanced-rest-client/icons/ArcIcons.js';
 import '@anypoint-web-components/awc/anypoint-collapse.js';
 import '@anypoint-web-components/awc/anypoint-icon-button.js';
 import '@anypoint-web-components/awc/anypoint-checkbox.js';
@@ -63,9 +63,9 @@ export class ImportBaseTable extends LitElement {
       // True to select all elements from the list
       allSelected: { type: Boolean },
       /**
-       * Enables compatibility with Anypoint platform
+       * Enables Anypoint theme
        */
-      compatibility: { type: Boolean }
+      anypoint: { type: Boolean }
     };
   }
 
@@ -122,7 +122,7 @@ export class ImportBaseTable extends LitElement {
     super();
     this.selectedIndexes = [];
     this.tableTitle = undefined;
-    this.compatibility = false;
+    this.anypoint = false;
   }
 
   firstUpdated() {
@@ -267,7 +267,7 @@ export class ImportBaseTable extends LitElement {
    * @returns {TemplateResult} A template for the table header
    */
   headerTemplate() {
-    const { tableTitle, selectedIndexes, opened, compatibility, allSelected } = this;
+    const { tableTitle, selectedIndexes, opened, anypoint, allSelected } = this;
     const cnt = selectedIndexes ? selectedIndexes.length : 0;
     const iconClass = `toggle-icon${(opened ? ' opened' : '')}`;
     return html`
@@ -285,7 +285,7 @@ export class ImportBaseTable extends LitElement {
         class="${iconClass}"
         aria-label="Activate to toggle table opened"
         title="Toggle table opened"
-        ?anypoint="${compatibility}"
+        ?anypoint="${anypoint}"
       >
         <span class="icon">${keyboardArrowDown}</span>
       </anypoint-icon-button>

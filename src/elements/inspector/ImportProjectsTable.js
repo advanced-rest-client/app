@@ -17,13 +17,14 @@ the License.
 
 import { html, css } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { keyboardArrowDown } from '@advanced-rest-client/arc-icons/ArcIcons.js';
+import { keyboardArrowDown } from '@advanced-rest-client/icons/ArcIcons.js';
 import { ImportBaseTable, dataChanged } from './ImportBaseTable.js';
+import '../../../define/http-method-label.js';
 
 /** @typedef {import('lit-element').CSSResult} CSSResult */
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcProjects} ExportArcProjects */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcSavedRequest} ExportArcSavedRequest */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcProjects} ExportArcProjects */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcSavedRequest} ExportArcSavedRequest */
 /** @typedef {import('./ImportProjectsTable').RenderItem} RenderItem */
 
 export const requestsValue = Symbol('requestsValue');
@@ -309,7 +310,7 @@ export class ImportProjectsTable extends ImportBaseTable {
     if (!hasRequests) {
       return '';
     }
-    const { compatibility } = this;
+    const { anypoint } = this;
     const allOpened = /** @type string[] */ (this[openedProjectsValue] || []);
     const opened = allOpened.includes(project.key);
     const classes = {
@@ -322,7 +323,7 @@ export class ImportProjectsTable extends ImportBaseTable {
       title="Toggle table opened" 
       class="${classMap(classes)}" 
       data-id="${project.key}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
       @click="${this[toggleProjectHandler]}"
     >
       <span class="icon">${keyboardArrowDown}</span>
