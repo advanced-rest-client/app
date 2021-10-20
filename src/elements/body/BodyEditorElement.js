@@ -111,7 +111,7 @@ export const editorTypes = Object.freeze([
   },
   {
     id: 'urlEncode',
-    label: 'www-url-form-encoded',
+    label: 'application/x-www-form-urlencoded',
     title: 'Opens an editor specialized with URL encoded data types'
   },
   {
@@ -169,7 +169,7 @@ export default class BodyEditorElement extends ResizableMixin(LitElement) {
       disabled: { type: Boolean },
       /** 
        * When set it automatically encodes and decodes values
-       * in www-url-form-encoded editor.
+       * in application/x-www-form-urlencoded editor.
        */
       autoEncode: { type: Boolean },
       /** 
@@ -584,7 +584,7 @@ export default class BodyEditorElement extends ResizableMixin(LitElement) {
         this[invalidMimeValue] = false;
       }
     } else if (selected === 'urlEncode') {
-      if (ct !== 'www-url-form-encoded') {
+      if (ct !== 'application/x-www-form-urlencoded') {
         this[invalidMimeValue] = true;
         this[invalidMimeMessage] = 2;
       } else {
@@ -602,7 +602,7 @@ export default class BodyEditorElement extends ResizableMixin(LitElement) {
     const { selected } = this;
     let updated = '';
     if (selected === 'urlEncode') {
-      updated = 'www-url-form-encoded';
+      updated = 'application/x-www-form-urlencoded';
     } else if (selected === 'multipart') {
       updated = 'multipart/form-data';
     }
@@ -834,7 +834,7 @@ export default class BodyEditorElement extends ResizableMixin(LitElement) {
   }
 
   /**
-   * @returns {TemplateResult} A template for the www-url-form-encoded editor
+   * @returns {TemplateResult} A template for the application/x-www-form-urlencoded editor
    */
   [urlEncodeEditorTemplate]() {
     const { autoEncode, value } = this;
@@ -954,7 +954,7 @@ export default class BodyEditorElement extends ResizableMixin(LitElement) {
     <div class="invalid-mime">
       <arc-icon icon="warning" class="warning-icon"></arc-icon>
       ${id === 1 ? this[fixableInvalidMimeTemplate]('multipart/form-data') : ''}
-      ${id === 2 ? this[fixableInvalidMimeTemplate]('www-url-form-encoded') : ''}
+      ${id === 2 ? this[fixableInvalidMimeTemplate]('application/x-www-form-urlencoded') : ''}
     </div>
     `;
   }

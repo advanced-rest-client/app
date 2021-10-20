@@ -104,7 +104,7 @@ export default class BodyEditorElement extends ResizableMixin(LitElement) {
   disabled: boolean;
   /** 
    * When set it automatically encodes and decodes values
-   * in www-url-form-encoded editor.
+   * in application/x-www-form-urlencoded editor.
    * @attribute
    */
   autoEncode: boolean;
@@ -313,7 +313,7 @@ export default class BodyEditorElement extends ResizableMixin(LitElement) {
   [monacoTemplate](value: string): TemplateResult;
 
   /**
-   * @returns A template for the www-url-form-encoded editor
+   * @returns A template for the application/x-www-form-urlencoded editor
    */
   [urlEncodeEditorTemplate](): TemplateResult;
 

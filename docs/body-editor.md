@@ -7,7 +7,7 @@ The package contains:
 - body-editor - An element to render fully featured body editor with specialized editors to edit different kind of data
 - body-raw-editor - Monaco editor based body editor.
 - body-multipart-editor - An element that specializes in multipart form data generation
-- body-formdata-editor - A form based input for the `www-url-form-encoded` type
+- body-formdata-editor - A form based input for the `application/x-www-form-urlencoded` type
 
 ## Usage
 
@@ -46,7 +46,7 @@ class SampleElement extends LitElement {
 customElements.define('sample-element', SampleElement);
 ```
 
-The `autoEncode` property allows to hide encode/decode buttons in the `www-url-form-encoded` editor and automatically handle value processing. The `contentType` property is passed down to the raw editor
+The `autoEncode` property allows to hide encode/decode buttons in the `application/x-www-form-urlencoded` editor and automatically handle value processing. The `contentType` property is passed down to the raw editor
 to detect the language to use.
 
 ## External dependencies
