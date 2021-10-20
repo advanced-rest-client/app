@@ -66,7 +66,8 @@
     "lint:types": "tsc",
     "lint": "npm run lint:eslint",
     "format": "npm run format:eslint",
-    "test": "web-test-runner test/**/*.test.js --coverage --node-resolve --playwright --browsers chromium  firefox webkit",
+    "test": "web-test-runner test/**/*.test.js --coverage --node-resolve --playwright --browsers chromium webkit",
+    "test:all": "web-test-runner test/**/*.test.js --coverage --node-resolve --playwright --browsers chromium firefox webkit",
     "test:watch": "web-test-runner test/**/*.test.js --node-resolve --watch",
     "gen:wc": "wca analyze \"*.js\" --outFile custom-elements.json"
   },

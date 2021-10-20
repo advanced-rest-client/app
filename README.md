@@ -23,3 +23,5 @@ npm start
 ```sh
 npm test
 ```
+
+Note, Firefox is temporarily removed from tests until Playwright update FF version to at least 91.
