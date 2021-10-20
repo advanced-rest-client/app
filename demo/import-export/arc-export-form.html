@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <title>export-panel demo</title>
+
+  <!-- <script src="../node_modules/crypto-js/crypto-js.js"></script> -->
+
+  <style>
+    .centered[role="main"] {
+      max-width: 1400px;
+    }
+
+    body.styled {
+      --anypoint-autocomplete-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+      --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+      --anypoint-listbox-background-color: #fff;
+      --primary-color: #00A2DF;
+      --error-color: red;
+      --arc-font-body1-font-size: 14px;
+      --arc-font-body1-font-weight: 400;
+      --arc-font-body1-line-height: 20px;
+
+      --arc-font-subhead-font-size: 16px;
+      --arc-font-subhead-font-weight: 400;
+      --arc-font-subhead-line-height: 24px;
+
+      --action-button-background-color: var(--primary-color);
+      --action-button-background-image: none;
+      --action-button-color: #fff;
+      --action-button-transition: background-color 300ms linear;
+      --action-button-hover-background-color: #04b3f5;
+      --action-button-hover-color: #fff;
+      --action-button-disabled-background-color: #eaeaea;
+      --action-button-disabled-color: #a8a8a8;
+
+      --error-color: #b71c1c;
+      --success-color: #1b5e20;
+    }
+
+    body.styled.dark {
+      background-color: #424242;
+      height: 100%;
+      color: #fff;
+      --accent-color: #FF9800;
+      --primary-background-color: #424242;
+      --action-button-background-color: #fff;
+      --action-button-color: var(--primary-color);
+      --secondary-action-button-color: #fff;
+      --primary-color: #2196f3;
+      --primary-text-color: #fff;
+      --action-button-background-color: #212121;
+      --action-button-color: #fff;
+      --action-button-hover-background-color: #212121;
+      --action-button-hover-color: #04b3f5;
+
+      --anypoint-checkbox-label-color:  #F5F5F5;
+      --anypoint-input-background-color: rgba(255, 255, 255, 0.04);
+      --anypoint-input-label-color: #fff;
+      --anypoint-input-input-color: #fff;
+      --anypoint-input-border-bottom-color: #8e8e8e;
+      --anypoint-input-focused-border-bottom-color: #fff;
+      --anypoint-input-label-background-color: rgb(66, 66, 66);
+      --anypoint-input-compatibility-focus-background-color: #3a3b3c;
+      --anypoint-input-compatibility-focus-border-color: #178bea;
+      --anypoint-input-info-message-color: #fff;
+
+      --anypoint-dropdown-menu-background-color: #494949;
+      --anypoint-dropdown-menu-label-background-color: #494949;
+      --anypoint-listbox-background-color: #494949;
+      --anypoint-dropdown-menu-focus-background-color: #494949;
+      --anypoint-dropdown-menu-hover-border-color: #fff;
+      --anypoint-dropdown-menu-label-color: #fff;
+      --anypoint-dropdown-menu-info-message-color: #fff;
+      --anypoint-item-hover-background-color: #616161;
+    }
+
+    body.styled.dark .card {
+      background-color: #424242;
+    }
+
+    arc-export-form {
+      width: 600px;
+    }
+  </style>
+</head>
+<body class="styled">
+  <div id="demo"></div>
+
+  <script type="module" src="./arc-export-form.js"></script>
+</body>
+</html>

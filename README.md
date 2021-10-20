@@ -6,7 +6,7 @@ It also provides DOM events based access to the API. Each operation has correspo
 A convenient way of using the events API is to by using the `ArcModelEvents` and `ArcModelEventTypes` interfaces.
 The first provides access to function which call creates and dispatches events on a given node. The later provides the definition of the event types for manual handling.
 
-It is highly recommended to use this models with the support of typescript. The library and each component has types definition with documentation for convenient use. Types are declared in `@advanced-rest-client/arc-types` module.
+It is highly recommended to use this models with the support of typescript. The library and each component has types definition with documentation for convenient use. Types are declared in `@advanced-rest-client/events` module.
 
 [![Published on NPM](https://img.shields.io/npm/v/@advanced-rest-client/arc-models.svg)](https://www.npmjs.com/package/@advanced-rest-client/arc-models)
 
@@ -163,7 +163,7 @@ An element to visually inspect ARC export object. It is used by ARC during the i
 <import-data-inspector .data="${data}" @cancel="${this.cancelled}" @import="${this.imported}"></import-data-inspector>
 ```
 
-The data object is the `ArcExportObject` declare in the `@advanced-rest-client/arc-types/DataExport` declaration.
+The data object is the `ArcExportObject` declare in the `@advanced-rest-client/events/DataExport` declaration.
 
 ### ExportOptionsElement
 

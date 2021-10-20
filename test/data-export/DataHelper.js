@@ -200,7 +200,7 @@ DataHelper.generateExportData = () => {
     variables: /** @type ExportArcVariable[] */ (generator.variables.listVariables().map(mapExportKeys)),
     cookies: /** @type ExportArcCookie[] */ (generator.cookies.cookies().map(mapExportKeys)),
     urlhistory: /** @type ExportArcUrlHistory[] */ (generator.urls.urls(10).map(mapExportKeys)),
-    websocketurlhistory: /** @type ExportArcWebsocketUrl[] */ (generator.urls.urls(10).map(mapExportKeys)).map(mapExportKeys),
+    websocketurlhistory: /** @type ExportArcWebsocketUrl[] */ (generator.urls.urls(10).map(mapExportKeys)),
     authdata: /** @type ExportArcAuthData[] */ (generator.authorization.basicList().map(mapExportKeys)),
     clientcertificates: certs,
   };

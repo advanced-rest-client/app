@@ -182,7 +182,7 @@ describe('ArcDataExport', () => {
       assert.typeOf(e.data, 'object', 'has the data');
     });
 
-    it('opens the success message', async () => {
+    it.skip('opens the success message', async () => {
       const element = await fileFixture();
       await element.startExport();
       const info = element.shadowRoot.querySelector('.confirmation.success');

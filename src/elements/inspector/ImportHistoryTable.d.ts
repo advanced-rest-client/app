@@ -1,6 +1,6 @@
 import {ImportBaseTable} from './ImportBaseTable.js';
 import {CSSResult, TemplateResult} from 'lit-element';
-import { DataExport } from '@advanced-rest-client/arc-types';
+import { DataExport } from '@advanced-rest-client/events';
 
 /**
  * An element to display list of cookies to import.

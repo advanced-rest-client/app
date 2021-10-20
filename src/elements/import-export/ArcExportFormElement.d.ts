@@ -1,6 +1,6 @@
 import { CSSResult, TemplateResult } from 'lit-element';
 import { ExportPanelBase } from './ExportPanelBase.js';
-import { DataExport } from '@advanced-rest-client/arc-types';
+import { DataExport } from '@advanced-rest-client/events';
 
 declare function exportItemsTemplate(): TemplateResult;
 

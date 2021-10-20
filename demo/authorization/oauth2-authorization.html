@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>OAuth 2 Playground</title>
+  <style>
+  
+  </style>
+</head>
+<body>
+  <div id="demo">
+    <button id="iframeLoad">Test iframe load event</button>
+    <button id="popupLoad">Test popup</button>
+  </div>
+  <script type="module">
+    import { IframeAuthorization } from '../../src/lib/IframeAuthorization.js';
+    import { PopupAuthorization } from '../../src/lib/PopupAuthorization.js';
+
+    const iframe = new IframeAuthorization();
+    const popup = new PopupAuthorization();
+
+    iframe.addEventListener('timeout', () => {
+      console.log('Time out called');
+    });
+    popup.addEventListener('close', () => {
+      console.log('Popup closed');
+    });
+    let data;
+
+    window.addEventListener('message', (e) => {
+      data = e.data;
+      iframe.cancel();
+      iframe.cleanUp();
+      popup.cleanUp();
+      console.log(data);
+    });
+
+    document.getElementById('iframeLoad').addEventListener('click', () => {
+      iframe.load('./redirect.html');
+    });
+
+    document.getElementById('popupLoad').addEventListener('click', () => {
+      popup.load('./redirect.html');
+    });
+  </script>
+</body>
+</html>

@@ -2,7 +2,7 @@ import { TemplateResult, LitElement } from 'lit-element';
 import { DataExport, GoogleDrive } from '@advanced-rest-client/events';
 import { Suggestion } from '@anypoint-web-components/awc';
 
-/** @typedef {import('@advanced-rest-client/arc-types').GoogleDrive.AppFolder} AppFolder */
+/** @typedef {import('@advanced-rest-client/events').GoogleDrive.AppFolder} AppFolder */
 
 export declare const destinationTemplate: unique symbol;
 export declare const fileInputTemplate: unique symbol;

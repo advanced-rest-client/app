@@ -1,5 +1,5 @@
 import { TemplateResult, CSSResult } from 'lit-element';
-import { DataExport } from '@advanced-rest-client/arc-types';
+import { DataExport } from '@advanced-rest-client/events';
 import { ImportBaseTable, dataChanged } from './ImportBaseTable';
 
 export declare interface RenderItem {

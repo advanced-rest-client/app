@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>authorization-selector</title>
+  <style>
+  [role="main"].centered {
+    max-width: 1440px;
+  }
+
+  authorization-selector {
+    flex: 1;
+    margin: 12px;
+  }
+
+  [slot="aria"] {
+    margin: 20px 12px;
+    padding: 0;
+  }
+
+  body.styled {
+    --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --anypoint-autocomplete-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --arc-font-subhead-font-size: 16px;
+    --arc-font-subhead-font-weight: 400;
+    --arc-font-subhead-line-height: 24px;
+    --anypoint-dropdown-border-radius: 0 0 12px 12px;
+  }
+
+  [type="none"] {
+    padding: 8px;
+  }
+
+  body.styled.dark output {
+    background-color: #263238;
+  }
+
+  body.styled.dark {
+    --secondary-text-color: #616161;
+    --primary-background-color: #424242;
+
+    --anypoint-input-anypoint-label-color: #F5F5F5;
+    --arc-interactive-demo-options-color: #F5F5F5;
+    --anypoint-checkbox-label-color:  #F5F5F5;
+    --anypoint-input-background-color: #494949;
+    --anypoint-input-label-color: #fff;
+    --anypoint-input-input-color: #fff;
+    --anypoint-input-border-bottom-color: #fff;
+    --anypoint-input-focused-border-bottom-color: #fff;
+    --anypoint-input-label-background-color: rgb(66, 66, 66);
+    --anypoint-input-anypoint-focus-background-color: #3a3b3c;
+    --anypoint-input-anypoint-focus-border-color: #178bea;
+    --anypoint-input-info-message-color: #fff;
+
+    --inline-documentation-background-color: #263238;
+
+    --anypoint-dropdown-menu-background-color: #494949;
+    --anypoint-dropdown-menu-label-background-color: var(--primary-background-color);
+    --anypoint-listbox-background-color: #494949;
+    --anypoint-dropdown-menu-focus-background-color: #9E9E9E;
+    --anypoint-dropdown-menu-label-color: #fff;
+    --anypoint-dropdown-menu-info-message-color: #fff;
+    --anypoint-item-hover-background-color: #9E9E9E;
+    --anypoint-autocomplete-background-color: #494949;
+    --anypoint-icon-button-emphasis-low-color: #fff;
+  }
+  </style>
+</head>
+<body>
+  <div id="demo"></div>
+
+  <script type="module" src="selector.js"></script>
+</body>
+</html>

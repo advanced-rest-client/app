@@ -26,6 +26,7 @@ import '@anypoint-web-components/awc/anypoint-selector.js';
 import styles from './CommonStyles.js';
 
 /** @typedef {import('@anypoint-web-components/awc').AnypointSelectorElement} AnypointSelectorElement */
+/** @typedef {import('@anypoint-web-components/awc').AnypointCheckboxElement} AnypointCheckboxElement */
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
 
 export const toggleSelectedAll = Symbol('toggleSelectedAll');
@@ -180,10 +181,10 @@ export class ImportBaseTable extends LitElement {
   }
 
   /**
-   * @param {CustomEvent} e
+   * @param {Event} e
    */
   [selectedHandler](e) {
-    this.selectedIndexes = e.detail.value;
+    this.selectedIndexes = /** @type AnypointSelectorElement */ (e.target).selectedValues;
     this.requestUpdate();
   }
 
@@ -196,10 +197,10 @@ export class ImportBaseTable extends LitElement {
   }
 
   /**
-   * @param {CustomEvent} e
+   * @param {Event} e
    */
   [toggleSelectedAll](e) {
-    const { value } = e.detail;
+    const value = /** @type AnypointCheckboxElement */ (e.target).checked;
     this.allSelected = value;
     let indexes = [];
     if (value) {
@@ -304,7 +305,7 @@ export class ImportBaseTable extends LitElement {
         attrforselected="data-key"
         selectable="anypoint-icon-item"
         .selectedValues="${this.selectedIndexes}"
-        @selectedvalues-changed="${this[selectedHandler]}"
+        @selectedvalueschange="${this[selectedHandler]}"
       >
       ${this.repeaterTemplate(this.data)}
       </anypoint-selector>

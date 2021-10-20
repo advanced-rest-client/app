@@ -13,7 +13,7 @@ import { getTableData, readNonProjectsData } from '../../src/elements/import-exp
 /** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcWebsocketUrl} ExportArcWebsocketUrl */
 /** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcAuthData} ExportArcAuthData */
 
-describe('<import-data-inspector>', () => {
+describe('ImportDataInspectorElement', () => {
   /**
    * @param {ArcExportObject=} data
    * @returns {Promise<ImportDataInspectorElement>}
@@ -21,7 +21,6 @@ describe('<import-data-inspector>', () => {
   async function basicFixture(data) {
     return fixture(html`<import-data-inspector .data="${data}"></import-data-inspector>`);
   }
-
 
   describe('import table test', () => {
     let element;
@@ -117,7 +116,7 @@ describe('<import-data-inspector>', () => {
     it('computes list of selected objects', () => {
       const result = element[getTableData]('import-websocket-url-history-table');
       assert.typeOf(result, 'array');
-      assert.lengthOf(result, 5);
+      assert.lengthOf(result, 10);
     });
 
     it('returns undefined if selection is empty', () => {
@@ -131,7 +130,8 @@ describe('<import-data-inspector>', () => {
   describe('collectData()', () => {
     let element = /** @type ImportDataInspectorElement */(null);
     beforeEach(async () => {
-      element = await basicFixture(DataHelper.generateExportData());
+      const data = DataHelper.generateExportData();
+      element = await basicFixture(data);
       await nextFrame();
     });
 

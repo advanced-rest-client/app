@@ -18,7 +18,7 @@ import { ImportBaseTable } from './ImportBaseTable.js';
 
 /** @typedef {import('lit-element').CSSResult} CSSResult */
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcAuthData} ExportArcAuthData */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcAuthData} ExportArcAuthData */
 
 const styles = css`.no-data {
   margin-left: 16px;

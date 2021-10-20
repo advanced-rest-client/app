@@ -17,9 +17,9 @@ const acceptHandlerValue = Symbol('acceptHandlerValue');
 const cancelHandlerValue = Symbol('cancelHandlerValue');
 const resizeHandlerValue = Symbol('resizeHandlerValue');
 
-/** @typedef {import('@advanced-rest-client/arc-types').GoogleDrive.AppFolder} AppFolder */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ProviderOptions} ProviderOptions */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportOptions} ExportOptions */
+/** @typedef {import('@advanced-rest-client/events').GoogleDrive.AppFolder} AppFolder */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ProviderOptions} ProviderOptions */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportOptions} ExportOptions */
 
 /**
  * `export-options`

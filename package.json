@@ -23,13 +23,19 @@
   "dependencies": {
     "@advanced-rest-client/events": "^0.2.22",
     "@advanced-rest-client/icons": "^4.0.0",
+    "@advanced-rest-client/uuid": "^4.0.0",
     "@anypoint-web-components/awc": "^1.0.3",
+    "@github/time-elements": "^3.1.2",
     "lit-element": "^2.5.1",
     "lit-html": "^1.4.1"
+  },
+  "peerDependencies": {
+    "jsrsasign": "^10.4.0"
   },
   "devDependencies": {
     "@advanced-rest-client/arc-demo-helper": "^5.0.1",
     "@advanced-rest-client/arc-mock": "^5.0.0",
+    "@advanced-rest-client/idb-store": "^1.0.0",
     "@open-wc/eslint-config": "^6.0.0",
     "@open-wc/testing": "^3.0.1",
     "@web/dev-server": "^0.1.25",
@@ -37,8 +43,13 @@
     "@web/test-runner-playwright": "^0.8.8",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
+    "get-port": "^6.0.0",
     "husky": "^7.0.2",
+    "jsrsasign": "^10.4.1",
+    "koa-proxies": "^0.12.1",
     "lint-staged": "^11.2.3",
+    "oauth2-mock-server": "^3.2.0",
+    "pouchdb": "^7.2.2",
     "sinon": "^11.1.2",
     "typescript": "^4.4.4",
     "typescript-lit-html-plugin": "^0.9.0"
@@ -51,7 +62,7 @@
     "lint": "npm run lint:eslint",
     "format": "npm run format:eslint",
     "test": "web-test-runner test/**/*.test.js --coverage --node-resolve --playwright --browsers chromium  firefox webkit",
-    "test:watch": "web-test-runner --config wtr-dev.config.mjs",
+    "test:watch": "web-test-runner test/**/*.test.js --node-resolve --watch",
     "gen:wc": "wca analyze \"*.js\" --outFile custom-elements.json"
   },
   "eslintConfig": {

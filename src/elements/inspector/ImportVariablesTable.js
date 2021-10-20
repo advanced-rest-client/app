@@ -17,7 +17,7 @@ import { ImportBaseTable } from './ImportBaseTable.js';
 
 /** @typedef {import('lit-element').CSSResult} CSSResult */
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcVariable} ExportArcVariable */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcVariable} ExportArcVariable */
 
 /**
  * An element to render list of variables to import.

@@ -16,7 +16,7 @@ import { html } from 'lit-element';
 import { ImportBaseTable } from './ImportBaseTable.js';
 
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcUrlHistory} ExportArcUrlHistory */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcUrlHistory} ExportArcUrlHistory */
 
 /**
  * An element to render list of URLs history to import.

@@ -18,7 +18,7 @@ import { ImportBaseTable } from './ImportBaseTable.js';
 
 /** @typedef {import('lit-element').CSSResult} CSSResult */
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcClientCertificateData} ExportArcClientCertificateData */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcClientCertificateData} ExportArcClientCertificateData */
 
 /**
  * An element to render list of authorization data to import.

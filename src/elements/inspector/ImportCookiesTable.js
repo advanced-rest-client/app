@@ -16,7 +16,7 @@ import { html } from 'lit-element';
 import { ImportBaseTable } from './ImportBaseTable.js';
 
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
-/** @typedef {import('@advanced-rest-client/arc-types').DataExport.ExportArcCookie} ExportArcCookie */
+/** @typedef {import('@advanced-rest-client/events').DataExport.ExportArcCookie} ExportArcCookie */
 
 /**
  * An element to display list of cookies to import.

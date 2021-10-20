@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Oauth2 callback window</title>
+    <style>*[hidden] { display: none; } </style>
+  </head>
+  <body>
+    <h1>Sending the authorization data to the application</h1>
+    <p id="general-error" hidden>
+      The window wasn't opened as a popup and therefore it can't pass the authorization information.<br/>
+      This is an error.
+    </p>
+    <script>
+    const messageTarget = (window.opener || window.parent || window.top);
+    if (!messageTarget || messageTarget === window || !messageTarget.postMessage) {
+      const elm = document.getElementById('general-error');
+      elm.removeAttribute('hidden');
+    } else {
+      const search = window.location.search.substr(1);
+      if (search) {
+        messageTarget.postMessage(search, '*');
+      } else {
+        messageTarget.postMessage(window.location.hash.substr(1), '*');
+      }
+    }
+    </script>
+  </body>
+</html>
