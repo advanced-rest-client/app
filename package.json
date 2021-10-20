@@ -1,7 +1,7 @@
 {
   "name": "@advanced-rest-client/app",
   "description": "Advanced REST Client application sources.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "license": "Apache-2.0",
   "main": "index.js",
   "module": "index.js",
