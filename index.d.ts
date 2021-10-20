@@ -18,11 +18,11 @@ export { ImportDataInspectorElement } from './src/elements/import-export/ImportD
 export { default as ArcDefinitionsElement } from './src/elements/headers/ArcDefinitionsElement';
 export { default as HttpMethodLabelElement } from './src/elements/http/HttpMethodLabelElement';
 export * as HttpStyles from './src/elements/styles/HttpLabel';
-export { HeadersParser } from './src/lib/headers/HeadersParser.js';
-export { ArcHeaders } from './src/lib/headers/ArcHeaders.js';
-export { default as HeadersEditorElement } from './src/elements/headers/HeadersEditorElement.js';
-export { default as HeadersListElement } from './src/elements/headers/HeadersListElement.js';
-export { default as AuthorizationMethodElement } from './src/elements/authorization/AuthorizationMethodElement.js';
+export { HeadersParser } from './src/lib/headers/HeadersParser';
+export { ArcHeaders } from './src/lib/headers/ArcHeaders';
+export { default as HeadersEditorElement } from './src/elements/headers/HeadersEditorElement';
+export { default as HeadersListElement } from './src/elements/headers/HeadersListElement';
+export { default as AuthorizationMethodElement } from './src/elements/authorization/AuthorizationMethodElement';
 export {
   METHOD_BASIC,
   METHOD_BEARER,
@@ -31,23 +31,29 @@ export {
   METHOD_OAUTH1,
   METHOD_OAUTH2,
   METHOD_OIDC,
-} from './src/elements/authorization/Utils.js';
-export { default as AuthDialogBasicElement } from './src/elements/authorization/AuthDialogBasicElement.js';
-export { default as AuthDialogNtlmElement } from './src/elements/authorization/AuthDialogNtlmElement.js';
-export { default as AuthorizationSelectorElement } from './src/elements/authorization/AuthorizationSelectorElement.js';
-export { default as OAuth2ScopeSelectorElement } from './src/elements/authorization/OAuth2ScopeSelectorElement.js';
-export { default as OidcAuthorizationElement } from './src/elements/authorization/OidcAuthorizationElement.js';
-export { OAuth2AuthorizationElement } from './src/elements/authorization/OAuth2AuthorizationElement.js';
-export { OAuth1AuthorizationElement } from './src/elements/authorization/OAuth1AuthorizationElement.js';
-export { OAuth2Authorization } from './src/elements/authorization/OAuth2Authorization.js';
-export { OidcAuthorization } from './src/elements/authorization/OidcAuthorization.js';
-export { AuthorizationError, CodeError } from './src/elements/authorization/AuthorizationError.js';
-export { default as AuthUiBase } from './src/elements/authorization/ui/AuthUiBase.js';
-export { default as Digest } from './src/elements/authorization/ui/Digest.js';
-export { default as HttpBasic } from './src/elements/authorization/ui/HttpBasic.js';
-export { default as HttpBearer } from './src/elements/authorization/ui/HttpBearer.js';
-export { default as Ntlm } from './src/elements/authorization/ui/Ntlm.js';
-export { default as OAuth1 } from './src/elements/authorization/ui/OAuth1.js';
-export { default as OAuth2 } from './src/elements/authorization/ui/OAuth2.js';
-export { UiDataHelper } from './src/elements/authorization/ui/UiDataHelper.js';
+} from './src/elements/authorization/Utils';
+export { default as AuthDialogBasicElement } from './src/elements/authorization/AuthDialogBasicElement';
+export { default as AuthDialogNtlmElement } from './src/elements/authorization/AuthDialogNtlmElement';
+export { default as AuthorizationSelectorElement } from './src/elements/authorization/AuthorizationSelectorElement';
+export { default as OAuth2ScopeSelectorElement } from './src/elements/authorization/OAuth2ScopeSelectorElement';
+export { default as OidcAuthorizationElement } from './src/elements/authorization/OidcAuthorizationElement';
+export { OAuth2AuthorizationElement } from './src/elements/authorization/OAuth2AuthorizationElement';
+export { OAuth1AuthorizationElement } from './src/elements/authorization/OAuth1AuthorizationElement';
+export { OAuth2Authorization } from './src/elements/authorization/OAuth2Authorization';
+export { OidcAuthorization } from './src/elements/authorization/OidcAuthorization';
+export { AuthorizationError, CodeError } from './src/elements/authorization/AuthorizationError';
+export { default as AuthUiBase } from './src/elements/authorization/ui/AuthUiBase';
+export { default as Digest } from './src/elements/authorization/ui/Digest';
+export { default as HttpBasic } from './src/elements/authorization/ui/HttpBasic';
+export { default as HttpBearer } from './src/elements/authorization/ui/HttpBearer';
+export { default as Ntlm } from './src/elements/authorization/ui/Ntlm';
+export { default as OAuth1 } from './src/elements/authorization/ui/OAuth1';
+export { default as OAuth2 } from './src/elements/authorization/ui/OAuth2';
+export { UiDataHelper } from './src/elements/authorization/ui/UiDataHelper';
 export * from './src/elements/authorization/types';
+export { UrlParser } from './src/lib/UrlParser';
+export { UrlValueParser } from './src/lib/UrlValueParser';
+export * as Utils from './src/lib/Utils';
+export { default as WebUrlInputElement } from './src/elements/url/WebUrlInputElement';
+export { default as UrlInputEditorElement } from './src/elements/url/UrlInputEditorElement';
+export { default as UrlParamsEditorElement } from './src/elements/url/UrlParamsEditorElement';

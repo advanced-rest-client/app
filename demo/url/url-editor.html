@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>ARC URL editor demo</title>
+  <style>
+  .centered[role="main"] {
+    max-width: 1400px;
+  }
+
+  url-input-editor {
+    width: 900px;
+    background-color: #fff;
+  }
+
+  body.styled {
+    --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --anypoint-autocomplete-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --primary-color: #00A2DF;
+    
+    --error-color: red;
+  }
+
+  body.styled.dark {
+    --primary-background-color: #373737;
+    --anypoint-listbox-background-color: var(--primary-background-color);
+    --anypoint-input-background-color: #373737;
+    --anypoint-item-hover-background-color: var(--anypoint-input-background-color);
+    --anypoint-item-focused-background-color: var(--anypoint-input-background-color);
+  }
+
+  body.styled.dark url-input-editor {
+    background-color: rgb(66, 66, 66);
+  }
+
+  </style>
+</head>
+
+<body>
+  <div id="demo"></div>
+  <script type="module" src="url-editor.js"></script>
+  </script>
+</body>
+
+</html>

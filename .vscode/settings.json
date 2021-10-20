@@ -5,9 +5,13 @@
     "Hamac",
     "itemschange",
     "jsrsasign",
+    "openedchange",
     "queryheaders",
     "querystatuscodes",
     "selectedvalueschange",
+    "suggestionsopenedchange",
+    "urldecode",
+    "urlencode",
     "valuechange"
   ]
 }
