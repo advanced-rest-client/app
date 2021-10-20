@@ -75,9 +75,9 @@ export default class WebUrlInputElement extends OverlayMixin(LitElement) {
        */
       purpose: { type: String },
       /**
-       * Enables compatibility with Anypoint platform
+       * Enables Anypoint theme
        */
-      compatibility: { type: Boolean },
+      anypoint: { type: Boolean },
       /**
        * Enables Material Design Outlined inputs
        */
@@ -130,7 +130,7 @@ export default class WebUrlInputElement extends OverlayMixin(LitElement) {
     super();
     this[keyDownHandler] = this[keyDownHandler].bind(this);
     this[transitionEndHandler] = this[transitionEndHandler].bind(this);
-    this.compatibility = false;
+    this.anypoint = false;
     this.outlined = false;
     this.purpose = undefined;
     this[autocompleteOpenedValue] = false;
@@ -307,12 +307,12 @@ export default class WebUrlInputElement extends OverlayMixin(LitElement) {
    * @returns {TemplateResult} Template for the main input
    */
   [inputTemplate]() {
-    const { value = '', compatibility, outlined } = this;
+    const { value = '', anypoint, outlined } = this;
     return html`
     <anypoint-input
       .value="${value}"
       @input="${this[inputHandler]}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
       ?outlined="${outlined}"
       class="main-input"
       type="url"
@@ -329,9 +329,9 @@ export default class WebUrlInputElement extends OverlayMixin(LitElement) {
    * @returns {TemplateResult} Template for the autocomplete element
    */
   [autocompleteTemplate]() {
-    const { compatibility } = this;
+    const { anypoint } = this;
     const target = this[autocompleteTarget];
-    const offset = compatibility ? 40 : 56;
+    const offset = anypoint ? 40 : 56;
     return html`
     <anypoint-autocomplete
       loader
@@ -339,7 +339,7 @@ export default class WebUrlInputElement extends OverlayMixin(LitElement) {
       .verticalOffset="${offset}"
       @query="${this[autocompleteQueryHandler]}"
       .target="${target}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
       @openedchange="${this[suggestionsOpenedHandler]}"
       @closed="${this[autocompleteClosedHandler]}"
       @overlay-closed="${cancelEvent}"
@@ -355,10 +355,10 @@ export default class WebUrlInputElement extends OverlayMixin(LitElement) {
    * @returns {TemplateResult} Template for the confirm button
    */
   [confirmButtonTemplate]() {
-    const { compatibility, confirmDisabled } = this;    
+    const { anypoint, confirmDisabled } = this;    
     return html`
     <anypoint-button
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
       @click="${this[enterHandler]}"
       ?disabled="${confirmDisabled}"
       emphasis="high"

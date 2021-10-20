@@ -73,9 +73,9 @@ export default class WebUrlInputElement extends OverlayMixin(LitElement) {
    */
   purpose?: string;
   /**
-   * Enables compatibility with Anypoint platform
+   * Enables Anypoint theme
    */
-  compatibility: boolean;
+  anypoint: boolean;
   /**
    * Enables Material Design Outlined inputs
    */

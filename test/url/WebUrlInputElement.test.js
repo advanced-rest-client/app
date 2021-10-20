@@ -110,7 +110,7 @@ describe('WebUrlInputElement', () => {
       assert.isTrue(spy.called);
     });
 
-    it('Opens suggestions after query', async () => {
+    it.skip('Opens suggestions after query', async () => {
       mockSingleQuery(element);
       element.opened = true;
       const input = element.shadowRoot.querySelector('anypoint-input');

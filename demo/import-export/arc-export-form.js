@@ -19,7 +19,6 @@ class ComponentDemoPage extends DemoPage {
   constructor() {
     super();
     this.initObservableProperties([
-      'compatibility',
       'outlined',
       'withEncrypt'
     ]);
@@ -38,8 +37,8 @@ class ComponentDemoPage extends DemoPage {
   _demoStateHandler(e) {
     const state = e.detail.value;
     this.outlined = state === 1;
-    this.compatibility = state === 2;
-    this._updateCompatibility();
+    this.anypoint = state === 2;
+    this._updateAnypoint();
   }
 
   /**
@@ -114,7 +113,7 @@ class ComponentDemoPage extends DemoPage {
     const {
       demoStates,
       darkThemeActive,
-      compatibility,
+      anypoint,
       outlined,
       withEncrypt
     } = this;
@@ -131,7 +130,7 @@ class ComponentDemoPage extends DemoPage {
           ?dark="${darkThemeActive}"
         >
           <arc-export-form
-            ?compatibility="${compatibility}"
+            ?anypoint="${anypoint}"
             ?outlined="${outlined}"
             ?withEncrypt="${withEncrypt}"
             provider="drive"
@@ -173,7 +172,7 @@ class ComponentDemoPage extends DemoPage {
         <ul>
           <li><b>Material</b> - Normal state</li>
           <li>
-            <b>Compatibility</b> - To provide compatibility with Anypoint design
+            <b>Anypoint</b> - Enables Anypoint theme
           </li>
         </ul>
         <p>

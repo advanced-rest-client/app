@@ -13,11 +13,10 @@ class ComponentPage extends DemoPage {
   constructor() {
     super();
     this.initObservableProperties([
-      'compatibility',
       'outlined',
       'value'
     ]);
-    this._componentName = 'url-input-editor';
+    this.componentName = 'url-input-editor';
     this.demoStates = ['Material', 'Outlined', 'Anypoint'];
     this.renderViewControls = true;
     this.generator = new ArcMock();
@@ -79,7 +78,7 @@ class ComponentPage extends DemoPage {
     const {
       demoStates,
       darkThemeActive,
-      compatibility,
+      anypoint,
       outlined,
       value
     } = this;
@@ -97,7 +96,7 @@ class ComponentPage extends DemoPage {
           ?dark="${darkThemeActive}"
         >
           <url-input-editor
-            ?compatibility="${compatibility}"
+            ?anypoint="${anypoint}"
             ?outlined="${outlined}"
             .value="${value}"
             @change="${this._valueHandler}"

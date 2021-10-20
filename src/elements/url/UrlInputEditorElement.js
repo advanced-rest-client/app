@@ -85,7 +85,7 @@ import {
 /** @typedef {import('@advanced-rest-client/events').ARCHistoryUrlDeletedEvent} ARCHistoryUrlDeletedEvent */
 /** @typedef {import('@advanced-rest-client/events').ARCModelStateDeleteEvent} ARCModelStateDeleteEvent */
 /** @typedef {import('@advanced-rest-client/events').UrlHistory.ARCUrlHistory} ARCUrlHistory */
-/** @typedef {import('./UrlParamsEditorElement').UrlParamsEditorElement} UrlParamsEditorElement */
+/** @typedef {import('./UrlParamsEditorElement').default} UrlParamsEditorElement */
 
 /**
  * The request URL editor
@@ -104,9 +104,9 @@ export default class UrlInputEditorElement extends EventsTargetMixin(Validatable
        */
       outlined: { type: Boolean },
       /**
-       * Enables compatibility with Anypoint components.
+       * Enables Anypoint theme.
        */
-      compatibility: { type: Boolean },
+      anypoint: { type: Boolean },
       /**  
        * The current URL value.
        */
@@ -174,7 +174,7 @@ export default class UrlInputEditorElement extends EventsTargetMixin(Validatable
     this.defaultProtocol = 'http';
     this.value = 'http://';
 
-    this.compatibility = false;
+    this.anypoint = false;
     this.readOnly = false;
     this.outlined = false;
     this[autocompleteOpened] = false;
@@ -712,7 +712,7 @@ export default class UrlInputEditorElement extends EventsTargetMixin(Validatable
    * @returns {TemplateResult} A template for the autocomplete element
    */
   [urlAutocompleteTemplate]() {
-    const { detailsOpened, compatibility } = this;
+    const { detailsOpened, anypoint } = this;
     let opened = this[autocompleteOpened];
     if (opened && detailsOpened) {
       opened = false;
@@ -745,7 +745,7 @@ export default class UrlInputEditorElement extends EventsTargetMixin(Validatable
           selectable="anypoint-item"
           useAriaSelected
           @select="${this[suggestionHandler]}"
-          ?compatibility="${compatibility}"
+          ?anypoint="${anypoint}"
         >
           ${this[suggestionsListTemplate]()}
         </anypoint-listbox>
@@ -777,7 +777,7 @@ export default class UrlInputEditorElement extends EventsTargetMixin(Validatable
     // this has a11y rule disabled because we are not planning to make this so complex to use
     // where you can switch between the list context to a button context.
     return html`
-    <anypoint-item ?compatibility="${this.compatibility}">
+    <anypoint-item ?anypoint="${this.anypoint}">
       <div>${url}</div>
       <span 
         class="remove-suggestion" 
@@ -811,7 +811,7 @@ export default class UrlInputEditorElement extends EventsTargetMixin(Validatable
    */
   [paramsEditorTemplate]() {
     const {
-      compatibility,
+      anypoint,
       readOnly,
       outlined,
       detailsOpened,
@@ -830,7 +830,7 @@ export default class UrlInputEditorElement extends EventsTargetMixin(Validatable
       @urlencode="${this.encodeParameters}"
       @urldecode="${this.decodeParameters}"
       @change="${this[inputHandler]}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
       ?outlined="${outlined}"
       ?readOnly="${readOnly}"
       ?opened="${detailsOpened}"

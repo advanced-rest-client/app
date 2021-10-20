@@ -75,9 +75,9 @@ export default class UrlParamsEditorElement extends ResizableMixin(OverlayMixin(
        */
       outlined: { type: Boolean },
       /**
-       * Enables compatibility with Anypoint components.
+       * Enables Anypoint theme.
        */
-      compatibility: { type: Boolean },
+      anypoint: { type: Boolean },
       /**
        * Current value of the editor.
        */
@@ -121,7 +121,7 @@ export default class UrlParamsEditorElement extends ResizableMixin(OverlayMixin(
     super();
     this.model = /** @type ViewModel */ ({});
 
-    this.compatibility = false;
+    this.anypoint = false;
     this.outlined = false;
     this.readOnly = false;
     /** 
@@ -416,7 +416,7 @@ export default class UrlParamsEditorElement extends ResizableMixin(OverlayMixin(
    */
   [formTemplate]() {
     const items = /** @type QueryParameter[] */ (this.queryParameters || []);
-    const { compatibility, readOnly } = this;
+    const { anypoint, readOnly } = this;
     return html`
     <label class="query-title">Query parameters</label>
     ${this[listTemplate](items)}
@@ -425,7 +425,7 @@ export default class UrlParamsEditorElement extends ResizableMixin(OverlayMixin(
         emphasis="low"
         @click="${this[addParamHandler]}"
         class="add-param"
-        ?compatibility="${compatibility}"
+        ?anypoint="${anypoint}"
         ?disabled="${readOnly}"
       >
         <arc-icon icon="addCircleOutline"></arc-icon> Add
@@ -473,7 +473,7 @@ export default class UrlParamsEditorElement extends ResizableMixin(OverlayMixin(
    * @return {TemplateResult} Template for the parameter name input
    */
   [paramRemoveTemplate](index) {
-    const { compatibility, readOnly } = this;
+    const { anypoint, readOnly } = this;
     return html`
     <anypoint-icon-button
       data-index="${index}"
@@ -481,7 +481,7 @@ export default class UrlParamsEditorElement extends ResizableMixin(OverlayMixin(
       title="Remove this parameter"
       aria-label="Activate to remove this item"
       ?disabled="${readOnly}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
     >
       <arc-icon icon="removeCircleOutline"></arc-icon>
     </anypoint-icon-button>
@@ -494,7 +494,7 @@ export default class UrlParamsEditorElement extends ResizableMixin(OverlayMixin(
    * @return {TemplateResult} Template for the parameter name input
    */
   [paramToggleTemplate](item, index) {
-    const { compatibility, readOnly } = this;
+    const { anypoint, readOnly } = this;
     return html`
     <anypoint-switch
       data-index="${index}"
@@ -504,7 +504,7 @@ export default class UrlParamsEditorElement extends ResizableMixin(OverlayMixin(
       aria-label="Activate to toggle enabled state of this item"
       class="param-switch"
       ?disabled="${readOnly}"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
     ></anypoint-switch>
     `;
   }
@@ -515,7 +515,7 @@ export default class UrlParamsEditorElement extends ResizableMixin(OverlayMixin(
    * @return {TemplateResult} Template for the parameter name input
    */
   [paramNameInput](item, index) {
-    const { compatibility, outlined, readOnly } = this;
+    const { anypoint, outlined, readOnly } = this;
     return html`
     <anypoint-input
       autoValidate
@@ -523,7 +523,7 @@ export default class UrlParamsEditorElement extends ResizableMixin(OverlayMixin(
       data-property="name"
       data-index="${index}"
       class="param-name"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
       ?outlined="${outlined}"
       ?readOnly="${readOnly}"
       pattern="\\S*"
@@ -541,7 +541,7 @@ export default class UrlParamsEditorElement extends ResizableMixin(OverlayMixin(
    * @return {TemplateResult} Template for the parameter value input
    */
   [paramValueInput](item, index) {
-    const { compatibility, outlined, readOnly } = this;
+    const { anypoint, outlined, readOnly } = this;
     return html`
     <anypoint-input
       autoValidate
@@ -549,7 +549,7 @@ export default class UrlParamsEditorElement extends ResizableMixin(OverlayMixin(
       data-property="value"
       data-index="${index}"
       class="param-value"
-      ?compatibility="${compatibility}"
+      ?anypoint="${anypoint}"
       ?outlined="${outlined}"
       ?readOnly="${readOnly}"
       pattern="\\S*"
@@ -565,26 +565,26 @@ export default class UrlParamsEditorElement extends ResizableMixin(OverlayMixin(
    * @return {TemplateResult}
    */
   [actionsTemplate]() {
-    const { compatibility, readOnly } = this;
+    const { anypoint, readOnly } = this;
     return html`
     <div class="dialog-actions">
       <anypoint-button
         id="encode"
-        ?compatibility="${compatibility}"
+        ?anypoint="${anypoint}"
         @click="${this[encodeQueryParameters]}"
         title="URL encodes parameters in the editor"
         ?disabled="${readOnly}"
       >Encode URL</anypoint-button>
       <anypoint-button
         id="decode"
-        ?compatibility="${compatibility}"
+        ?anypoint="${anypoint}"
         @click="${this[decodeQueryParameters]}"
         title="URL decodes parameters in the editor"
         ?disabled="${readOnly}"
       >Decode URL</anypoint-button>
       <anypoint-button
         class="close-button"
-        ?compatibility="${compatibility}"
+        ?anypoint="${anypoint}"
         @click="${this.close}"
         title="Closes the editor"
       >Close</anypoint-button>

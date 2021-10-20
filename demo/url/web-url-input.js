@@ -14,7 +14,6 @@ class ComponentDemo extends DemoPage {
     super();
     this.initObservableProperties(['opened']);
     this.componentName = 'web-url-input';
-    this.compatibility = false;
     this.opened = false;
     this.generator = new ArcMock();
 
@@ -59,7 +58,7 @@ class ComponentDemo extends DemoPage {
     const {
       demoStates,
       darkThemeActive,
-      compatibility,
+      anypoint,
       opened,
     } = this;
     
@@ -75,7 +74,7 @@ class ComponentDemo extends DemoPage {
           @state-changed="${this._demoStateHandler}"
           ?dark="${darkThemeActive}"
         >
-          <anypoint-button ?compatibility="${compatibility}" @click="${this.openHandler}" slot="content">Open</anypoint-button>
+          <anypoint-button ?anypoint="${anypoint}" @click="${this.openHandler}" slot="content">Open</anypoint-button>
         </arc-interactive-demo>
         <web-url-input 
           .opened="${opened}" 

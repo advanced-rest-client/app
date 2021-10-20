@@ -56,3 +56,8 @@ export * as Utils from './src/lib/Utils.js';
 export { default as WebUrlInputElement } from './src/elements/url/WebUrlInputElement.js';
 export { default as UrlInputEditorElement } from './src/elements/url/UrlInputEditorElement.js';
 export { default as UrlParamsEditorElement } from './src/elements/url/UrlParamsEditorElement.js';
+export { default as CookieDetailsElement } from './src/elements/cookies/CookieDetailsElement.js';
+export { default as CookieEditorElement } from './src/elements/cookies/CookieEditorElement.js';
+export { default as CookieManagerElement } from './src/elements/cookies/CookieManagerElement.js';
+export { Cookie } from './src/lib/Cookie.js';
+export { Cookies } from './src/lib/Cookies.js';

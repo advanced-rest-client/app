@@ -70,10 +70,10 @@ export default class UrlInputEditorElement extends EventsTargetMixin(Validatable
   outlined: boolean;
 
   /**
-   * Enables compatibility with Anypoint components.
+   * Enables Anypoint theme.
    * @attribute
    */
-  compatibility: boolean;
+  anypoint: boolean;
 
   /**
    * True if detailed editor is opened.

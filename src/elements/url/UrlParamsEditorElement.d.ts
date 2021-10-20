@@ -75,10 +75,10 @@ export default class UrlParamsEditorElement extends ValidatableMixin(OverlayMixi
   outlined: boolean;
 
   /**
-   * Enables compatibility with Anypoint components.
+   * Enables Anypoint theme.
    * @attribute
    */
-  compatibility: boolean;
+  anypoint: boolean;
 
   /**
    * Computed data model for the view.
