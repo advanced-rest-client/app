@@ -51,6 +51,7 @@ export { default as OAuth1 } from './src/elements/authorization/ui/OAuth1';
 export { default as OAuth2 } from './src/elements/authorization/ui/OAuth2';
 export { UiDataHelper } from './src/elements/authorization/ui/UiDataHelper';
 export * from './src/elements/authorization/types';
+export * from './src/types';
 export { UrlParser } from './src/lib/UrlParser';
 export { UrlValueParser } from './src/lib/UrlValueParser';
 export * as Utils from './src/lib/Utils';
@@ -70,3 +71,9 @@ export { default as ResponseViewElement } from './src/elements/http/ResponseView
 export { default as ResponseHighlightElement } from './src/elements/http/ResponseHighlightElement';
 export { default as ResponseBodyElement } from './src/elements/http/ResponseBodyElement';
 export { default as ResponseErrorElement } from './src/elements/http/ResponseErrorElement';
+export { default as BodyEditorElement } from './src/elements/body/BodyEditorElement';
+export { default as BodyFormdataEditorElement } from './src/elements/body/BodyFormdataEditorElement';
+export { default as BodyRawEditorElement } from './src/elements/body/BodyRawEditorElement';
+export { default as BodyMultipartEditorElement } from './src/elements/body/BodyMultipartEditorElement';
+export * from './src/elements/body/UrlEncodeUtils';
+export { ifProperty } from './src/directives/if-property';

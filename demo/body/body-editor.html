@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>Body editor</title>
+  <style>
+  .centered[role="main"] {
+    max-width: 1400px;
+  }
+
+  body.styled {
+    --arc-font-code-family: 'Roboto Mono', 'Consolas', 'Menlo', monospace;
+    --error-color: red;
+    --anypoint-dialog-background-color: #fff;
+    --code-editor-color: #F5F5F5;
+  }
+
+  body.styled.dark {
+    --primary-background-color: #373737;
+    --selection-background-color: #757575;
+    --inputs-background-color: #212121;
+
+    --anypoint-dropdown-menu-background-color: var(--inputs-background-color);
+    --anypoint-dropdown-menu-label-color: #dddddd;
+    --anypoint-listbox-background-color: var(--primary-background-color);
+    --anypoint-item-focused-background-color: var(--selection-background-color);
+    --anypoint-item-hover-background-color: var(--selection-background-color);
+    --anypoint-input-background-color: var(--inputs-background-color);
+  }
+
+  body-editor {
+    flex: 1;
+  }
+
+  .url-input {
+    width: 100%;
+    padding: 4px 12px;
+  }
+  .monaco-aria-container{position:absolute;left:-999em};
+  </style>
+</head>
+
+<body>
+  <div id="demo"></div>
+  <script type="module" src="body-editor.js"></script>
+</body>
+
+</html>

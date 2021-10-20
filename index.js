@@ -69,3 +69,9 @@ export { default as ResponseViewElement } from './src/elements/http/ResponseView
 export { default as ResponseHighlightElement } from './src/elements/http/ResponseHighlightElement.js';
 export { default as ResponseBodyElement } from './src/elements/http/ResponseBodyElement.js';
 export { default as ResponseErrorElement } from './src/elements/http/ResponseErrorElement.js';
+export { default as BodyEditorElement } from './src/elements/body/BodyEditorElement.js';
+export { default as BodyFormdataEditorElement } from './src/elements/body/BodyFormdataEditorElement.js';
+export { default as BodyRawEditorElement } from './src/elements/body/BodyRawEditorElement.js';
+export { default as BodyMultipartEditorElement } from './src/elements/body/BodyMultipartEditorElement.js';
+export * from './src/elements/body/UrlEncodeUtils.js';
+export { ifProperty } from './src/directives/if-property.js';

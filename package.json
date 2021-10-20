@@ -23,12 +23,14 @@
   "dependencies": {
     "@advanced-rest-client/events": "^0.2.22",
     "@advanced-rest-client/icons": "^4.0.0",
-    "@advanced-rest-client/libs": "^1.0.0",
+    "@advanced-rest-client/libs": "^1.0.1",
+    "@advanced-rest-client/monaco-support": "^1.0.1",
     "@advanced-rest-client/uuid": "^4.0.0",
     "@anypoint-web-components/awc": "^1.0.4",
     "@github/time-elements": "^3.1.2",
     "lit-element": "^2.5.1",
     "lit-html": "^1.4.1",
+    "monaco-editor": "^0.29.1",
     "prismjs": "^1.25.0"
   },
   "peerDependencies": {
