@@ -262,6 +262,41 @@ describe('parser', () => {
         assert.equal(parser.value, item.result);
       });
     });
+
+    it('sets a param with number zero', () => {
+      const parser = new UrlParser('http://domain.com');
+      parser.searchParams = [['number', 0]];
+      const result = parser.toString();
+      assert.equal(result, 'http://domain.com/?number=0')
+    });
+
+    it('sets a param with a number', () => {
+      const parser = new UrlParser('http://domain.com');
+      parser.searchParams = [['number', 12]];
+      const result = parser.toString();
+      assert.equal(result, 'http://domain.com/?number=12')
+    });
+
+    it('sets a param with a boolean false', () => {
+      const parser = new UrlParser('http://domain.com');
+      parser.searchParams = [['boolean', false]];
+      const result = parser.toString();
+      assert.equal(result, 'http://domain.com/?boolean=false')
+    });
+
+    it('sets a param with a boolean true', () => {
+      const parser = new UrlParser('http://domain.com');
+      parser.searchParams = [['boolean', true]];
+      const result = parser.toString();
+      assert.equal(result, 'http://domain.com/?boolean=true')
+    });
+
+    it('sets a param with a null value', () => {
+      const parser = new UrlParser('http://domain.com');
+      parser.searchParams = [['null', null]];
+      const result = parser.toString();
+      assert.equal(result, 'http://domain.com/?null=null')
+    });
   });
 
   describe('toString()', () => {

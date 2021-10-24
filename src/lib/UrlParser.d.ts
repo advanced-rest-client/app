@@ -47,7 +47,7 @@ export declare class UrlParser extends UrlValueParser {
    * array when first item is name of the parameter and second item is the
    * value.
    */
-  searchParams?: Array<string[]>;
+  searchParams?: Array<any[]>;
 
   /**
    * Returns the URL for current settings.

@@ -148,7 +148,7 @@ export class UrlParser extends UrlValueParser {
   /**
    * Sets the value of `search` and `searchParams`.
    *
-   * @param {Array<string[]>} value Search params list.
+   * @param {Array<any[]>} value Search params list.
    */
   set searchParams(value) {
     if (!value || !value.length) {
@@ -156,10 +156,15 @@ export class UrlParser extends UrlValueParser {
       return;
     }
     this.search = value.map((item) => {
-      if (!item[0] && !item[1]) {
+      let itemValue = item[1];
+      if (!item[0] && !itemValue) {
         return '';
       }
-      const itemValue = item[1] || '';
+      if (itemValue === undefined) {
+        itemValue = '';
+      } else if (typeof itemValue !== 'string') {
+        itemValue = String(itemValue);
+      }
       return `${item[0]}=${itemValue}`;
     })
     .join(this.opts.queryDelimiter);
