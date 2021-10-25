@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>ARC history menu demo</title>
+
+  <style>
+  .centered[role="main"] {
+    max-width: 1400px;
+  }
+
+  history-menu {
+    height: 700px;
+    width: 360px;
+  }
+
+  pre {
+    display: block;
+    white-space: pre-wrap;
+  }
+
+  .drop-target {
+    border: 2px transparent dashed;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 20px;
+    border: 1px #e5e5e5 solid;
+  }
+
+  .drop-target.drag-over {
+    border-color: #8BC34A;
+  }
+
+  output {
+    display: block;
+    text-align: left;
+    white-space: pre-wrap;
+  }
+  </style>
+</head>
+
+<body>
+  <div id="demo"></div>
+  <script type="module" src="history.js"></script>
+</body>
+
+</html>

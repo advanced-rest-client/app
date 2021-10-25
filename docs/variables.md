@@ -6,7 +6,7 @@ The UI and logic related to environment and variables management in Advanced RES
 
 The `variables-overlay` renders an overlay with a list of variables in the current environment. The `environment-selector` renders an UI to select an environment. The `variables-list` renders a basic list of variables.
 
-All of these elements are powered by `@advanced-rest-client/arc-models` which acts as a context store for the environments and variables.
+All of these elements are powered by `@advanced-rest-client/idb-store` which acts as a context store for the environments and variables.
 
 The `VariablesProcessor` is a class that processes input to look for variables and replaces them in the input. This is used in ARC to process the request data.
 

@@ -95,3 +95,9 @@ export { default as SavedPanelElement } from './src/elements/request/SavedPanelE
 export { RestApiListMixin } from './src/elements/request/RestApiListMixin.js';
 export { ListMixin } from './src/elements/request/ListMixin.js';
 export { default as RestApisPanelElement } from './src/elements/request/RestApisPanelElement.js';
+export { default as ArcMenuElement } from './src/elements/menu/ArcMenuElement.js';
+export { default as HistoryMenuElement } from './src/elements/menu/HistoryMenuElement.js';
+export { default as SavedMenuElement } from './src/elements/menu/SavedMenuElement.js';
+export { default as ProjectsMenuElement } from './src/elements/menu/ProjectsMenuElement.js';
+export { default as RestApiMenuElement } from './src/elements/menu/RestApiMenuElement.js';
+export { default as SearchMenuElement } from './src/elements/menu/SearchMenuElement.js';

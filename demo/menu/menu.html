@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>ARC menu demo</title>
+
+  <style>
+  .centered[role="main"] {
+    max-width: 1400px;
+  }
+
+  arc-menu {
+    height: 500px;
+    width: 320px;
+  }
+
+  body.styled {
+    --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --arc-rail-menu-icon-color: #de1643;
+    --arc-menu-title-background-color: #0073ad;
+    --arc-menu-title-color: #fff;
+    --primary-background-color: #fff;
+  }
+
+  body.demo.styled.dark header {
+    background-color: #424242;
+  }
+
+  body.demo.styled.dark {
+    background-color: #212121;
+    height: 100vh;
+    color: #fff;
+    --accent-color: #9c27b0;
+    --action-button-background-color: #fff;
+    --action-button-color: var(--primary-color);
+    --secondary-action-button-color: #fff;
+    --primary-color: #ffcc80;
+    --primary-text-color: #fff;
+    --paper-toggle-button-label-color: #fff;
+    --paper-listbox-background-color: #424242;
+    --paper-listbox-color: #fff;
+    --google-drive-list-view-file-icon-color: rgba(255, 255, 255, 0.54);
+    --google-drive-list-view-search-icon-color: rgba(255, 255, 255, 0.54);
+    --paper-item-body-secondary-color: rgba(255, 255, 255, 0.64);
+    --action-button-background-color: #212121;
+    --action-button-color: #fff;
+    --action-button-hover-background-color: #212121;
+    --action-button-hover-color: #04b3f5;
+    --google-drive-list-view-selected-background-color: #757575;
+    --paper-input-container-color: rgba(255, 255, 255, 0.64);
+    --paper-toggle-button-label-color: #fff;
+    --error-message-icon-color: rgba(255, 255, 255, 0.64);
+    --error-message-color: #fff;
+    --secondary-text-color: rgba(255, 255, 255, 0.84);
+    --primary-background-color: #424242;
+    --arc-interactive-demo-options-color: #F5F5F5;
+    --anypoint-checkbox-label-color:  #F5F5F5;
+    --anypoint-input-background-color: #494949;
+    --anypoint-input-label-color: #fff;
+    --anypoint-input-input-color: #fff;
+    --anypoint-input-border-bottom-color: #fff;
+    --anypoint-input-focused-border-bottom-color: #fff;
+    --anypoint-input-label-background-color: rgb(66, 66, 66);
+    --anypoint-input-legacy-focus-background-color: #3a3b3c;
+    --anypoint-input-legacy-focus-border-color: #178bea;
+    --anypoint-input-info-message-color: #fff;
+    --inline-documentation-background-color: #3a3a3a;
+    --anypoint-dropdown-menu-background-color: #494949;
+    --anypoint-dropdown-menu-label-background-color: var(--primary-background-color);
+    --anypoint-listbox-background-color: #494949;
+    --anypoint-dropdown-menu-focus-background-color: #9E9E9E;
+    --anypoint-dropdown-menu-label-color: #fff;
+    --anypoint-dropdown-menu-info-message-color: #fff;
+    --anypoint-item-hover-background-color: #9E9E9E;
+    --anypoint-item-focused-background-color: #212121;
+    --anypoint-autocomplete-background-color: #494949;
+    --anypoint-icon-button-emphasis-low-color: #fff;
+    --anypoint-icon-button-emphasis-low-color: #fff;
+
+
+    --arc-rail-menu-icon-color: #757575;
+    --arc-rail-menu-icon-selected-color: #fff;
+    --arc-menu-title-background-color: #424242;
+    --requests-list-history-group-header-background-color: #424242;
+    --requests-list-item-history-group-header-color: rgba(255, 255, 255, 0.74);
+
+    --http-method-label-get-background-color: rgba(0, 128, 0, 0.74);
+    --http-method-label-get-color: #fff;
+    --http-method-label-post-background-color: rgba(33, 150, 243, 0.74);
+    --http-method-label-post-color: #fff;
+    --http-method-label-put-background-color: rgba(255, 165, 0, 0.74);
+    --http-method-label-put-color: #fff;
+    --http-method-label-delete-background-color: rgba(244, 67, 54, 0.74);
+    --http-method-label-delete-color: #fff;
+    --http-method-label-options-background-color: rgba(128, 128, 128, 0.74);
+    --http-method-label-options-background-color: #fff;
+    --http-method-label-head-background-color: rgba(128, 128, 128, 0.74);
+    --http-method-label-head-background-color: #fff;
+
+    --search-menu-input-background-color: var(--primary-background-color);
+  }
+
+  #dragOutput {
+    display: block;
+    padding: 8px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    background-color: #FFF8E1;
+  }
+
+  .drop-target {
+    border: 2px transparent dashed;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 20px;
+    border: 1px #e5e5e5 solid;
+    margin-bottom: 20px;
+  }
+
+  .drop-target.drag-over {
+    border-color: #8BC34A;
+  }
+
+  output {
+    display: block;
+    text-align: left;
+    white-space: pre-wrap;
+  }
+  </style>
+</head>
+
+<body class="demo">
+  <div id="demo"></div>
+  <script type="module" src="menu.js"></script>
+</body>
+
+</html>

@@ -40,22 +40,6 @@ export declare const dataDestroyHandler: unique symbol;
  * without changing the `host` header value. This element allows to enter mapping
  * rules and to test them against arbitrary URL.
  *
- * NOTE: This element does not provide data storing interface. Instead of operating
- * on a data store it sends custom events that should be handled by the hosting
- * application. Example interface is included in `arc-models/host-rules-model` element.
- *
- * NOTE: This element works with `arc-data-export` element to export data to a file.
- * You can use other way to handle `export-user-data` custom event to export host
- * rules data.
- *
- * ### Example
- *
- * ```
- * <arc-data-export></arc-data-export>
- * <host-rules-model></host-rules-model>
- * <host-rules-editor></host-rules-editor>
- * ```
- *
  * ### Data model
  *
  * The `items` property accepts an array of the following objects:
@@ -143,9 +127,6 @@ export default class HostRulesEditorElement extends LitElement {
 
   /**
    * Refreshes the list of rules from the model.
-   * This element is designed to work with `arc-models/host-rules-model`
-   * element but can work with any model that handles `host-rules-list`
-   * custom event.
    *
    * Calling this function will replace current `items` value with the one
    * received from the model.

@@ -135,3 +135,9 @@ export function midnightTimestamp(): number;
  * @return Keyboard command for the key.
  */
 export function computeA11yCommand(key: string): string;
+
+/**
+ * Computes value for `dropEffect` property of the `DragEvent`.
+ * @returns Either `copy` or `move`.
+ */
+export function computeProjectDropEffect(e: DragEvent): "link" | "none" | "copy" | "move";

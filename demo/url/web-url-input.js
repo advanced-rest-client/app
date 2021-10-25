@@ -100,7 +100,6 @@ class ComponentDemo extends DemoPage {
   contentTemplate() {
     return html`
       <h2>ARC web URL input</h2>
-      <url-history-model></url-history-model>
       ${this._demoTemplate()}
       ${this._dataControlsTemplate()}
     `;

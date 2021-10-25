@@ -121,7 +121,6 @@ class ComponentPage extends DemoPage {
 
   contentTemplate() {
     return html`
-      <url-history-model></url-history-model>
       <h2>ARC URL editor screen</h2>
       ${this._demoTemplate()}
       ${this._dataControlsTemplate()}

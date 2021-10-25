@@ -30,7 +30,7 @@ progress {
   background-color: var(--requests-list-history-group-header-background-color, #eceff1);
 }
 
-:host([compatibility]) .history-group {
+:host([anypoint]) .history-group {
   border-left-width: 2px;
   border-right-width: 2px;
   border-left-color: var(--anypoint-item-border-left-color, var(--anypoint-color-aluminum4));

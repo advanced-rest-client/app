@@ -548,7 +548,6 @@ class ComponentDemoPage extends DemoPage {
           This component implements Material Design styles.
         </p>
       </section>
-      <!-- <client-certificate-model></client-certificate-model> -->
     `;
   }
 

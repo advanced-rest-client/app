@@ -95,7 +95,6 @@ const mxFunction = (base) => {
         systemVariablesEnabled: { type: Boolean },
         /** 
          * The list of system variables to process. This is a regular key-value map of variables.
-         * It is set from the `variable-model` event, if the model sets this value. Otherwise it is safe to set it in here.
          */
         systemVariables: { type: Object },
       };

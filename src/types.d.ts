@@ -167,3 +167,32 @@ export declare interface HistoryGroup {
 }
 
 export type ListLayout = 'default' | 'comfortable' | 'compact';
+
+export declare interface HistorySearchItem {
+  kind: 'ARC#HistorySearchItem';
+  /**
+   * The history item
+   */
+  item: ArcRequest. ARCHistoryRequest;
+  /**
+   * History's ISO time value.
+   */
+  isoTime: string;
+}
+
+export declare interface SavedProjectSearchItem {
+  id: string;
+  label: string;
+}
+
+export declare interface SavedSearchItem {
+  kind: 'ARC#SavedSearchItem';
+  /**
+   * The saved item
+   */
+  item: ArcRequest.ARCSavedRequest;
+  /**
+   * List of projects this request belongs to.
+   */
+  projects: SavedProjectSearchItem[];
+}

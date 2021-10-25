@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>ARC projects menu demo</title>
+
+  <style>
+  .centered[role="main"] {
+    max-width: 1400px;
+  }
+
+  body.styled {
+    --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+  }
+
+  projects-menu,
+  saved-menu,
+  history-menu {
+    height: 500px;
+    width: 300px;
+  }
+
+  .menus {
+    display: flex;
+  }
+
+  pre {
+    display: block;
+    white-space: pre-wrap;
+  }
+
+  .drop-area {
+    border: 2px transparent dashed;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 20px;
+    border: 1px #e5e5e5 solid;
+  }
+
+  .drop-area.drag-over {
+    border-color: #8BC34A;
+  }
+
+  output {
+    display: block;
+    text-align: left;
+    white-space: pre-wrap;
+  }
+  </style>
+</head>
+
+<body>
+  <div id="demo"></div>
+  <script type="module" src="projects.js"></script>
+</body>
+
+</html>

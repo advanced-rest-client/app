@@ -39,7 +39,7 @@
     "jsrsasign": "^10.4.0"
   },
   "devDependencies": {
-    "@advanced-rest-client/arc-demo-helper": "^5.0.1",
+    "@advanced-rest-client/arc-demo-helper": "^5.0.2",
     "@advanced-rest-client/arc-mock": "^5.0.0",
     "@advanced-rest-client/idb-store": "^1.0.0",
     "@api-client/context-menu": "^0.2.0",
