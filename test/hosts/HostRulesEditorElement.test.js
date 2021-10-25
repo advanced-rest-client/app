@@ -73,7 +73,7 @@ describe('HostRulesEditorElement', () => {
       document.body.appendChild(elm);
       await nextFrame();
       document.body.removeChild(elm);
-      assert.isUndefined(elm.items);
+      assert.isEmpty(elm.items);
     });
 
     it('does not query the store when has items set', async () => {
@@ -88,19 +88,25 @@ describe('HostRulesEditorElement', () => {
     });
 
     it('renders empty screen', async () => {
+      model.unlisten(window);
       const element = await basicFixture();
+      model.listen(window);
       const node = element.shadowRoot.querySelector('.empty-screen');
       assert.ok(node);
     });
 
     it('the empty screen has the add button', async () => {
+      model.unlisten(window);
       const element = await basicFixture();
+      model.listen(window);
       const node = element.shadowRoot.querySelector('.empty-screen .add-param');
       assert.ok(node);
     });
 
     it('sets dataUnavailable property', async () => {
+      model.unlisten(window);
       const element = await basicFixture();
+      model.listen(window);
       assert.isTrue(element.dataUnavailable);
     });
 

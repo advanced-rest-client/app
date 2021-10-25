@@ -264,7 +264,9 @@ describe('RequestsListMixin (history)', () => {
     });
 
     it('resets [queryingProperty] after error', async () => {
+      element[internals.handleError] = () => {};
       element.addEventListener(ArcModelEventTypes.Request.query, (e) => {
+        e.preventDefault();
         // @ts-ignore
         e.detail.result = Promise.reject(new Error('test'));
       });

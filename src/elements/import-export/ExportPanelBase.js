@@ -328,7 +328,10 @@ export class ExportPanelBase extends LitElement {
     <div class="autocomplete-input">
       <anypoint-input
         id="parentInput"
+        role="combobox"
         name="parentId"
+        aria-expanded="false"
+        aria-controls="input"
         .value="${this[parentNameValue]}"
         @input="${this[parentsInputHandler]}"
         ?outlined="${outlined}"
@@ -359,13 +362,17 @@ export class ExportPanelBase extends LitElement {
       @select="${this[destinationHandler]}"
       ?anypoint="${anypoint}"
       ?outlined="${outlined}"
+      role="listbox"
+      aria-label="Select the export provider"
     >
       <label slot="label">Destination</label>
       <anypoint-listbox
         slot="dropdown-content"
         .selected="${provider}"
         attrforselected="data-value"
-        ?anypoint="${anypoint}">
+        ?anypoint="${anypoint}"
+        role="group"
+      >
         <anypoint-icon-item
           class="menu-item"
           data-value="file"

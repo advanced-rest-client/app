@@ -524,6 +524,7 @@ export default class AuthorizationSelectorElement extends MultiSelectableMixin(L
     return html`
     <anypoint-dropdown-menu
       aria-label="Activate to select authorization method"
+      role="listbox"
       ?anypoint="${anypoint}"
       ?outlined="${outlined}"
       fitPositionTarget
@@ -537,6 +538,7 @@ export default class AuthorizationSelectorElement extends MultiSelectableMixin(L
         @activate="${this[activateDropdownHandler]}"
         ?anypoint="${anypoint}"
         class="auth-listbox"
+        role="group"
       >
         ${children.map((item, index) => this[dropdownItemTemplate](item, index))}
       </anypoint-listbox>
@@ -555,7 +557,7 @@ export default class AuthorizationSelectorElement extends MultiSelectableMixin(L
     if (multi) {
       const checked = selectedValues.includes(index);
       return html`
-      <anypoint-icon-item ?anypoint="${anypoint}">
+      <anypoint-icon-item ?anypoint="${anypoint}" role="option" aria-selected="${checked ? 'true' : 'false'}">
         <anypoint-switch 
           slot="item-icon" 
           .checked="${checked}"

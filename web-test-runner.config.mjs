@@ -10,8 +10,8 @@ const oauth2server = new OAuth2Server();
 let oauth2env;
 
 export default /** @type TestRunnerConfig */ ({
-  // files: 'test/**/*.test.js',
-  files: 'test/variables/*.test.js',
+  files: 'test/**/*.test.js',
+  // files: 'test/variables/*.test.js',
   nodeResolve: true,
   concurrency: 1,
   testFramework: {
