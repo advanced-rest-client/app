@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>Host rules demo</title>
+  <style>
+  .centered[role="main"] {
+    max-width: 1400px;
+  }
+
+  host-rules-editor {
+    width: 700px;
+  }
+
+  body.styled {
+    --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --primary-color: #00A2DF;
+    --primary-background-color: #fff;
+  }
+
+  body.demo.styled.dark header {
+    background-color: #424242;
+  }
+
+  body.demo.styled.dark {
+    background-color: #212121;
+    color: #fff;
+    --primary-color: #ffcc80;
+    --primary-text-color: #fff;
+    --accent-color: #9c27b0;
+    --secondary-text-color: rgba(255, 255, 255, 0.84);
+    --primary-background-color: #212121;
+  }
+  </style>
+</head>
+
+<body class="demo">
+  <div id="demo"></div>
+  <script type="module" src="index.js"></script>
+  </script>
+</body>
+
+</html>

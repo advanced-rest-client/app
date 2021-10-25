@@ -83,3 +83,5 @@ export { default as VariablesOverlayElement } from './src/elements/variables/Var
 export { default as VariablesSuggestionsElement } from './src/elements/variables/VariablesSuggestionsElement';
 export { VariablesConsumerMixin } from './src/elements/variables/VariablesConsumerMixin';
 export { VariablesProcessor } from './src/lib/variables/VariablesProcessor';
+export { default as HostRulesEditorElement } from './src/elements/hosts/HostRulesEditorElement';
+export { default as HostRulesTesterElement } from './src/elements/hosts/HostRulesTesterElement';
