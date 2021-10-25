@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <title>HTTP request actions</title>
+  <style>
+    body.styled.demo {
+      font-size: 16px;
+      
+      --primary-color: #3F51B5;
+      --accent-color: #4caf50;
+      --error-color: #F44336;
+      --dark-divider-opacity: 0.12;
+      --arc-font-body1-font-size: 14px;
+      --arc-font-body1-font-weight: 400;
+      --arc-font-body1-line-height: 20px;
+      --arc-font-code-family: 'Roboto Mono', 'Consolas', 'Menlo', monospace;
+      --code-background-color: #f5f7f9;
+      --anypoint-menu-button-dropdown-background: #fff;
+      --anypoint-listbox-background-color: #fff;
+      --anypoint-item-focused-background-color: #f5f5f5;
+      --anypoint-item-before-background: transparent;
+      --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+      --anypoint-color-primary: var(--primary-color);
+      --arc-font-body1-font-size: 14px;
+      --arc-font-body1-font-weight: 400;
+      --arc-font-body1-line-height: 20px;
+
+      --arc-font-subhead-font-size: 16px;
+      --arc-font-subhead-font-weight: 400;
+      --arc-font-subhead-line-height: 24px;
+
+      --arc-font-headline-font-size: 24px;
+      --arc-font-headline-font-weight: 400;
+      --arc-font-headline-letter-spacing: -.012em;
+      --arc-font-headline-line-height: 32px;
+
+      --anypoint-item-min-height: 48px;
+      --anypoint-item-focus-color: currentColor;
+      --anypoint-item-focused-color: currentColor;
+      --anypoint-item-before-background: currentColor;
+      --anypoint-item-before-opacity: 0.12;
+      --anypoint-item-border-left-width: 0;
+      --anypoint-item-border-right-width: 0;
+      --anypoint-item-hover-background-color: #F5F5F5;
+      --anypoint-item-pressed-background-color: #BDBDBD;
+      --anypoint-item-secondary-focus-color: var(--secondary-text-color);
+
+      --action-editor-opened-border-color: #2196f3;
+      --action-editor-opened-title-background-color: #0d47a1;
+      --action-editor-opened-title-color: #fff;
+
+      --box-shadow-2dp: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+                  0 1px 5px 0 rgba(0, 0, 0, 0.12),
+                  0 3px 1px -2px rgba(0, 0, 0, 0.2);
+    }
+
+    body.styled arc-actions {
+      padding: 0 12px;
+    }
+
+    body.demo.styled.dark header {
+      background-color: #424242;
+    }
+
+    body.demo.styled.dark {
+      /* General theme */
+      background-color: #212121;
+      height: 100vh;
+      color: #fff;
+      --accent-color: #9c27b0;
+      --primary-color: #ffcc80;
+      --primary-text-color: #fff;
+      --primary-background-color: #212121;
+      --secondary-text-color: rgba(255, 255, 255, 0.84);
+
+      --error-message-icon-color: rgba(255, 255, 255, 0.64);
+      --error-message-color: #fff;
+
+      --arc-interactive-demo-options-color: #F5F5F5;
+      --anypoint-checkbox-label-color:  #F5F5F5;
+      
+      --anypoint-input-legacy-label-color: #F5F5F5;
+      --anypoint-input-background-color: #494949;
+      --anypoint-input-label-color: #fff;
+      --anypoint-input-input-color: #fff;
+      --anypoint-input-border-bottom-color: #fff;
+      --anypoint-input-focused-border-bottom-color: #fff;
+      --anypoint-input-label-background-color: rgb(66, 66, 66);
+      --anypoint-input-legacy-focus-background-color: #3a3b3c;
+      --anypoint-input-legacy-focus-border-color: #178bea;
+      --anypoint-input-info-message-color: #fff;
+      
+      --anypoint-dropdown-menu-background-color: #494949;
+      --anypoint-dropdown-menu-label-background-color: var(--primary-background-color);
+      --anypoint-dropdown-menu-focus-background-color: #9E9E9E;
+      --anypoint-dropdown-menu-label-color: #fff;
+      --anypoint-dropdown-menu-info-message-color: #fff;
+      
+      --anypoint-listbox-background-color: #494949;
+      
+      --anypoint-item-hover-background-color: #9E9E9E;
+      --anypoint-item-focused-background-color: #212121;
+
+      --anypoint-autocomplete-background-color: #494949;
+      --anypoint-icon-button-emphasis-low-color: #fff;
+      
+      --icon-button-color: #fff;
+      --inline-documentation-color: #fff;
+
+      --anypoint-button-emphasis-low-hover-background-color: #616161;
+      --anypoint-button-emphasis-low-focus-background-color: var(--anypoint-button-emphasis-low-hover-background-color);
+      --anypoint-button-emphasis-low-focus-color: var(--primary-color);
+
+      /* Actions specific styles */
+
+      --arc-actions-tutorial-content-color: var(--secondary-text-color);
+      --action-editor-opened-border-color: #616161;
+      --action-editor-opened-title-background-color: transparent;
+      --action-editor-opened-title-color: #fff;
+      --action-condition-closed-background-color: transparent;
+      --action-editor-opened-title-border-bottom-color: #616161;
+      --action-condition-wrapper-border-bottom-color: #616161;
+      --action-condition-closed-border-bottom-color: #616161;
+    }
+
+    .centered[role="main"] {
+      width: 1400px;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body class="demo">
+  <div id="demo"></div>
+
+  <script type="module" src="index.js"></script>
+</body>
+</html>

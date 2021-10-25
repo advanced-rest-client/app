@@ -103,3 +103,11 @@ export { default as RestApiMenuElement } from './src/elements/menu/RestApiMenuEl
 export { default as SearchMenuElement } from './src/elements/menu/SearchMenuElement.js';
 export { default as ProjectScreenElement } from './src/elements/legacy-project/ProjectScreenElement.js';
 export { default as ProjectMetaEditorElement } from './src/elements/legacy-project/ProjectMetaEditorElement.js';
+export { ActionCondition } from './src/lib/actions/ActionCondition.js';
+export { default as ARCActionEditorElement } from './src/elements/actions/ARCActionEditorElement.js';
+export { default as ARCActionsPanelElement } from './src/elements/actions/ARCActionsPanelElement.js';
+export { default as ARCActionsElement } from './src/elements/actions/ARCActionsElement.js';
+export { default as ARCConditionEditorElement } from './src/elements/actions/ARCConditionEditorElement.js';
+export { ArcAction } from './src/lib/actions/ArcAction.js';
+export { ActionsRunner } from './src/lib/actions/runner/ActionsRunner.js';
+export { ActionRunner } from './src/lib/actions/runner/ActionRunner.js';
