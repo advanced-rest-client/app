@@ -86,3 +86,14 @@ export { VariablesProcessor } from './src/lib/variables/VariablesProcessor';
 export { default as HostRulesEditorElement } from './src/elements/hosts/HostRulesEditorElement';
 export { default as HostRulesTesterElement } from './src/elements/hosts/HostRulesTesterElement';
 export { default as ArcSettingsElement } from './src/elements/settings/ArcSettingsElement';
+export { FileDropMixin } from './src/elements/filesystem/FileDropMixin';
+export { HistoryListMixin } from './src/elements/request/HistoryListMixin';
+export { default as HistoryPanelElement } from './src/elements/request/HistoryPanelElement'
+export { ProjectsListConsumerMixin } from './src/elements/request/ProjectsListConsumerMixin';
+export { RequestsListMixin } from './src/elements/request/RequestsListMixin';
+export { default as RequestsPanelElement } from './src/elements/request/RequestsPanelElement';
+export { SavedListMixin } from './src/elements/request/SavedListMixin';
+export { default as SavedPanelElement } from './src/elements/request/SavedPanelElement';
+export { RestApiListMixin } from './src/elements/request/RestApiListMixin';
+export { ListMixin } from './src/elements/request/ListMixin';
+export { default as RestApisPanelElement } from './src/elements/request/RestApisPanelElement';

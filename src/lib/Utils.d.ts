@@ -1,4 +1,5 @@
-import { UrlHistory } from '@advanced-rest-client/events';
+import { UrlHistory, ArcRequest, Project } from '@advanced-rest-client/events';
+import { ListType, ListLayout } from '../types';
 
 /**
  * Generates default export name value.
@@ -76,3 +77,61 @@ export declare function sortUrls(list: UrlHistory.ARCUrlHistory[], query: string
  * The input otherwise.
  */
 export function variableValueLabel(value: string, maskedValues: boolean): string;
+
+/**
+ * Sort function used to sort projects in order.
+ */
+ export function projectsSortFn(a: Project.ARCProject, b: Project.ARCProject): number;
+
+/**
+ * Sorts requests list by `projectOrder` property
+ */
+export function projectLegacySort(a: any, b: any): number;
+
+/**
+ * Sorts the query results by name
+ */
+export function savedSort(a: ArcRequest.ARCSavedRequest, b: ArcRequest.ARCSavedRequest): number;
+
+/**
+ * Throws an error when type is not set.
+ * @param type Passed to the function type
+ */
+export function validateRequestType(type: ListType): void;
+
+/**
+ * Tests if two arrays has the same order of ids (strings).
+ * @param a1 Array a
+ * @param a2 Array b
+ * @return True when elements are ordered the same way.
+ */
+export function idsArrayEqual(a1: string[], a2: string[]): boolean
+
+
+/**
+ * Checks if requests is related to the project by project's id.
+ * 
+ * @param request The request to test
+ * @param id Project id
+ */
+export function isProjectRequest(request: ArcRequest.ARCSavedRequest, id: string): boolean;
+
+ /**
+  * Computes value for the `hasTwoLines` property.
+  * 
+  * @param listType Selected list layout.
+  */
+export function hasTwoLines(listType: ListLayout): boolean;
+
+/**
+ * Creates a timestamp fot today, midnight
+ */
+export function midnightTimestamp(): number;
+
+/**
+ * Computes a proper key command depending on the platform.
+ *
+ * @param key The key modifier for the command
+ * @return Keyboard command for the key.
+ */
+export function computeA11yCommand(key: string): string;

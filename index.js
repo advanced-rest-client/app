@@ -84,3 +84,14 @@ export { VariablesProcessor } from './src/lib/variables/VariablesProcessor.js';
 export { default as HostRulesEditorElement } from './src/elements/hosts/HostRulesEditorElement.js';
 export { default as HostRulesTesterElement } from './src/elements/hosts/HostRulesTesterElement.js';
 export { default as ArcSettingsElement } from './src/elements/settings/ArcSettingsElement.js';
+export { FileDropMixin } from './src/elements/filesystem/FileDropMixin.js';
+export { HistoryListMixin } from './src/elements/request/HistoryListMixin.js';
+export { default as HistoryPanelElement } from './src/elements/request/HistoryPanelElement.js'
+export { ProjectsListConsumerMixin } from './src/elements/request/ProjectsListConsumerMixin.js';
+export { RequestsListMixin } from './src/elements/request/RequestsListMixin.js';
+export { default as RequestsPanelElement } from './src/elements/request/RequestsPanelElement.js';
+export { SavedListMixin } from './src/elements/request/SavedListMixin.js';
+export { default as SavedPanelElement } from './src/elements/request/SavedPanelElement.js';
+export { RestApiListMixin } from './src/elements/request/RestApiListMixin.js';
+export { ListMixin } from './src/elements/request/ListMixin.js';
+export { default as RestApisPanelElement } from './src/elements/request/RestApisPanelElement.js';

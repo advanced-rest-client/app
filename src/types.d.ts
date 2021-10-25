@@ -1,5 +1,5 @@
 import { Entry, Page } from "har-format";
-import { Variable } from '@advanced-rest-client/events';
+import { Variable, ArcRequest } from '@advanced-rest-client/events';
 
 export declare interface RenderedPage {
   page: Page;
@@ -126,3 +126,44 @@ export declare interface SettingsPage {
    */
   scrollPosition?: number;
 }
+
+export declare type ListType = 'saved' | 'history' | 'project';
+
+export declare interface HistoryDayItem {
+  /**
+   * The midnight timestamp for the day
+   */
+  midnight: number;
+  /**
+   * A label to render in the group
+   */
+  label: string;
+}
+
+export declare interface HistoryListItem {
+  /**
+   * The history item
+   */
+  item: ArcRequest.ARCHistoryRequest;
+  /**
+   * History's ISO time value.
+   */
+  isoTime: string;
+}
+
+export declare interface HistoryGroup {
+  /**
+   * Group's day definition
+   */
+  day: HistoryDayItem;
+  /**
+   * Requests in the group
+   */
+  requests: HistoryListItem[];
+  /**
+   * Whether a group is collapsed or opened.
+   */
+  opened: boolean;
+}
+
+export type ListLayout = 'default' | 'comfortable' | 'compact';
