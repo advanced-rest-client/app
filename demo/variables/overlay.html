@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>Environment selector demo</title>
+  <style>
+  [role="main"].centered {
+    max-width: 1440px;
+  }
+
+  body.styled {
+    --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --anypoint-autocomplete-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --arc-font-subhead-font-size: 16px;
+    --arc-font-subhead-font-weight: 400;
+    --arc-font-subhead-line-height: 24px;
+    --error-color: red;
+  }
+
+  [type="none"] {
+    padding: 8px;
+  }
+
+  body.styled.dark output {
+    background-color: #263238;
+  }
+
+  body.styled.demo.dark {
+    --primary-color: #ffcc80;
+    --primary-text-color: #fff;
+    --accent-color: #E040FB;
+    --secondary-text-color: rgba(255, 255, 255, 0.84);
+    --primary-background-color: #212121;
+    --secondary-background-color: #313131;
+    --error-color: #ff9090;
+    --link-color: #8bc34a;
+    --input-background-color: var(--primary-background-color);
+    --active-background-color: #616161;
+
+    --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --anypoint-autocomplete-dropdown-shadow: var(--anypoint-dropdown-shadow);
+
+    --anypoint-chip-label-color: var(--primary-text-color);
+    --anypoint-chip-icon-color: var(--primary-text-color);
+    --anypoint-chip-label-focused-color: var(--primary-text-color);
+    --anypoint-chip-label-active-color: var(--primary-text-color);
+    --anypoint-chip-focused-background-color: #34434b;
+    --anypoint-chip-background-color: var(--secondary-background-color);
+
+    --anypoint-checkbox-label-color:  #F5F5F5;
+    --anypoint-input-background-color: var(--input-background-color);
+    --anypoint-input-label-color: var(--primary-text-color);
+    --anypoint-input-input-color: var(--primary-text-color);
+    --anypoint-input-border-bottom-color: var(--primary-text-color);
+    --anypoint-input-focused-border-bottom-color: var(--primary-text-color);
+    --anypoint-input-label-background-color: rgb(66, 66, 66);
+    --anypoint-input-legacy-focus-background-color: #3a3b3c;
+    --anypoint-input-legacy-focus-border-color: #178bea;
+    --anypoint-input-info-message-color: var(--primary-text-color);
+
+    --anypoint-menu-button-border-radius: 12px;
+    
+    --anypoint-dropdown-menu-background-color: var(--input-background-color);
+    --anypoint-dropdown-menu-label-background-color: var(--primary-background-color);
+    --anypoint-listbox-background-color: var(--input-background-color);
+    --anypoint-dropdown-menu-focus-background-color: var(--active-background-color);
+    --anypoint-dropdown-menu-label-color: var(--primary-text-color);
+    --anypoint-dropdown-menu-info-message-color: var(--primary-text-color);
+    --anypoint-item-hover-background-color: var(--active-background-color);
+    --anypoint-item-focused-background-color: var(--primary-background-color);
+    --anypoint-autocomplete-background-color: var(--input-background-color);
+    --anypoint-icon-button-emphasis-low-color: #c5c5c5;
+    --anypoint-item-before-background: transparent;
+
+    --anypoint-button-emphasis-low-hover-background-color: var(--active-background-color);
+    --anypoint-button-emphasis-low-focus-background-color: var(--anypoint-button-emphasis-low-hover-background-color);
+    --anypoint-button-emphasis-low-focus-color: var(--primary-color);
+
+    /* Dialogs */
+    --anypoint-dialog-title-color: var(--primary-text-color);
+    --anypoint-dialog-content-color: var(--primary-text-color);
+
+    /* variables overlay */
+    --variables-overlay-background-color: var(--primary-background-color);
+    --variables-overlay-color: var(--primary-text-color);
+    --variables-overlay-intro-color: var(--secondary-text-color);
+    --variables-overlay-var-name-color: var(--secondary-text-color);
+    --variables-overlay-var-value-color: var(--secondary-text-color);
+  }
+
+  body.demo.styled.dark {
+    background-color: var(--secondary-background-color);
+    color: var(--primary-text-color);
+    --arc-font-code-family: Noto, monospace;
+  }
+
+  body.demo.styled.dark header {
+    background-color: var(--primary-background-color);
+  }
+  </style>
+</head>
+<body class="demo">
+  <div id="demo"></div>
+
+  <script type="module" src="overlay.js"></script>
+</body>
+</html>

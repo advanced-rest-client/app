@@ -77,3 +77,9 @@ export { default as BodyRawEditorElement } from './src/elements/body/BodyRawEdit
 export { default as BodyMultipartEditorElement } from './src/elements/body/BodyMultipartEditorElement';
 export * from './src/elements/body/UrlEncodeUtils';
 export { ifProperty } from './src/directives/if-property';
+export { default as EnvironmentSelectorElement } from './src/elements/variables/EnvironmentSelectorElement';
+export { default as VariablesListElement } from './src/elements/variables/VariablesListElement';
+export { default as VariablesOverlayElement } from './src/elements/variables/VariablesOverlayElement';
+export { default as VariablesSuggestionsElement } from './src/elements/variables/VariablesSuggestionsElement';
+export { VariablesConsumerMixin } from './src/elements/variables/VariablesConsumerMixin';
+export { VariablesProcessor } from './src/lib/variables/VariablesProcessor';

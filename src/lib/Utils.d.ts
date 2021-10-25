@@ -66,3 +66,13 @@ export declare function cancelEvent(e: Event): void;
  * Lists the suggestions lists before rendering.
  */
 export declare function sortUrls(list: UrlHistory.ARCUrlHistory[], query: string): void;
+
+/**
+ * Computes value for a variable label depending on value of `maskedValues`.
+ *
+ * @param value Variable value
+ * @param maskedValues True to masks the value.
+ * @return When `maskedValues` is true then it returns series of `•`.
+ * The input otherwise.
+ */
+export function variableValueLabel(value: string, maskedValues: boolean): string;
