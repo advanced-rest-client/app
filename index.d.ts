@@ -85,3 +85,4 @@ export { VariablesConsumerMixin } from './src/elements/variables/VariablesConsum
 export { VariablesProcessor } from './src/lib/variables/VariablesProcessor';
 export { default as HostRulesEditorElement } from './src/elements/hosts/HostRulesEditorElement';
 export { default as HostRulesTesterElement } from './src/elements/hosts/HostRulesTesterElement';
+export { default as ArcSettingsElement } from './src/elements/settings/ArcSettingsElement';
