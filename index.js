@@ -101,3 +101,5 @@ export { default as SavedMenuElement } from './src/elements/menu/SavedMenuElemen
 export { default as ProjectsMenuElement } from './src/elements/menu/ProjectsMenuElement.js';
 export { default as RestApiMenuElement } from './src/elements/menu/RestApiMenuElement.js';
 export { default as SearchMenuElement } from './src/elements/menu/SearchMenuElement.js';
+export { default as ProjectScreenElement } from './src/elements/legacy-project/ProjectScreenElement.js';
+export { default as ProjectMetaEditorElement } from './src/elements/legacy-project/ProjectMetaEditorElement.js';

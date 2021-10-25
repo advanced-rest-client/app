@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@advanced-rest-client/events": "^0.2.22",
+    "@advanced-rest-client/highlight": "^2.0.1",
     "@advanced-rest-client/icons": "^4.0.0",
     "@advanced-rest-client/libs": "^1.0.1",
     "@advanced-rest-client/monaco-support": "^1.0.1",

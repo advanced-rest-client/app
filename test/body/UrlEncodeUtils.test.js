@@ -1,5 +1,5 @@
 import { assert } from '@open-wc/testing';
-import './monaco-loader.js';
+import { loadMonaco } from '../MonacoSetup.js';
 import { 
   encodeUrlEncoded, 
   encodeQueryString, 
@@ -12,6 +12,8 @@ import {
 /** @typedef {import('@advanced-rest-client/events').ApiTypes.ApiType} ApiType */
 
 describe('UrlEncodeUtils', () => {
+  before(async () => loadMonaco());
+  
   describe('URL encoder', () => {
     it('encodes a string', () => {
       const src = 'test=encoded value&encoded name=encoded value';

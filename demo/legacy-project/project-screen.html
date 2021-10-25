@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>Project screen demo</title>
+  <style>
+  .centered[role="main"] {
+    max-width: 1400px;
+  }
+
+  body.styled.demo.dark {
+    --primary-color: #ffcc80;
+    --primary-text-color: #fff;
+    --accent-color: #E040FB;
+    --secondary-text-color: rgba(255, 255, 255, 0.84);
+    --primary-background-color: #212121;
+    --secondary-background-color: #313131;
+    --error-color: #ff9090;
+    --link-color: #8bc34a;
+    --input-background-color: var(--primary-background-color);
+    --active-background-color: #616161;
+
+    --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --anypoint-autocomplete-dropdown-shadow: var(--anypoint-dropdown-shadow);
+
+    --anypoint-chip-label-color: var(--primary-text-color);
+    --anypoint-chip-icon-color: var(--primary-text-color);
+    --anypoint-chip-label-focused-color: var(--primary-text-color);
+    --anypoint-chip-label-active-color: var(--primary-text-color);
+    --anypoint-chip-focused-background-color: #34434b;
+    --anypoint-chip-background-color: var(--secondary-background-color);
+
+    --anypoint-checkbox-label-color:  #F5F5F5;
+    --anypoint-input-background-color: var(--input-background-color);
+    --anypoint-input-label-color: var(--primary-text-color);
+    --anypoint-input-input-color: var(--primary-text-color);
+    --anypoint-input-border-bottom-color: var(--primary-text-color);
+    --anypoint-input-focused-border-bottom-color: var(--primary-text-color);
+    --anypoint-input-label-background-color: rgb(66, 66, 66);
+    --anypoint-input-legacy-focus-background-color: #3a3b3c;
+    --anypoint-input-legacy-focus-border-color: #178bea;
+    --anypoint-input-info-message-color: var(--primary-text-color);
+
+    --anypoint-menu-button-border-radius: 12px;
+    
+    --anypoint-dropdown-menu-background-color: var(--input-background-color);
+    --anypoint-dropdown-menu-label-background-color: var(--primary-background-color);
+    --anypoint-listbox-background-color: var(--input-background-color);
+    --anypoint-dropdown-menu-focus-background-color: var(--active-background-color);
+    --anypoint-dropdown-menu-label-color: var(--primary-text-color);
+    --anypoint-dropdown-menu-info-message-color: var(--primary-text-color);
+    --anypoint-item-hover-background-color: var(--active-background-color);
+    --anypoint-item-focused-background-color: var(--primary-background-color);
+    --anypoint-autocomplete-background-color: var(--input-background-color);
+    --anypoint-icon-button-emphasis-low-color: #c5c5c5;
+    --anypoint-item-before-background: transparent;
+
+    --anypoint-button-emphasis-low-hover-background-color: var(--active-background-color);
+    --anypoint-button-emphasis-low-focus-background-color: var(--anypoint-button-emphasis-low-hover-background-color);
+    --anypoint-button-emphasis-low-focus-color: var(--primary-color);
+    --anypoint-button-emphasis-high-color: #000;
+
+    /* Dialogs */
+    --anypoint-dialog-title-color: var(--primary-text-color);
+    --anypoint-dialog-content-color: var(--primary-text-color);
+
+    /* Bottom sheets */
+    --bottom-sheet-background-color: var(--primary-background-color);
+    --bottom-sheet-color: var(--primary-text-color);
+    --arc-workspace-detail-data-list-color: var(--secondary-text-color);
+    --saved-request-editor-options-color: var(--secondary-text-color);
+
+    /* HTTP method colors */
+    --http-get-color: #c6f68d;
+    --http-post-color: #b39afd;
+    --http-put-color: #ffc77d;
+    --http-patch-color: #f186c0;
+    --http-delete-color: #FF5252;
+    --http-options-color: rgba(128, 128, 128, 0.74);
+    --http-head-color: rgba(128, 128, 128, 0.74);
+    --http-connect-color: rgba(128, 128, 128, 0.74);
+    --http-trace-color: rgba(128, 128, 128, 0.74);
+    --http-method-label-get-background-color: var(--http-get-color);
+    --http-method-label-get-color: #000;
+    --http-method-label-post-background-color: var(--http-post-color);
+    --http-method-label-post-color: #000;
+    --http-method-label-put-background-color: var(--http-put-color);
+    --http-method-label-put-color: #000;
+    --http-method-label-delete-background-color: var(--http-delete-color);
+    --http-method-label-delete-color: #000;
+    --http-method-label-options-background-color: var(--http-options-color);
+    --http-method-label-options-background-color: var(--primary-text-color);
+    --http-method-label-head-background-color: var(--http-head-color);
+    --http-method-label-head-color: var(--primary-text-color);
+    --http-method-label-patch-background-color: var(--http-patch-color);
+    --http-method-label-patch-color: #000;
+
+    /* Lists */
+    --requests-list-history-group-header-background-color: var(--secondary-background-color);
+    --requests-list-item-history-group-header-color: var(--secondary-text-color);
+    --requests-list-content-actions-background-color: var(--secondary-background-color);
+    --requests-list-content-actions-icon-color: var(--secondary-text-color);
+    --requests-list-list-background-color: var(--primary-background-color);
+  }
+
+  body.demo.styled.dark {
+    background-color: var(--secondary-background-color);
+    color: var(--primary-text-color);
+    --arc-font-code-family: Noto, monospace;
+  }
+
+  body.demo.styled.dark header {
+    background-color: var(--primary-background-color);
+  }
+
+  .panels-container {
+    flex: 1;
+    display: flex;
+  }
+
+  .app-menu {
+    width: 320px;
+    height: 700px;
+    overflow: auto;
+  }
+
+  project-screen {
+    height: 700px;
+    flex: 1;
+    margin: 0 12px;
+  }
+
+  pre {
+    display: block;
+    white-space: pre-wrap;
+  }
+
+  .drop-target {
+    border: 2px transparent dashed;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 20px;
+    border: 1px #e5e5e5 solid;
+  }
+
+  .drop-target.drag-over {
+    border-color: #8BC34A;
+  }
+
+  output {
+    display: block;
+    text-align: left;
+    white-space: pre-wrap;
+  }
+  </style>
+</head>
+
+<body class="demo">
+  <div id="demo"></div>
+  <script type="module" src="project-screen.js"></script>
+  </script>
+</body>
+
+</html>

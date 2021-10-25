@@ -1,6 +1,6 @@
 import { assert, fixture, nextFrame } from '@open-wc/testing';
 import sinon from 'sinon';
-import './monaco-loader.js';
+import { loadMonaco } from '../MonacoSetup.js';
 import '../../define/body-multipart-editor.js'
 import {
   addText,
@@ -25,6 +25,8 @@ import {
   async function basicFixture() {
     return fixture(`<body-multipart-editor></body-multipart-editor>`);
   }
+
+  before(async () => loadMonaco());
 
   /**
    * @returns {Promise<BodyMultipartEditorElement>}

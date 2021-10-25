@@ -103,3 +103,5 @@ export { default as SavedMenuElement } from './src/elements/menu/SavedMenuElemen
 export { default as ProjectsMenuElement } from './src/elements/menu/ProjectsMenuElement';
 export { default as RestApiMenuElement } from './src/elements/menu/RestApiMenuElement';
 export { default as SearchMenuElement } from './src/elements/menu/SearchMenuElement';
+export { default as ProjectScreenElement } from './src/elements/legacy-project/ProjectScreenElement';
+export { default as ProjectMetaEditorElement } from './src/elements/legacy-project/ProjectMetaEditorElement';

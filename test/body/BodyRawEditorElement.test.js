@@ -1,7 +1,6 @@
 import { assert, aTimeout, fixture, oneEvent } from '@open-wc/testing';
-// import * as monaco from 'monaco-editor';
 import sinon from 'sinon';
-import './monaco-loader.js';
+import { loadMonaco } from '../MonacoSetup.js';
 import '../../define/body-raw-editor.js'
 import {
   languageValue,
@@ -9,26 +8,6 @@ import {
 } from '../../src/elements/body/internals.js';
 
 /* global monaco */
-
-// @ts-ignore
-window.MonacoEnvironment = {
-  getWorker: (moduleId, label) => {
-    let url;
-    const prefix = 'node_modules/monaco-editor/esm/vs/';
-    const langPrefix = `${prefix}language/`;
-    switch (label) {
-      case 'json': url = `${langPrefix}json/json.worker.js`; break;
-      case 'css': url = `${langPrefix}css/css.worker.js`; break;
-      case 'html': url = `${langPrefix}html/html.worker.js`; break;
-      case 'javascript':
-      case 'typescript': url = `${langPrefix}typescript/ts.worker.js`; break;
-      default: url = `${prefix}editor/editor.worker.js`; break;
-    }
-    return new Worker(url, {
-      type: 'module'
-    });
-  }
-}
 
 /** @typedef {import('../../').BodyRawEditorElement} BodyRawEditorElement */
 
@@ -40,16 +19,7 @@ describe('BodyRawEditorElement()', () => {
     return fixture(`<body-raw-editor></body-raw-editor>`);
   }
 
-  let interval;
-  before((done) => {
-    interval = setInterval(() => {
-      // @ts-ignore
-      if (window.monaco) {
-        clearInterval(interval);
-        done();
-      }
-    }, 20);
-  });
+  before(async () => loadMonaco());
 
   describe('constructor()', () => {
     let element = /** @type BodyRawEditorElement */ (null);

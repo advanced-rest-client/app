@@ -1,7 +1,7 @@
 import { assert, aTimeout, fixture, html, nextFrame } from '@open-wc/testing';
 import sinon from 'sinon';
 import { ArcMock } from '@advanced-rest-client/arc-mock';
-import './monaco-loader.js';
+import { loadMonaco } from '../MonacoSetup.js';
 import '../../define/body-formdata-editor.js'
 import {
   addParamHandler,
@@ -33,6 +33,8 @@ describe('BodyFormdataEditorElement', () => {
   }
 
   const generator = new ArcMock();
+  
+  before(async () => loadMonaco());
 
   describe('Empty state', () => {
     let element = /** @type BodyFormdataEditorElement */ (null);
