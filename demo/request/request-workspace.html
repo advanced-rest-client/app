@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <title>ARC request workspace demo</title>
+  <script>
+  if (window.location.search.indexOf('response_type') !== -1 && window.location.search.indexOf('redirect_uri') !== -1) {
+    // OAUTH DEMO
+    const p = new URLSearchParams(window.location.search);
+    const state = p.get('state');
+    const type = p.get('response_type');
+    let red = p.get('redirect_uri');
+    red += `?state=${state}`;
+    if (type === 'token') {
+      red += '&access_token=ya.12345.asdfghh';
+    } else {
+      red += '&code=12345Zasdfghh';
+    }
+    window.location.href = red;
+  }
+  </script>
+  <style>
+  body.demo.styled .centered[role="main"],
+  body.demo.styled .documentation-section {
+    max-width: 1800px;
+  }
+  
+  body.demo.styled {
+    color: #000;
+    --error-color: red;
+    --primary-text-color: #000;
+    --dark-divider-opacity: 0.12;
+    --code-mirror-height: 300px;
+    --code-mirror-background-color: #f5f5f5;
+    /* --code-mirror-height: auto; */
+    /* --code-mirror-background-color: #F5F5F5; */
+    --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --anypoint-autocomplete-dropdown-shadow: var(--anypoint-dropdown-shadow);
+    --primary-color: #00a2df;
+
+    --request-editor-url-area-background-color: #e4e4e4;
+    --url-input-editor-border-color: #e5e5ee;
+    --primary-background-color: #ffffff;
+
+    
+    --action-button-background-color: var(--primary-color);
+    --action-button-background-image: none;
+    --action-button-color: #fff;
+    --action-button-transition: background-color 300ms linear;
+    --action-button-hover-background-color: #04b3f5;
+    --action-button-hover-color: #fff;
+    --action-button-disabled-background-color: #eaeaea;
+    --action-button-disabled-color: #a8a8a8;
+
+    --action-editor-opened-border-color: #2196f3;
+    --action-editor-opened-title-background-color: #0d47a1;
+    --action-editor-opened-title-color: #fff;
+
+    --box-shadow-6dp: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  }
+
+  body.demo.styled.dark {
+    --primary-color: #ffcc80;
+    --primary-text-color: #fff;
+    --accent-color: #E040FB;
+    --secondary-text-color: rgba(255, 255, 255, 0.84);
+    --primary-background-color: #212121;
+    --secondary-background-color: #313131;
+    --error-color: #ff9090;
+    --link-color: #8bc34a;
+    --input-background-color: var(--primary-background-color);
+    --active-background-color: #616161;
+
+    --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --anypoint-autocomplete-dropdown-shadow: var(--anypoint-dropdown-shadow);
+    
+    --secondary-action-button-color: var(--primary-text-color);
+    --action-button-background-color: var(--primary-background-color);
+    --action-button-color: var(--primary-text-color);
+    --action-button-hover-background-color: var(--primary-background-color);
+    --action-button-hover-color: #04b3f5;
+
+    --saved-request-detail-background-color: var(--primary-background-color);
+    --saved-request-detail-color: var(--primary-text-color);
+    --saved-request-detail-padding: 20px;
+    --saved-request-detail-data-list-color: var(--primary-text-color);
+    --saved-request-detail-action-button-color: var(--primary-text-color);
+    --saved-request-detail-action-icon-color: var(--primary-text-color);
+
+    --anypoint-chip-label-color: var(--primary-text-color);
+    --anypoint-chip-icon-color: var(--primary-text-color);
+    --anypoint-chip-label-focused-color: var(--primary-text-color);
+    --anypoint-chip-label-active-color: var(--primary-text-color);
+    --anypoint-chip-focused-background-color: #34434b;
+    --anypoint-chip-background-color: var(--secondary-background-color);
+
+    --anypoint-checkbox-label-color:  #F5F5F5;
+    --anypoint-input-background-color: var(--input-background-color);
+    --anypoint-input-label-color: var(--primary-text-color);
+    --anypoint-input-input-color: var(--primary-text-color);
+    --anypoint-input-border-bottom-color: var(--primary-text-color);
+    --anypoint-input-focused-border-bottom-color: var(--primary-text-color);
+    --anypoint-input-label-background-color: rgb(66, 66, 66);
+    --anypoint-input-legacy-focus-background-color: #3a3b3c;
+    --anypoint-input-legacy-focus-border-color: #178bea;
+    --anypoint-input-info-message-color: var(--primary-text-color);
+
+    --inline-documentation-background-color: #3a3a3a;
+
+    --no-info-message-color: var(--secondary-text-color);
+
+    --anypoint-menu-button-border-radius: 12px;
+    
+    --anypoint-dropdown-menu-background-color: var(--input-background-color);
+    --anypoint-dropdown-menu-label-background-color: var(--primary-background-color);
+    --anypoint-listbox-background-color: var(--input-background-color);
+    --anypoint-dropdown-menu-focus-background-color: var(--active-background-color);
+    --anypoint-dropdown-menu-label-color: var(--primary-text-color);
+    --anypoint-dropdown-menu-info-message-color: var(--primary-text-color);
+    --anypoint-item-hover-background-color: var(--active-background-color);
+    --anypoint-item-focused-background-color: var(--primary-background-color);
+    --anypoint-autocomplete-background-color: var(--input-background-color);
+    --anypoint-icon-button-emphasis-low-color: #c5c5c5;
+    --anypoint-item-before-background: transparent;
+
+    --anypoint-button-emphasis-low-hover-background-color: var(--active-background-color);
+    --anypoint-button-emphasis-low-focus-background-color: var(--anypoint-button-emphasis-low-hover-background-color);
+    --anypoint-button-emphasis-low-focus-color: var(--primary-color);
+    /* --anypoint-button-emphasis-high-hover-background-color: var(--primary-color); */
+
+    --code-mirror-background-color: #1e1e1e;
+    --code-mirror-gutters-background-color: #1e1e1e;
+    --code-mirror-string-color: #C3E88D;
+    --code-mirror-punctuation-color: #EEFFFF;
+    --code-mirror-atom-color: #F07178;
+    --code-mirror-number-color: #F78C6A;
+    --code-mirror-cursor-color: #009688;
+    --code-mirror-tag-color: var(--primary-text-color);
+    --code-mirror-tag-color: #b4b4b4;
+    --code-mirror-gutters-border-right-color: #757575;
+
+    --code-operator-value-background-color: transparent;
+    --code-background-color: var(--primary-background-color);
+    --code-color: var(--primary-text-color);
+    --code-type-number-value-color: #eb67b0;
+    --code-property-value-color: #b0e6ff;
+    --code-type-text-value-color: #ffb89b;
+    --code-type-boolean-value-color: #72baff;
+    --code-type-number-value-color: #b5cea8;
+    --code-token-comment-value-color: #91afcd;
+    --code-keyword-value-color: #63d0ff;
+
+    --api-type-document-type-attribute-color: var(--primary-text-color);
+    --api-annotation-document-color: var(--primary-text-color);
+    --api-body-document-description-color: var(--primary-text-color);
+    --api-method-documentation-description-color: var(--primary-text-color);
+    --api-method-documentation-url-background-color: var(--code-background-color);
+    --markdown-styles-code-text-shadow: none;
+
+    --http-code-snippet-code-text-shadow: var(--primary-text-color);
+    --http-code-snippet-container-background-color: var(--code-background-color);
+    --http-code-snippet-code-function-color: #82AAFF;
+    --http-code-snippet-code-keyword-color: #C792EA;
+    --http-code-snippet-code-cdata-color: #adb9c5;
+
+    --api-type-document-property-parent-color: var(--primary-text-color);
+
+    --from-row-action-icon-color: var(--primary-text-color);
+    --icon-button-color: var(--primary-text-color);
+    --api-form-action-icon-color: var(--primary-text-color);
+    --api-form-action-button-color: var(--primary-text-color);
+
+    --auth-method-oauth2-redirect-info-color: var(--primary-text-color);
+    --inline-documentation-color: var(--primary-text-color);
+
+    --api-endpoint-documentation-bottom-navigation-color: var(--link-color);
+    --api-endpoint-documentation-description-color: var(--primary-text-color);
+    --api-method-documentation-bottom-navigation-color: var(--link-color);
+
+    --authorization-method-oauth2-redirect-info-color: var(--secondary-text-color);
+    --auth-method-certificate-second-line-color: var(--secondary-text-color);
+    
+    --request-editor-url-area-background-color: var(--primary-background-color);
+    --request-editor-url-input-background-color: var(--primary-background-color);
+    --workspace-tab-decorator-background-color: var(--secondary-background-color);
+    --progress-info-background-color: #404040;
+    --progress-info-color: var(--primary-text-color);
+
+    --request-editor-pill-background-color: var(--secondary-background-color);
+    --request-editor-pill-color: var(--primary-text-color);
+
+    --arc-request-workspace-tabs-close-color: #9e9e9e;
+    --workspace-tabs-add-color: var(--primary-text-color);
+
+    --arc-actions-tutorial-content-color: var(--secondary-text-color);
+    --action-editor-opened-border-color: var(--active-background-color);
+    --action-editor-opened-title-background-color: transparent;
+    --action-editor-opened-title-color: var(--primary-text-color);
+    --action-condition-closed-background-color: transparent;
+    --action-editor-opened-title-border-bottom-color: var(--active-background-color);
+    --action-condition-wrapper-border-bottom-color: var(--active-background-color);
+    --action-condition-closed-border-bottom-color: var(--active-background-color);
+
+    --request-panel-resizer-active-background-color: var(--secondary-background-color);
+
+    /* Response view styles */
+    --response-empty-panel-background-color: var(--primary-background-color);
+    --error-message-icon-color: rgba(255, 255, 255, 0.64);
+    --error-message-color: var(--primary-text-color);
+    --error-message-code-color: #9e9e9e;
+    --response-status-view-request-url-background-color: var(--secondary-background-color);
+    --response-tabs-border-color: #757575;
+    --response-tab-close-hover-background-color: var(--secondary-background-color);
+    --response-code-line-numbers-border-color: #757575;
+    --response-code-line-numbers-color: #999;
+    --response-code-toggle-line-border-color: #757575;
+
+    /* Timings view styles */
+    --request-timings-total-border-color: #757575;
+    --request-timings-progress-background: var(--secondary-background-color);
+    --request-timings-progress-color: #c6f68d;
+
+    /* App toolbar */
+    --arc-toolbar-background: var(--primary-background-color);
+
+    /* ARC menu */
+    --arc-rail-menu-icon-color: #757575;
+    --arc-rail-menu-icon-selected-color: var(--primary-text-color);
+    --arc-menu-title-background-color: var(--primary-background-color);
+    --arc-menu-title-color: var(--primary-text-color);
+    --requests-list-history-group-header-background-color: var(--primary-background-color);
+    --requests-list-item-history-group-header-color: rgba(255, 255, 255, 0.74);
+
+    /* HTTP method colors */
+    --http-get-color: #c6f68d;
+    --http-post-color: #b39afd;
+    --http-put-color: #ffc77d;
+    --http-patch-color: #f186c0;
+    --http-delete-color: #FF5252;
+    --http-options-color: rgba(128, 128, 128, 0.74);
+    --http-head-color: rgba(128, 128, 128, 0.74);
+    --http-connect-color: rgba(128, 128, 128, 0.74);
+    --http-trace-color: rgba(128, 128, 128, 0.74);
+    --http-method-label-get-background-color: var(--http-get-color);
+    --http-method-label-get-color: #000;
+    --http-method-label-post-background-color: var(--http-post-color);
+    --http-method-label-post-color: #000;
+    --http-method-label-put-background-color: var(--http-put-color);
+    --http-method-label-put-color: #000;
+    --http-method-label-delete-background-color: var(--http-delete-color);
+    --http-method-label-delete-color: #000;
+    --http-method-label-options-background-color: var(--http-options-color);
+    --http-method-label-options-background-color: var(--primary-text-color);
+    --http-method-label-head-background-color: var(--http-head-color);
+    --http-method-label-head-color: var(--primary-text-color);
+    --http-method-label-patch-background-color: var(--http-patch-color);
+    --http-method-label-patch-color: #000;
+
+    /* Status code colors */
+    --arc-status-code-color-200: #c6f68d;
+    --arc-status-code-color-300: #b39afd;
+    --arc-status-code-color-400: #ffc77d;
+    --arc-status-code-color-500: #FF5252;
+    --response-status-code-color: #000;
+
+    /* Web session URL */
+    --web-url-input-background-color: var(--primary-background-color);
+
+    /* shadows */
+    --box-shadow-6dp: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+
+    /* Dialogs */
+    --anypoint-dialog-title-color: var(--primary-text-color);
+    --anypoint-dialog-content-color: var(--primary-text-color);
+
+    /* Bottom sheets */
+    --bottom-sheet-background-color: var(--secondary-background-color);
+    --bottom-sheet-color: var(--primary-text-color);
+    --arc-workspace-detail-data-list-color: var(--secondary-text-color);
+    --saved-request-editor-options-color: var(--secondary-text-color);
+
+    /* Client certificates */
+    --certificate-details-data-list-color: var(--primary-text-color);
+  }
+
+  body.demo.styled.dark {
+    background-color: var(--secondary-background-color);
+    color: var(--primary-text-color);
+    --arc-font-code-family: Noto, monospace;
+  }
+
+  body.demo.styled.dark header {
+    background-color: var(--primary-background-color);
+  }
+
+  nav {
+    display: flex;
+  }
+
+  saved-menu,
+  history-menu {
+    height: 500px;
+    width: 320px;
+  }
+
+  .demo-app {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+  }
+
+  arc-request-workspace {
+    margin: 20px;
+    flex: 1;
+    height: 70vh;
+    overflow: hidden;
+  }
+  </style>
+</head>
+
+<body class="demo">
+  <div id="demo"></div>
+  <script type="module" src="request-workspace.js"></script>
+  </script>
+</body>
+
+</html>

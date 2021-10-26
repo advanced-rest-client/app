@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+  <link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Roboto:400,300,300italic,400italic,500,500italic,700,700italic" as="style" crossorigin="anonymous">
+  <title>Demo log in</title>
+
+  <style>
+    html,
+    body {
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    html{
+      background-color: #fff;
+      -webkit-text-size-adjust: 100%;
+      -moz-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      text-size-adjust: 100%
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      font-size: 16px;
+      font-family: Roboto,sans-serif;
+      font-weight: 400;
+    }
+
+    .login {
+      width: 600px;
+      margin: 0 auto;
+    }
+
+    html {
+      --primary-color:  #00A2DF;
+      --accent-color:  rgb(33, 150, 243);
+      --error-color: #d1344e;
+      --anypoint-color-primary: #00a2df;
+      --anypoint-color-tertiary: #fff;
+    }
+  </style>
+  <link rel="stylesheet" crossorigin="anonymous" href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Roboto:400,300,300italic,400italic,500,500italic,700,700italic">
+</head>
+<body>
+  <section class="login">
+    <form autocomplete="on" method="post">
+      <h1>Demo log in</h1>
+      <p>Log in using any username and password to authorize Authorization Method component</p>
+      <anypoint-input
+        type="email"
+        name="email"
+        required
+        autovalidate
+        autocomplete="on"
+        outlined
+        invalidMessage="Email is required"
+      >
+        <label slot="label">Email</label>
+      </anypoint-input>
+      <anypoint-masked-input
+        name="password"
+        required
+        autoValidate
+        autocomplete="on"
+        outlined
+        invalidMessage="Password is required"
+      >
+        <label slot="label">Password</label>
+      </anypoint-masked-input>
+      <anypoint-button class="login-button" emphasis="high">Authorize</anypoint-button>
+    </form>
+  </section>
+  <script type="module" src="oauth-authorize.js"></script>
+</body>
+</html>

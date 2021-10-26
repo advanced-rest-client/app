@@ -1,5 +1,5 @@
 import { Entry, Page } from "har-format";
-import { Variable, ArcRequest, WebSocket, EnvironmentStateDetail } from '@advanced-rest-client/events';
+import { Variable, ArcRequest, WebSocket, EnvironmentStateDetail, Project } from '@advanced-rest-client/events';
 import { ActionType, OperatorEnum, IteratorConfiguration } from "@advanced-rest-client/events/src/actions/Actions";
 import { ArcBaseRequest, ARCHistoryRequest, ARCSavedRequest, TransportRequest } from "@advanced-rest-client/events/src/request/ArcRequest";
 import { ErrorResponse, Response } from "@advanced-rest-client/events/src/request/ArcResponse";
@@ -427,4 +427,68 @@ export declare interface ResponseProcessOptions {
    * @default true
    */
   evaluateSystemVariables?: boolean;
+}
+
+export declare interface ARCProjectNames extends Project.ARCProject {
+  missing: boolean;
+}
+
+export declare interface AuthorizationTemplateOptions {
+  outlined?: boolean;
+  anypoint?: boolean;
+  ui?: ArcRequest.AuthMeta;
+  oauth2RedirectUri: string;
+  hidden?: boolean;
+}
+
+/**
+ * An object that describes a workspace tab 
+ */
+export declare interface WorkspaceTab {
+  /**
+   * The internal for the workspace id of the request panel.
+   * This has nothing to do with the request id or editor request id. It just keeps track which tabs controls which request panel
+   * as both requests and tabs array are out of sync by design.
+   * 
+   * The id is generated when a tab is being created.
+   */
+  id: string;
+  /**
+   * A label to render on the tab.
+   */
+  label: string;
+}
+
+declare interface RequestWithTab {
+ /**
+   * The ID of the tab
+   */
+  tab: string;
+}
+
+export declare interface WorkspaceHttpRequest extends ArcRequest.ArcEditorRequest, RequestWithTab {
+}
+
+export declare interface WorkspaceWebsocketRequest extends WebSocket.WebsocketEditorRequest, RequestWithTab {
+}
+
+export declare type WorkspaceRequest = WorkspaceHttpRequest | WorkspaceWebsocketRequest;
+
+export declare interface AddRequestOptions {
+  /**
+   * Won't check for empty panel before appending it to the list
+   */
+  skipPositionCheck?: boolean;
+  /**
+   * Won't attempt to select added request
+   */
+  noAutoSelect?: boolean;
+  /**
+   * When set it will not call the `requestUpdate()`
+   */
+  skipUpdate?: boolean;
+  /**
+   * When set it ignores call to store workspace data in the store.
+   */
+  skipStore?: boolean;
 }
