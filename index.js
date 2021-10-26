@@ -111,3 +111,8 @@ export { default as ARCConditionEditorElement } from './src/elements/actions/ARC
 export { ArcAction } from './src/lib/actions/ArcAction.js';
 export { ActionsRunner } from './src/lib/actions/runner/ActionsRunner.js';
 export { ActionRunner } from './src/lib/actions/runner/ActionRunner.js';
+export { default as CcAuthorizationMethodElement } from './src/elements/authorization/CcAuthorizationMethodElement.js';
+export { default as CertificateDetailsElement } from './src/elements/certificates/CertificateDetailsElement.js';
+export { default as CertificateImportElement } from './src/elements/certificates/CertificateImportElement.js';
+export { ClientCertificatesConsumerMixin } from './src/elements/certificates/ClientCertificatesConsumerMixin.js';
+export { default as ClientCertificatesPanelElement } from './src/elements/certificates/ClientCertificatesPanelElement.js';

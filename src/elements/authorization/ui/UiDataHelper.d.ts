@@ -5,7 +5,9 @@ import Ntlm from './Ntlm';
 import OAuth1 from './OAuth1';
 import OAuth2 from './OAuth2';
 import OpenID from './OpenID';
+import ClientCertificate from './ClientCertificate.js';
 import AuthorizationMethodElement from '../AuthorizationMethodElement';
+import CcAuthorizationMethodElement from '../CcAuthorizationMethodElement';
 import { AuthUiInit } from '../types';
 
 export class UiDataHelper {
@@ -25,4 +27,6 @@ export class UiDataHelper {
   static populateOAuth1(element: AuthorizationMethodElement, ui: OAuth1): void;
   static populateOAuth2(element: AuthorizationMethodElement, ui: OAuth2): void;
   static populateOpenId(element: AuthorizationMethodElement, ui: OpenID): void;
+  static setupClientCertificate(element: CcAuthorizationMethodElement, init: AuthUiInit): ClientCertificate;
+  static populateClientCertificate(element: CcAuthorizationMethodElement, ui: ClientCertificate): void;
 }

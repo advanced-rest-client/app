@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 /** @typedef {import('../AuthorizationMethodElement').default} AuthorizationMethodElement */
+/** @typedef {import('../CcAuthorizationMethodElement').default} CcAuthorizationMethodElement */
 /** @typedef {import('../types').AuthUiInit} AuthUiInit */
 
 import Digest from './Digest.js';
@@ -9,6 +10,7 @@ import Ntlm from './Ntlm.js';
 import OAuth1 from './OAuth1.js';
 import OAuth2 from './OAuth2.js';
 import OpenID from './OpenID.js';
+import ClientCertificate from './ClientCertificate.js';
 
 export class UiDataHelper {
   /**
@@ -272,5 +274,28 @@ export class UiDataHelper {
     element.supportedResponses = ui.supportedResponses;
     element.serverScopes = ui.serverScopes;
     element.responseType = ui.responseType;
+  }
+
+  /**
+   * @param {CcAuthorizationMethodElement} element
+   * @param {AuthUiInit} init
+   */
+  static setupClientCertificate(element, init) {
+    const i = new ClientCertificate(init);
+    i.selected = element.selected;
+    i.none = element.none;
+    i.importButton = element.importButton;
+    i.items = element.items;
+    return i;
+  }
+
+  /**
+   * @param {CcAuthorizationMethodElement} element
+   * @param {ClientCertificate} ui
+   */
+  static populateClientCertificate(element, ui) {
+    element.selected = ui.selected;
+    element.none = ui.none;
+    element.importButton = ui.importButton;
   }
 }

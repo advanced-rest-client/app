@@ -27,7 +27,7 @@
     "@advanced-rest-client/libs": "^1.0.1",
     "@advanced-rest-client/monaco-support": "^1.0.1",
     "@advanced-rest-client/uuid": "^4.0.0",
-    "@anypoint-web-components/awc": "^1.0.5",
+    "@anypoint-web-components/awc": "^1.0.6",
     "@github/time-elements": "^3.1.2",
     "@material/mwc-snackbar": "^0.25.3",
     "@open-wc/dedupe-mixin": "^1.3.0",

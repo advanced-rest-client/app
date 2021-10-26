@@ -25,14 +25,14 @@ render() {
   const {
     request = [],
     response = [],
-    compatibility,
+    anypoint,
     outlined,
   } = this;
   return html`
   <arc-actions
     .request="${request}"
     .response="${response}"
-    ?compatibility="${compatibility}"
+    ?anypoint="${anypoint}"
     ?outlined="${outlined}"
     @actionchange="${this._actionsChange}"
   ></arc-actions>`;
