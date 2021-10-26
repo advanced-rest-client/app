@@ -121,3 +121,9 @@ export { default as ClientCertificatesPanelElement } from './src/elements/certif
 export { default as ArcWebsocketEditorElement } from './src/elements/ws/ArcWebsocketEditorElement';
 export { default as ArcWebsocketLogsElement } from './src/elements/ws/ArcWebsocketLogsElement';
 export { default as ArcWebsocketPanelElement } from './src/elements/ws/ArcWebsocketPanelElement';
+export { RequestFactory } from './src/request-engine/RequestFactory';
+export { ModulesRegistry } from './src/request-modules/ModulesRegistry';
+export { ArcFetchRequest } from './src/request-engine/ArcFetchRequest';
+export { default as RequestAuthorization } from './src/request-modules/RequestAuthorization';
+export { default as ResponseAuthorization } from './src/request-modules/ResponseAuthorization';
+export * as RequestCookies  from './src/request-modules/RequestCookies';
