@@ -139,14 +139,16 @@ describe('ClientCertificatesConsumerMixin', () => {
     });
 
     it('removes existing item', () => {
+      const size = element.items.length;
       const item = element.items[0];
       ArcModelEvents.ClientCertificate.State.delete(document.body, item._id, item._rev);
-      assert.lengthOf(element.items, 4);
+      assert.lengthOf(element.items, size - 1);
     });
 
     it('ignores when not on the list', () => {
+      const size = element.items.length;
       ArcModelEvents.ClientCertificate.State.delete(document.body, 'some-id', 'some-rev');
-      assert.lengthOf(element.items, 5);
+      assert.lengthOf(element.items, size);
     });
   });
 
