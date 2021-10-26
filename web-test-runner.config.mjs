@@ -1,6 +1,7 @@
 import { OAuth2Server } from 'oauth2-mock-server';
 import getPort, {portNumbers} from 'get-port';
 import pkg from './test/oauth2/ServerMock.js';
+import { startServer, stopServer } from './test/WSServer.mjs';
 
 const { CodeServerMock } = pkg;
 
@@ -8,6 +9,8 @@ const { CodeServerMock } = pkg;
 
 const oauth2server = new OAuth2Server();
 let oauth2env;
+/** @type number */
+let wsPort;
 
 export default /** @type TestRunnerConfig */ ({
   files: 'test/**/*.test.js',
@@ -56,11 +59,16 @@ export default /** @type TestRunnerConfig */ ({
         if (context.path === '/empty-response') {
           return '';
         }
+        if (context.path === '/test/ws/env.js') {
+          return `export default { port: "${wsPort}" }`;
+        }
         return undefined;
       },
     },
+
+    // servers
     {
-      name: 'auth',
+      name: 'servers',
       async serverStart() {
         const port = await getPort({ port: portNumbers(8000, 8100) });
         const jwtKey = await oauth2server.issuer.keys.generateRSA();
@@ -70,6 +78,13 @@ export default /** @type TestRunnerConfig */ ({
           jwtKey,
           issuer: oauth2server.issuer.url,
         };
+        wsPort = await getPort({ port: portNumbers(8000, 8100) });
+        await startServer(wsPort);
+      },
+
+      async serverStop() {
+        await oauth2server.stop();
+        await stopServer();
       },
     },
   ],

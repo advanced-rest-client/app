@@ -116,3 +116,6 @@ export { default as CertificateDetailsElement } from './src/elements/certificate
 export { default as CertificateImportElement } from './src/elements/certificates/CertificateImportElement.js';
 export { ClientCertificatesConsumerMixin } from './src/elements/certificates/ClientCertificatesConsumerMixin.js';
 export { default as ClientCertificatesPanelElement } from './src/elements/certificates/ClientCertificatesPanelElement.js';
+export { default as ArcWebsocketEditorElement } from './src/elements/ws/ArcWebsocketEditorElement.js';
+export { default as ArcWebsocketLogsElement } from './src/elements/ws/ArcWebsocketLogsElement.js';
+export { default as ArcWebsocketPanelElement } from './src/elements/ws/ArcWebsocketPanelElement.js';

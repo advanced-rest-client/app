@@ -1,5 +1,5 @@
 import { Entry, Page } from "har-format";
-import { Variable, ArcRequest } from '@advanced-rest-client/events';
+import { Variable, ArcRequest, WebSocket } from '@advanced-rest-client/events';
 import { ActionType, OperatorEnum, IteratorConfiguration } from "@advanced-rest-client/events/src/actions/Actions";
 import { ArcBaseRequest, ARCHistoryRequest, ARCSavedRequest, TransportRequest } from "@advanced-rest-client/events/src/request/ArcRequest";
 import { ErrorResponse, Response } from "@advanced-rest-client/events/src/request/ArcResponse";
@@ -332,4 +332,15 @@ export declare interface ResponseProcessOptions {
    * @default true
    */
   evaluateSystemVariables?: boolean;
+}
+
+export declare interface ViewConnectionResult extends WebSocket.WebsocketConnectionResult {
+  sizeLabel: string;
+  logs: ViewWebsocketLog[];
+}
+
+export declare interface ViewWebsocketLog extends WebSocket.WebsocketLog {
+  isBinary: boolean;
+  sizeLabel: string;
+  isoTime: string;
 }
