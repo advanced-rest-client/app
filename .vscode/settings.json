@@ -16,6 +16,7 @@
     "queryheaders",
     "querystatuscodes",
     "reindex",
+    "Renderable",
     "requestactionschange",
     "responseactionschange",
     "Restapis",

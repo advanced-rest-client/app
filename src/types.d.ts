@@ -4,7 +4,15 @@ import { ActionType, OperatorEnum, IteratorConfiguration } from "@advanced-rest-
 import { ArcBaseRequest, ARCHistoryRequest, ARCSavedRequest, TransportRequest } from "@advanced-rest-client/events/src/request/ArcRequest";
 import { ErrorResponse, Response } from "@advanced-rest-client/events/src/request/ArcResponse";
 import * as ArcModelEvents from "@advanced-rest-client/events/src/models/ArcModelEvents";
-import * as Events from '@advanced-rest-client/events';
+import { IArcNavigationEvents } from "@advanced-rest-client/events/src/navigation/ArcNavigationEvents";
+import { ISessionCookieEvents } from "@advanced-rest-client/events/src/cookies/SessionCookieEvents";
+import { IEncryptionEvents } from "@advanced-rest-client/events/src/encryption/EncryptionEvents";
+import { IGoogleDriveEvents } from "@advanced-rest-client/events/src/googledrive/GoogleDriveEvents";
+import { IProcessEvents } from "@advanced-rest-client/events/src/process/ProcessEvents";
+import { IWorkspaceEvents } from "@advanced-rest-client/events/src/workspace/WorkspaceEvents";
+import { IRequestEvents } from "@advanced-rest-client/events/src/request/RequestEvents";
+import { IAuthorizationEvents } from "@advanced-rest-client/events/src/authorization/AuthorizationEvents";
+import { IConfigEvents } from "@advanced-rest-client/events/src/config/ConfigEvents";
 
 
 export declare interface RenderedPage {
@@ -378,15 +386,15 @@ export declare interface ExecutionContext {
 }
 
 export declare interface ExecutionEvents {
-  ArcNavigationEvents: Events.ArcNavigationEvents;
-  SessionCookieEvents: Events.SessionCookieEvents;
-  EncryptionEvents: Events.EncryptionEvents;
-  GoogleDriveEvents: Events.GoogleDriveEvents;
-  ProcessEvents: Events.ProcessEvents;
-  WorkspaceEvents: Events.WorkspaceEvents;
-  RequestEvents: Events.RequestEvents;
-  AuthorizationEvents: Events.AuthorizationEvents;
-  ConfigEvents: Events.ConfigEvents;
+  ArcNavigationEvents: IArcNavigationEvents;
+  SessionCookieEvents: ISessionCookieEvents;
+  EncryptionEvents: IEncryptionEvents;
+  GoogleDriveEvents: IGoogleDriveEvents;
+  ProcessEvents: IProcessEvents;
+  WorkspaceEvents: IWorkspaceEvents;
+  RequestEvents: IRequestEvents;
+  AuthorizationEvents: IAuthorizationEvents;
+  ConfigEvents: IConfigEvents;
 }
 
 export declare interface ExecutionStore {
@@ -491,4 +499,21 @@ export declare interface AddRequestOptions {
    * When set it ignores call to store workspace data in the store.
    */
   skipStore?: boolean;
+}
+
+export interface ThemeManagerInit {
+  /**
+   * The protocol to use to load themes
+   * @example themes:
+   */
+  protocol: string;
+  /**
+   * The base URI to use to load themes.
+   * @example localhost:8080/path
+   */
+  baseUri: string;
+  /**
+   * The target for the DOM events.
+   */
+  eventsTarget?: EventTarget;
 }

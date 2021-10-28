@@ -78,4 +78,15 @@ export default /** @type DevServerConfig */ ({
       },
     },
   ],
+
+  middleware: [
+    function rewriteIndex(context, next) {
+      if (context.url.startsWith('/demo/themes/')) {
+        const newLocation = context.url.replace('@advanced-rest-client/', '');
+        context.url = `${newLocation}.css`;
+      }
+
+      return next();
+    },
+  ],
 });
