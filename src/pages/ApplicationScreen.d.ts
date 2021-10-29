@@ -27,6 +27,14 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
    * An event target on which to dispatch DOM events.
    */
   eventTarget: EventTarget;
+  /** 
+   * True when the app should render mobile friendly view.
+   */
+  isMobile: boolean;
+  /**
+   * Initializes media queries and observers.
+   */
+  initMediaQueries(): void;
   /**
    * Creates a modal dialog with the error details.
    * @param message The message to render

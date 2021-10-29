@@ -1,4 +1,4 @@
-import { ArcNavigationEventTypes } from '@advanced-rest-client/events';
+import { EventTypes } from '@advanced-rest-client/events';
 import { RequestModel, UrlIndexer, ProjectModel, RestApiModel } from  '@advanced-rest-client/idb-store';
 import '../../define/rest-api-menu.js';
 import '../../define/search-menu.js';
@@ -34,10 +34,10 @@ class MenuPopup {
 
     window.addEventListener('beforeunload', this.beforeUnloadHandler.bind(this));
 
-    window.addEventListener(ArcNavigationEventTypes.navigateProject, this.navigateProjectHandler.bind(this));
-    window.addEventListener(ArcNavigationEventTypes.navigateRequest, this.navigateRequestHandler.bind(this));
-    window.addEventListener(ArcNavigationEventTypes.navigateRestApi, this.navigateRestApiHandler.bind(this));
-    window.addEventListener(ArcNavigationEventTypes.navigate, this.navigateHandler.bind(this));
+    window.addEventListener(EventTypes.Navigation.navigateProject, this.navigateProjectHandler.bind(this));
+    window.addEventListener(EventTypes.Navigation.navigateRequest, this.navigateRequestHandler.bind(this));
+    window.addEventListener(EventTypes.Navigation.navigateRestApi, this.navigateRestApiHandler.bind(this));
+    window.addEventListener(EventTypes.Navigation.navigate, this.navigateHandler.bind(this));
   }
 
   /**

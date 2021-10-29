@@ -1,11 +1,11 @@
-import { EventTypes } from '@advanced-rest-client/events';
+import { EventTypes, Events } from '@advanced-rest-client/events';
 import { get, set } from 'idb-keyval';
 import { BaseThemeManager } from '../../pages.js';
 import * as Constants from '../../src/Constants.js';
 
-/** @typedef {import('@advanced-rest-client/events').Themes.ArcThemeStore} ArcThemeStore */
-/** @typedef {import('@advanced-rest-client/events').Themes.InstalledTheme} InstalledTheme */
-/** @typedef {import('@advanced-rest-client/events').Themes.SystemThemeInfo} SystemThemeInfo */
+/** @typedef {import('@advanced-rest-client/events').Theme.ArcThemeStore} ArcThemeStore */
+/** @typedef {import('@advanced-rest-client/events').Theme.InstalledTheme} InstalledTheme */
+/** @typedef {import('@advanced-rest-client/events').Theme.SystemThemeInfo} SystemThemeInfo */
 
 const settingsKey = 'ArcAppThemeBindings';
 
@@ -21,6 +21,7 @@ export class ThemeBindings {
   }
 
   initialize() {
+    window.addEventListener(EventTypes.Theme.loadTheme, this.loadThemeHandler.bind(this));
     window.addEventListener(EventTypes.Theme.loadApplicationTheme, this.loadApplicationThemeHandler.bind(this));
     window.addEventListener(EventTypes.Theme.readSate, this.readSateHandler.bind(this));
     window.addEventListener(EventTypes.Theme.activate, this.activateHandler.bind(this));
@@ -28,6 +29,23 @@ export class ThemeBindings {
     window.addEventListener(EventTypes.Theme.uninstall, this.uninstallHandler.bind(this));
     window.addEventListener(EventTypes.Theme.readActiveThemeInfo, this.readActiveThemeInfoHandler.bind(this));
     window.addEventListener(EventTypes.Theme.readSystemThemeInfo, this.readSystemThemeInfoHandler.bind(this));
+    window.addEventListener(EventTypes.Theme.setSystemPreferred, this.setSystemPreferredHandler.bind(this));
+  }
+
+  /**
+   * @param {CustomEvent} e 
+   */
+  loadThemeHandler(e) {
+    const { themeId, noFallback } = e.detail;
+    e.detail.result = this.themes.loadTheme(themeId, noFallback);
+  }
+
+  /**
+   * @param {CustomEvent} e 
+   */
+  setSystemPreferredHandler(e) {
+    const { status } = e.detail;
+    e.detail.result = this.setSystemPreferred(status);
   }
 
   /**
@@ -192,5 +210,20 @@ export class ThemeBindings {
       shouldUseHighContrastColors: false,
       shouldUseInvertedColorScheme: false,
     };
+  }
+
+  /**
+   * @param {boolean} status 
+   */
+  async setSystemPreferred(status) {
+    const state = await this.readState();
+    state.systemPreferred = status;
+    await set(settingsKey, state);
+    if (status) {
+      await this.themes.loadSystemPreferred();
+    } else {
+      await this.themes.loadSystemPreferred();
+    }
+    Events.Theme.themeActivated(window, state.active);
   }
 }

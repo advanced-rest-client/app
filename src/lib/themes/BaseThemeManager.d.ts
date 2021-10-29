@@ -13,18 +13,6 @@ export class BaseThemeManager {
   constructor(init: ThemeManagerInit);
 
   /**
-   * Lists installed in the application themes.
-   * @return A promise resolved to the theme info array
-   */
-  readState(): Promise<Themes.ArcThemeStore>;
-
-  /**
-   * Reads information about the current theme.
-   * @return A promise resolved to the theme info
-   */
-  readActiveThemeInfo(): Promise<Themes.InstalledTheme>;
-
-  /**
    * Activates the theme. It stores theme id in user preferences and loads the
    * theme.
    * @param name Theme name to activate
@@ -58,13 +46,6 @@ export class BaseThemeManager {
   readThemeUrl(themeId: string): string;
 
   _loadTheme(themeId: string): Promise<void>;
-
-  /**
-   * @param status Whether to ignore the system preferences for dark / light theme.
-   */
-  setSystemPreferred(status: boolean): Promise<void>;
-
-  readSystemThemeInfo(): Promise<Themes.SystemThemeInfo>;
 
   /**
    * Loads application theme applying user and system configuration.

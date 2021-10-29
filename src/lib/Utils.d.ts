@@ -141,3 +141,10 @@ export function computeA11yCommand(key: string): string;
  * @returns Either `copy` or `move`.
  */
 export function computeProjectDropEffect(e: DragEvent): "link" | "none" | "copy" | "move";
+
+/**
+ * Gets an index of the tab which is the source of one of the pre-build actions.
+ * @param target
+ * @return An index of the tab
+ */
+export function getTabClickIndex(target: Element): number;

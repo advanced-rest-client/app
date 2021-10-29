@@ -23,24 +23,6 @@ export class BaseThemeManager {
   }
 
   /**
-   * Lists installed in the application themes.
-   * @return {Promise<ArcThemeStore>} A promise resolved to the theme info array
-   */
-  readState() {
-    // throw new Error(`readState(): Not implemented`);
-    return Events.Theme.readSate(this.eventsTarget);
-  }
-
-  /**
-   * Reads information about the current theme.
-   * @return {Promise<InstalledTheme>} A promise resolved to the theme info
-   */
-  readActiveThemeInfo() {
-    // throw new Error(`readActiveThemeInfo(): Not implemented`);
-    return Events.Theme.readActiveThemeInfo(this.eventsTarget);
-  }
-
-  /**
    * Activates the theme. It stores theme id in user preferences and loads the
    * theme.
    * @param {string} name Theme name to activate
@@ -48,7 +30,6 @@ export class BaseThemeManager {
    */
   activate(name) {
     throw new Error(`activate(${name}): Not implemented`);
-    // return Events.Theme.activate(this.eventsTarget, name);
   }
 
   /**
@@ -59,7 +40,6 @@ export class BaseThemeManager {
     if (!name) {
       throw new Error('The name is required');
     }
-    // return Events.Theme.install(this.eventsTarget, name);
     throw new Error(`installTheme(${name}): Not implemented`);
   }
 
@@ -72,7 +52,6 @@ export class BaseThemeManager {
       throw new Error('The name is required');
     }
     throw new Error(`uninstallTheme(${name}): Not implemented`);
-    // return Events.Theme.uninstall(this.eventsTarget, name);
   }
 
   /**
@@ -129,28 +108,12 @@ export class BaseThemeManager {
   }
 
   /**
-   * @param {boolean} status Whether to ignore the system preferences for dark / light theme.
-   */
-  async setSystemPreferred(status) {
-    throw new Error(`setSystemPreferred(${status}): Not implemented`);
-    // return Events.Theme.setSystemPreferred(this.eventsTarget, status);
-  }
-
-  /**
-   * @returns {Promise<SystemThemeInfo>} 
-   */
-  async readSystemThemeInfo() {
-    // throw new Error(`readSystemThemeInfo(): Not implemented`);
-    return Events.Theme.readSystemThemeInfo(this.eventsTarget);
-  }
-
-  /**
    * Loads application theme applying user and system configuration.
    * This function should be used on each application page to load the theme.
    * @returns {Promise<string>} The id of the loaded theme.
    */
   async loadApplicationTheme() {
-    const settings = await this.readState();
+    const settings = await Events.Theme.readSate(this.eventsTarget);
     if (settings.systemPreferred) {
       return this.loadSystemPreferred();
     }
@@ -162,7 +125,7 @@ export class BaseThemeManager {
    * @returns {Promise<string>}
    */
   async loadSystemPreferred() {
-    const systemInfo = await this.readSystemThemeInfo();
+    const systemInfo = await Events.Theme.readSystemThemeInfo(this.eventsTarget);
     const id = systemInfo.shouldUseDarkColors ? Constants.darkTheme : Constants.defaultTheme;
     try {
       await this.loadTheme(id);
@@ -180,7 +143,7 @@ export class BaseThemeManager {
    * @returns {Promise<string>}
    */
   async loadUserPreferred() {
-    const info = await this.readActiveThemeInfo();
+    const info = await Events.Theme.readActiveThemeInfo(this.eventsTarget);
     const id = info && info.name || Constants.defaultTheme;
     try {
       await this.loadTheme(id);

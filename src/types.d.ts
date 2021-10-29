@@ -517,3 +517,13 @@ export interface ThemeManagerInit {
    */
   eventsTarget?: EventTarget;
 }
+
+export declare interface ArcAppInitOptions {
+  /**
+   * The backend id of the workspace file.
+   */
+  workspaceId?: string;
+  proxy?: string;
+  proxyUsername?: string;
+  proxyPassword?: string;
+}

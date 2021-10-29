@@ -29,6 +29,22 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
     /** @type boolean */
     this.anypoint = undefined;
     this.eventTarget = document.body;
+    /** 
+     * True when the app should render mobile friendly view.
+     */
+    this.isMobile = false;
+    this.initMediaQueries();
+  }
+
+  /**
+   * Initializes media queries and observers.
+   */
+  initMediaQueries() {
+    const mql = window.matchMedia('(max-width: 600px)');
+    this.isMobile = mql.matches;
+    mql.addEventListener('change', (e) => {
+      this.isMobile = e.matches;
+    });
   }
 
   /**
