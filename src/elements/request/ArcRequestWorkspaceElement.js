@@ -4,7 +4,7 @@ import { LitElement, html } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { EventsTargetMixin, ResizableMixin } from '@anypoint-web-components/awc';
 import { v4 } from '@advanced-rest-client/uuid';
-import { TransportEventTypes, WorkspaceEvents, ArcModelEvents } from '@advanced-rest-client/events';
+import { Events, EventTypes } from '@advanced-rest-client/events';
 import { BodyProcessor } from '@advanced-rest-client/libs';
 import '@anypoint-web-components/awc/anypoint-icon-button.js';
 import '@anypoint-web-components/awc/anypoint-listbox.js';
@@ -103,6 +103,7 @@ export const workspaceDetailTemplate = Symbol('workspaceDetailTemplate');
 export const workspaceMetaTemplate = Symbol('workspaceMetaTemplate');
 export const sheetClosedHandler = Symbol('sheetClosedHandler');
 export const storeWorkspaceMeta = Symbol('storeWorkspaceMeta');
+export const triggerWriteHandler = Symbol('triggerWriteHandler');
 
 const AddTypeSelectorDelay = 700;
 
@@ -127,11 +128,6 @@ export default class ArcRequestWorkspaceElement extends ResizableMixin(EventsTar
        * with `value` property on the `detail` object.
        */
       oauth2RedirectUri: { type: String },
-      /** 
-       *  When set, this identifier will be passed to the read and write workspace events
-       */
-      backendId: { type: String },
-
       /** 
        * When set it requests workspace state read when connected to the DOM.
        */
@@ -204,10 +200,6 @@ export default class ArcRequestWorkspaceElement extends ResizableMixin(EventsTar
       kind: 'ARC#DomainWorkspace',
       id: v4(),
     });
-    /** 
-     * @type {string}
-     */
-    this.backendId = undefined;
     this.autoRead = false;
     this.storeTimeout = 500;
     this.renderSend = false;
@@ -218,6 +210,7 @@ export default class ArcRequestWorkspaceElement extends ResizableMixin(EventsTar
 
     this[transportHandler] = this[transportHandler].bind(this);
     this[addButtonCallback] = this[addButtonCallback].bind(this);
+    this[triggerWriteHandler] = this[triggerWriteHandler].bind(this);
   }
 
   connectedCallback() {
@@ -226,12 +219,28 @@ export default class ArcRequestWorkspaceElement extends ResizableMixin(EventsTar
       this.restore();
     }
 
-    this.addEventListener(TransportEventTypes.request, this[transportHandler]);
+    this.addEventListener(EventTypes.Transport.request, this[transportHandler]);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.removeEventListener(TransportEventTypes.request, this[transportHandler]);
+    this.removeEventListener(EventTypes.Transport.request, this[transportHandler]);
+  }
+
+  /**
+   * @param {EventTarget} node 
+   */
+  _attachListeners(node) {
+    super._attachListeners(node);
+    node.addEventListener(EventTypes.Workspace.triggerWrite, this[triggerWriteHandler]);
+  }
+
+  /**
+   * @param {EventTarget} node 
+   */
+   _detachListeners(node) {
+    super._detachListeners(node);
+    node.removeEventListener(EventTypes.Workspace.triggerWrite, this[triggerWriteHandler]);
   }
 
   /**
@@ -240,6 +249,10 @@ export default class ArcRequestWorkspaceElement extends ResizableMixin(EventsTar
   firstUpdated(args) {
     super.firstUpdated(args);
     this[addButtonRef] = /** @type AnypointIconButton */ (this.shadowRoot.querySelector('.add-request-button'))
+  }
+
+  [triggerWriteHandler]() {
+    this.store();
   }
 
   /**
@@ -273,7 +286,7 @@ export default class ArcRequestWorkspaceElement extends ResizableMixin(EventsTar
    */
   async restore() {
     this.clear();
-    const result = await WorkspaceEvents.read(this, this.backendId);
+    const result = await Events.Workspace.read(this);
     /** @type DomainWorkspace */
     let value;
     if (result) {
@@ -312,7 +325,7 @@ export default class ArcRequestWorkspaceElement extends ResizableMixin(EventsTar
     const ps = workspace.requests.map((request) => BodyProcessor.stringifyRequest(request));
     const requests = await Promise.all(ps);
     workspace.requests = requests;
-    await WorkspaceEvents.write(this, workspace, this.backendId);
+    await Events.Workspace.write(this, workspace);
   }
 
   /**
@@ -464,7 +477,7 @@ export default class ArcRequestWorkspaceElement extends ResizableMixin(EventsTar
    * @returns {Promise<number>} The position at which the tab was inserted. It might be different than requested when the index is out of bounds.
    */
   async addAtByRequestId(index, type, id, options) {
-    const request = await ArcModelEvents.Request.read(this, type, id);
+    const request = await Events.Model.Request.read(this, type, id);
     return this.addAt(index, request, options);
   }
 
@@ -475,7 +488,7 @@ export default class ArcRequestWorkspaceElement extends ResizableMixin(EventsTar
    * @returns {Promise<number>} The position at which the request has been added.
    */
   async addByRequestId(type, id) {
-    const request = await ArcModelEvents.Request.read(this, type, id);
+    const request = await Events.Model.Request.read(this, type, id);
     const index = this.findRequestIndex(request._id);
     if (index === -1) {
       return this.add(request);
@@ -499,7 +512,7 @@ export default class ArcRequestWorkspaceElement extends ResizableMixin(EventsTar
    * @returns {Promise<number>} The position at which the last request has been added.
    */
   async addByRequestIds(type, ids) {
-    const requests = await ArcModelEvents.Request.readBulk(this, type, ids);
+    const requests = await Events.Model.Request.readBulk(this, type, ids);
     let result = -1;
     requests.forEach((request) => {
       const index = this.findRequestIndex(request._id);
@@ -550,11 +563,11 @@ export default class ArcRequestWorkspaceElement extends ResizableMixin(EventsTar
    * @returns {Promise<number>} the index of the last inserted item or -1 if none inserted.
    */
   async appendByProjectId(id, index) {
-    const project = await ArcModelEvents.Project.read(this, id);
+    const project = await Events.Model.Project.read(this, id);
     if (!Array.isArray(project.requests) || !project.requests.length) {
       return -1;
     }
-    const requests = await ArcModelEvents.Request.readBulk(this, 'saved', project.requests, {
+    const requests = await Events.Model.Request.readBulk(this, 'saved', project.requests, {
       preserveOrder: true,
     });
     let lastIndex;

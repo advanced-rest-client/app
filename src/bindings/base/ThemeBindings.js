@@ -1,26 +1,31 @@
-import { EventTypes, Events } from '@advanced-rest-client/events';
-import { get, set } from 'idb-keyval';
-import { BaseThemeManager } from '../../pages.js';
-import * as Constants from '../../src/Constants.js';
+/* eslint-disable no-unused-vars */
+/* eslint-disable class-methods-use-this */
+import { EventTypes } from '@advanced-rest-client/events';
+import { PlatformBindings } from './PlatformBindings.js';
+import { BaseThemeManager } from '../../lib/themes/BaseThemeManager.js';
+import * as Constants from '../../Constants.js';
 
 /** @typedef {import('@advanced-rest-client/events').Theme.ArcThemeStore} ArcThemeStore */
 /** @typedef {import('@advanced-rest-client/events').Theme.InstalledTheme} InstalledTheme */
 /** @typedef {import('@advanced-rest-client/events').Theme.SystemThemeInfo} SystemThemeInfo */
 
-const settingsKey = 'ArcAppThemeBindings';
-
-export class ThemeBindings {
-  constructor() {
-    const base = new URL(window.location.href);
+/**
+ * The base class for application themes bindings.
+ */
+export class ThemeBindings extends PlatformBindings {
+  /**
+   * @param {string} protocol The protocol to use when requesting for a theme.
+   * @param {string} baseUri The base URI to use when requesting for a theme.
+   */
+  constructor(protocol, baseUri) {
+    super();
     this.themes = new BaseThemeManager({
-      protocol: 'http:',
-      baseUri: `${base.host}/demo/themes`
+      protocol,
+      baseUri,
     });
-    this.darkMatcher = window.matchMedia('(prefers-color-scheme: dark)');
-    this.darkMatcher.addEventListener('change', this.darkMatcherQueryHandler.bind(this));
   }
 
-  initialize() {
+  async initialize() {
     window.addEventListener(EventTypes.Theme.loadTheme, this.loadThemeHandler.bind(this));
     window.addEventListener(EventTypes.Theme.loadApplicationTheme, this.loadApplicationThemeHandler.bind(this));
     window.addEventListener(EventTypes.Theme.readSate, this.readSateHandler.bind(this));
@@ -98,23 +103,6 @@ export class ThemeBindings {
   }
 
   /**
-   * @param {MediaQueryListEvent} e 
-   */
-  async darkMatcherQueryHandler(e) {
-    const state = await this.readState();
-    if (state.systemPreferred === false) {
-      return;
-    }
-    if (e.matches) {
-      await this.activate(Constants.darkTheme);
-      await this.themes.loadTheme(Constants.darkTheme);
-    } else {
-      await this.activate(Constants.defaultTheme);
-      await this.themes.loadTheme(Constants.defaultTheme);
-    }
-  }
-
-  /**
    * @returns {ArcThemeStore}
    */
   defaultSettings() {
@@ -122,38 +110,7 @@ export class ThemeBindings {
       kind: 'ARC#ThemeInfo',
       version: '1.1.0',
       systemPreferred: true,
-      themes: [
-        {
-          _id: "@advanced-rest-client/arc-electron-default-theme",
-          name: "@advanced-rest-client/arc-electron-default-theme",
-          title: "Default theme",
-          version: "4.0.0",
-          location: "@advanced-rest-client/arc-electron-default-theme",
-          mainFile: "@advanced-rest-client/arc-electron-default-theme/arc-electron-default-theme.css",
-          description: "Advanced REST Client default theme",
-          isDefault: true
-        },
-        {
-          _id: "@advanced-rest-client/arc-electron-anypoint-theme",
-          name: "@advanced-rest-client/arc-electron-anypoint-theme",
-          title: "Anypoint theme",
-          version: "3.0.2",
-          location: "@advanced-rest-client/arc-electron-anypoint-theme",
-          mainFile: "@advanced-rest-client/arc-electron-anypoint-theme/arc-electron-anypoint-theme.css",
-          description: "Advanced REST Client anypoint theme",
-          isDefault: true
-        },
-        {
-          _id: "@advanced-rest-client/arc-electron-dark-theme",
-          name: "@advanced-rest-client/arc-electron-dark-theme",
-          title: "Dark theme",
-          version: "3.0.2",
-          location: "@advanced-rest-client/arc-electron-dark-theme",
-          mainFile: "@advanced-rest-client/arc-electron-dark-theme/arc-electron-dark-theme.css",
-          description: "Advanced REST Client dark theme",
-          isDefault: true
-        }
-      ],
+      themes: [],
     });
   }
 
@@ -161,11 +118,7 @@ export class ThemeBindings {
    * @returns {Promise<ArcThemeStore>}
    */
   async readState() {
-    let info = await get(settingsKey);
-    if (!info) {
-      info = this.defaultSettings();
-    }
-    return info;
+    throw new Error('Not implemented');
   }
 
   /**
@@ -175,9 +128,7 @@ export class ThemeBindings {
    * @return {Promise<void>} Promise resolved when the theme is activated
    */
   async activate(name) {
-    const state = await this.readState();
-    state.active = name;
-    await set(settingsKey, state);
+    throw new Error('Not implemented');
   }
 
   /**
@@ -185,7 +136,7 @@ export class ThemeBindings {
    */
   async readActiveThemeInfo() {
     const state = await this.readState();
-    const { themes, active } = state;
+    const { themes, active=Constants.defaultTheme } = state;
     let info = themes.find((theme) => theme.name === active || theme._id === active);
     if (!info && active === Constants.defaultTheme) {
       throw new Error(`The default theme is not installed.`);
@@ -206,7 +157,7 @@ export class ThemeBindings {
    */
   async readSystemThemeInfo() {
     return {
-      shouldUseDarkColors: this.darkMatcher.matches,
+      shouldUseDarkColors: false,
       shouldUseHighContrastColors: false,
       shouldUseInvertedColorScheme: false,
     };
@@ -216,14 +167,6 @@ export class ThemeBindings {
    * @param {boolean} status 
    */
   async setSystemPreferred(status) {
-    const state = await this.readState();
-    state.systemPreferred = status;
-    await set(settingsKey, state);
-    if (status) {
-      await this.themes.loadSystemPreferred();
-    } else {
-      await this.themes.loadSystemPreferred();
-    }
-    Events.Theme.themeActivated(window, state.active);
+    throw new Error('Not implemented');
   }
 }

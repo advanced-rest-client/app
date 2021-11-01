@@ -47,6 +47,8 @@
     "@advanced-rest-client/arc-mock": "^5.0.0",
     "@advanced-rest-client/idb-store": "^1.0.0",
     "@babel/core": "^7.15.8",
+    "@babel/eslint-parser": "^7.15.8",
+    "@babel/eslint-plugin": "^7.14.5",
     "@babel/preset-env": "^7.15.8",
     "@commitlint/cli": "^13.2.1",
     "@commitlint/config-conventional": "^13.2.0",
@@ -94,10 +96,22 @@
     "prepare": "husky install && node dev/prepare.mjs"
   },
   "eslintConfig": {
+    "env": {
+      "es2021": true
+    },
     "extends": [
       "@open-wc/eslint-config",
       "eslint-config-prettier"
     ],
+    "plugins": [
+      "@babel"
+    ],
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module",
+      "requireConfigFile": false
+    },
     "overrides": [
       {
         "files": [

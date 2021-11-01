@@ -90,12 +90,6 @@ export default class ArcRequestWorkspaceElement extends ResizableMixin(EventsTar
    */
   oauth2RedirectUri: string;
   /** 
-   *  When set, this identifier will be passed to the read and write workspace events
-   * @attribute
-   */
-  backendId: string;
-
-  /** 
    * When set it requests workspace state read when connected to the DOM.
    * @attribute
    */

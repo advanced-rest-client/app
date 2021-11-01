@@ -1,8 +1,8 @@
 import { EventTypes } from '@advanced-rest-client/events';
-import { ElectronBindings } from '../lib/ElectronBindings.js';
+import { DemoBindings } from '../lib/DemoBindings.js';
 import { MenuScreen } from '../../pages.js';
 
-const bindings = new ElectronBindings();
+const bindings = new DemoBindings();
 bindings.initialize();
 const page = new MenuScreen();
 page.initialize();
