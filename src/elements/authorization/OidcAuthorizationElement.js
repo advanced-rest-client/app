@@ -1,13 +1,13 @@
 /* eslint-disable class-methods-use-this */
-import { AuthorizationEventTypes } from '@advanced-rest-client/events';
+import { EventTypes } from '@advanced-rest-client/events';
 import { EventsTargetMixin } from '@anypoint-web-components/awc';
-import { OidcAuthorization } from './OidcAuthorization.js';
+import { OidcAuthorization } from '@advanced-rest-client/oauth';
 
 /** @typedef {import('@advanced-rest-client/events').Authorization.OidcTokenInfo} OidcTokenInfo */
 /** @typedef {import('@advanced-rest-client/events').Authorization.OidcTokenError} OidcTokenError */
 /** @typedef {import('@advanced-rest-client/events').Authorization.OAuth2Authorization} OAuth2Settings */
 /** @typedef {import('@advanced-rest-client/events').OidcAuthorizeEvent} OidcAuthorizeEvent */
-/** @typedef {import('./types').ProcessingOptions} ProcessingOptions */
+/** @typedef {import('@advanced-rest-client/oauth').ProcessingOptions} ProcessingOptions */
 
 export const authorizeHandler = Symbol('authorizeHandler');
 
@@ -52,7 +52,7 @@ export default class OidcAuthorizationElement extends EventsTargetMixin(HTMLElem
    * @param {EventTarget} node
    */
   _attachListeners(node) {
-    node.addEventListener(AuthorizationEventTypes.Oidc.authorize, this[authorizeHandler]);
+    node.addEventListener(EventTypes.Authorization.Oidc.authorize, this[authorizeHandler]);
     this.setAttribute('aria-hidden', 'true');
   }
 
@@ -60,7 +60,7 @@ export default class OidcAuthorizationElement extends EventsTargetMixin(HTMLElem
    * @param {EventTarget} node
    */
   _detachListeners(node) {
-    node.removeEventListener(AuthorizationEventTypes.Oidc.authorize, this[authorizeHandler]);
+    node.removeEventListener(EventTypes.Authorization.Oidc.authorize, this[authorizeHandler]);
   }
 
   /**

@@ -229,6 +229,26 @@ export class ArcScreen extends ApplicationScreen {
    */
   menuPopup = [];
 
+  requestModel = new RequestModel();
+
+  projectModel = new ProjectModel();
+
+  restApiModel = new RestApiModel();
+
+  authDataModel = new AuthDataModel();
+
+  hostRulesModel = new HostRulesModel();
+
+  variablesModel = new VariablesModel();
+
+  urlHistoryModel = new UrlHistoryModel();
+
+  historyDataModel = new HistoryDataModel();
+
+  clientCertificateModel = new ClientCertificateModel();
+
+  websocketUrlHistoryModel = new WebsocketUrlHistoryModel();
+
   /**
    * @returns {ArcRequestWorkspaceElement}
    */
@@ -242,7 +262,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @returns {boolean} whether the history capturing is enabled in the application.
    */
-   get historyEnabled() {
+  get historyEnabled() {
     const { config={} } = this;
     const { history={} } = config;
     if (typeof history.enabled === 'boolean') {
@@ -305,7 +325,7 @@ export class ArcScreen extends ApplicationScreen {
   }
 
   /** 
-   * Whether the application should process system variables.
+   * @returns {boolean} Whether the application should process system variables.
    */
   get systemVariablesEnabled() {
     const { config={} } = this;
@@ -317,18 +337,86 @@ export class ArcScreen extends ApplicationScreen {
     return true;
   }
 
+  /** 
+   * @returns {boolean} Whether the application variables are enabled.
+   */
+  get variablesEnabled() {
+    const { config={} } = this;
+    const { request={} } = config;
+    if (typeof request.useAppVariables === 'boolean') {
+      return request.useAppVariables;
+    }
+    // default
+    return true;
+  }
+
+  /**
+   * @returns {string} The default OAuth2 redirect URI.
+   */
+  get oauth2RedirectUri() {
+    const { config={} } = this;
+    const { request={} } = config;
+    if (request.oauth2redirectUri) {
+      return request.oauth2redirectUri;
+    }
+    return 'http://auth.advancedrestclient.com/arc.html';
+  }
+
+  /**
+   * @returns {boolean} Whether the http editor should render the "send" button.
+   */
+  get workspaceSendButton() {
+    const { config={} } = this;
+    const { requestEditor={} } = config;
+    if (typeof requestEditor.sendButton === 'boolean') {
+      return requestEditor.sendButton;
+    }
+    return true;
+  }
+
+  /**
+   * @returns {boolean} Whether the http editor should render the progress information when sending a request.
+   */
+  get workspaceProgressInfo() {
+    const { config={} } = this;
+    const { requestEditor={} } = config;
+    if (typeof requestEditor.progressInfo === 'boolean') {
+      return requestEditor.progressInfo;
+    }
+    return true;
+  }
+
+  /**
+   * @returns {boolean} Whether the http editor should automatically encode parameters.
+   */
+  get workspaceAutoEncode() {
+    const { config={} } = this;
+    const { requestEditor={} } = config;
+    if (typeof requestEditor.autoEncode === 'boolean') {
+      return requestEditor.autoEncode;
+    }
+    return false;
+  }
+
+  /** @returns {Readonly<{[key: string]: string;}>} */
+  get systemVariables() {
+    return this.variablesModel.systemVariables;
+  }
+
+  /** @param {Readonly<{[key: string]: string;}>} value */
+  set systemVariables(value) {
+    this.variablesModel.systemVariables = value;
+  }
+
   constructor() {
     super();
 
     this.initObservableProperties(
       'route', 'routeParams', 'initializing', 'loadingStatus',
-      'oauth2RedirectUri',
       'navigationDetached', 'updateState', 
       'currentEnvironment',
-      'workspaceSendButton', 'workspaceProgressInfo', 'workspaceAutoEncode',
       'navigationWidth', 'navigationSelected',
       'requestDetailsOpened', 'requestMetaOpened', 'metaRequestId', 'metaRequestType',
-      'variablesEnabled',
     );
 
     /** 
@@ -339,11 +427,6 @@ export class ArcScreen extends ApplicationScreen {
      * @type {string} A loading state information.
      */
     this.loadingStatus = 'Initializing application...';
-    /**
-     * The default OAuth2 redirect URI.
-     * @type string
-     */
-    this.oauth2RedirectUri = 'http://auth.advancedrestclient.com/arc.html';
     /** 
      * When set the navigation element is detached from the main application window.
      */
@@ -361,21 +444,10 @@ export class ArcScreen extends ApplicationScreen {
     this.currentEnvironment = null;
 
     /** 
-     * Enables variables processor.
-     */
-    this.variablesEnabled = true;
-
-    /** 
      * The currently selected navigation group.
      * @type {number}
      */
     this.navigationSelected = undefined;
-
-    this.workspaceSendButton = true;
-
-    this.workspaceProgressInfo = true;
-
-    this.workspaceAutoEncode = false;
 
     this.requestDetailsOpened = false;
 
@@ -475,34 +547,9 @@ export class ArcScreen extends ApplicationScreen {
       ModulesRegistry.register(ModulesRegistry.request, 'arc/request/cookies', RequestCookies.processRequestCookies, ['events']);
       ModulesRegistry.register(ModulesRegistry.response, 'arc/response/cookies', RequestCookies.processResponseCookies, ['events']);
     }
-
-    if (cnf.request) {
-      if (typeof cnf.request.useAppVariables === 'boolean') {
-        this.variablesEnabled = cnf.request.useAppVariables;
-      }
-      if (cnf.request.oauth2redirectUri) {
-        this.oauth2RedirectUri = cnf.request.oauth2redirectUri;
-      }
-    }
-    
     if (cnf.view) {
       if (typeof cnf.view.fontSize === 'number') {
         document.body.style.fontSize = `${cnf.view.fontSize}px`;
-      }
-    }
-
-    if (cnf.requestEditor) {
-      if (typeof cnf.requestEditor.sendButton === 'boolean') {
-        this.workspaceSendButton = cnf.requestEditor.sendButton;
-      }
-      if (typeof cnf.requestEditor.progressInfo === 'boolean') {
-        this.workspaceProgressInfo = cnf.requestEditor.progressInfo;
-      }
-      if (typeof cnf.requestEditor.bodyEditor === 'string') {
-        this.workspaceBodyEditor = cnf.requestEditor.bodyEditor;
-      }
-      if (typeof cnf.requestEditor.autoEncode === 'boolean') {
-        this.workspaceAutoEncode = cnf.requestEditor.autoEncode;
       }
     }
   }
@@ -528,16 +575,7 @@ export class ArcScreen extends ApplicationScreen {
    * Initializes ARC datastore models.
    */
   initModels() {
-    this.requestModel = new RequestModel();
-    this.projectModel = new ProjectModel();
-    this.restApiModel = new RestApiModel();
-    this.authDataModel = new AuthDataModel();
-    this.hostRulesModel = new HostRulesModel();
-    this.variablesModel = new VariablesModel();
-    this.urlHistoryModel = new UrlHistoryModel();
-    this.historyDataModel = new HistoryDataModel();
-    this.clientCertificateModel = new ClientCertificateModel();
-    this.websocketUrlHistoryModel = new WebsocketUrlHistoryModel();
+    
     this.urlIndexer = new UrlIndexer(this.eventTarget);
     this.requestModel.listen(this.eventTarget);
     this.projectModel.listen(this.eventTarget);
@@ -864,19 +902,7 @@ export class ArcScreen extends ApplicationScreen {
       }
       return;
     }
-    if (key === 'request.oauth2redirectUri') {
-      this.oauth2RedirectUri = value;
-    } else if (key === 'request.useAppVariables') {
-      this.variablesEnabled = value;
-    } else if (key === 'requestEditor.sendButton') {
-      this.workspaceSendButton = value;
-    } else if (key === 'requestEditor.progressInfo') {
-      this.workspaceProgressInfo = value;
-    } else if (key === 'requestEditor.bodyEditor') {
-      this.workspaceBodyEditor = value;
-    } else if (key === 'requestEditor.autoEncode') {
-      this.workspaceAutoEncode = value;
-    } else if (key === 'view.fontSize') {
+    if (key === 'view.fontSize') {
       document.body.style.fontSize = `${value}px`;
     }
   }
@@ -1419,10 +1445,7 @@ export class ArcScreen extends ApplicationScreen {
    * @returns
    */
   [workspaceTemplate](visible) {
-    const { oauth2RedirectUri, anypoint, initOptions, workspaceSendButton, workspaceProgressInfo } = this;
-    // if (typeof cnf.requestEditor.bodyEditor === 'string') {
-    //   this.workspaceBodyEditor = cnf.requestEditor.bodyEditor;
-    // }
+    const { oauth2RedirectUri, anypoint, workspaceSendButton, workspaceProgressInfo } = this;
     // if (typeof cnf.requestEditor.autoEncode === 'boolean') {
     //   this.workspaceAutoEncode = cnf.requestEditor.autoEncode;
     // }

@@ -1,12 +1,12 @@
 /* eslint-disable class-methods-use-this */
-import { AuthorizationEventTypes } from '@advanced-rest-client/events';
+import { EventTypes } from '@advanced-rest-client/events';
 import { EventsTargetMixin } from '@anypoint-web-components/awc';
-import { OAuth2Authorization } from './OAuth2Authorization.js';
+import { OAuth2Authorization } from '@advanced-rest-client/oauth';
 
 /** @typedef {import('@advanced-rest-client/events').Authorization.TokenInfo} TokenInfo */
 /** @typedef {import('@advanced-rest-client/events').Authorization.OAuth2Authorization} OAuth2Settings */
 /** @typedef {import('@advanced-rest-client/events').OAuth2AuthorizeEvent} OAuth2AuthorizeEvent */
-/** @typedef {import('./types').ProcessingOptions} ProcessingOptions */
+/** @typedef {import('@advanced-rest-client/oauth').ProcessingOptions} ProcessingOptions */
 
 export const authorizeHandler = Symbol('authorizeHandler');
 
@@ -55,7 +55,7 @@ export class OAuth2AuthorizationElement extends EventsTargetMixin(HTMLElement) {
    * @param {EventTarget} node
    */
   _attachListeners(node) {
-    node.addEventListener(AuthorizationEventTypes.OAuth2.authorize, this[authorizeHandler]);
+    node.addEventListener(EventTypes.Authorization.OAuth2.authorize, this[authorizeHandler]);
     this.setAttribute('aria-hidden', 'true');
   }
 
@@ -63,7 +63,7 @@ export class OAuth2AuthorizationElement extends EventsTargetMixin(HTMLElement) {
    * @param {EventTarget} node
    */
   _detachListeners(node) {
-    node.removeEventListener(AuthorizationEventTypes.OAuth2.authorize, this[authorizeHandler]);
+    node.removeEventListener(EventTypes.Authorization.OAuth2.authorize, this[authorizeHandler]);
   }
 
   /**

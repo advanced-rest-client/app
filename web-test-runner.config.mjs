@@ -1,9 +1,6 @@
 import { OAuth2Server } from 'oauth2-mock-server';
 import getPort, {portNumbers} from 'get-port';
-import pkg from './test/oauth2/ServerMock.js';
 import { startServer, stopServer } from './test/WSServer.mjs';
-
-const { CodeServerMock } = pkg;
 
 /** @typedef {import('@web/test-runner').TestRunnerConfig} TestRunnerConfig */
 
@@ -31,30 +28,6 @@ export default /** @type TestRunnerConfig */ ({
             oauth2: oauth2env,
           };
           return `export default ${JSON.stringify(data)}`;
-        }
-        if (context.path === '/oauth2/auth-code') {
-          return CodeServerMock.authRequest(context.request);
-        }
-        if (context.path === '/oauth2/token') {
-          return CodeServerMock.tokenRequest(context);
-        }
-        if (context.path === '/oauth2/auth-code-custom') {
-          return CodeServerMock.authRequestCustom(context.request);
-        }
-        if (context.path === '/oauth2/token-custom') {
-          return CodeServerMock.tokenRequestCustom(context);
-        }
-        if (context.path === '/oauth2/password') {
-          return CodeServerMock.tokenPassword(context);
-        }
-        if (context.path === '/oauth2/client-credentials') {
-          return CodeServerMock.tokenClientCredentials(context);
-        }
-        if (context.path === '/oauth2/client-credentials-header') {
-          return CodeServerMock.tokenClientCredentialsHeader(context);
-        }
-        if (context.path === '/oauth2/custom-grant') {
-          return CodeServerMock.tokenCustomGrant(context);
         }
         if (context.path === '/empty-response') {
           return '';
@@ -89,20 +62,6 @@ export default /** @type TestRunnerConfig */ ({
     },
   ],
 
-  middleware: [
-    function implicitAuth(context, next) {
-      if (context.path === '/oauth2/auth-implicit') {
-        return CodeServerMock.authRequestImplicit(context);
-      }
-      if (context.path === '/oauth2/auth-implicit-custom') {
-        return CodeServerMock.authRequestImplicitCustom(context);
-      }
-      if (context.path === '/oauth2/auth-implicit-invalid-state') {
-        return CodeServerMock.authRequestImplicitStateError(context);
-      }
-      return next();
-    }
-  ],
   testRunnerHtml: testFramework =>
   `<html>
     <body>

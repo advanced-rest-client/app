@@ -75,6 +75,9 @@ export default /** @type DevServerConfig */ ({
         if (context.path === '/demo/ws/env.js') {
           return `export default { port: "${wsPort}" }`;
         }
+        if (context.path === '/demo/env.js') {
+          return `export default ${JSON.stringify(process.env)}`;
+        }
       },
     },
   ],

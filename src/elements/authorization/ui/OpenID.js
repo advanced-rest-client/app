@@ -14,8 +14,8 @@ import * as KnownGrants from '../../../lib/KnownGrants.js';
 /** @typedef {import('@advanced-rest-client/events').Authorization.OidcTokenError} OidcTokenError */
 /** @typedef {import('@advanced-rest-client/events').Authorization.Oauth2GrantType} Oauth2GrantType */
 /** @typedef {import('@advanced-rest-client/events').Authorization.Oauth2ResponseType} Oauth2ResponseType */
+/** @typedef {import('@advanced-rest-client/oauth').OpenIdProviderMetadata} OpenIdProviderMetadata */
 /** @typedef {import('../types').AuthUiInit} AuthUiInit */
-/** @typedef {import('../types').OpenIdProviderMetadata} OpenIdProviderMetadata */
 
 export const GrantLabels = {
   [KnownGrants.implicit]: 'Access token',
