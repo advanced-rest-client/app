@@ -337,3 +337,23 @@ export function getTabClickIndex(target) {
   const tab = target.closest('workspace-tab');
   return Array.from(tab.parentElement.children).filter((node) => node.localName === tab.localName).indexOf(tab);
 }
+
+/**
+ * Updates the value by path in the settings object.
+ * 
+ * @param {unknown} settings The object to update.
+ * @param {string} path The path to the data. If the object in the path does not exist it is being created.
+ * @param {unknown} value The value to set.
+ */
+export function updateDeepValue(settings, path, value) {
+  const parts = path.split('.');
+  const last = parts.pop();
+  let current = settings;
+  parts.forEach((part) => {
+    if (!current[part]) {
+      current[part] = {};
+    }
+    current = current[part];
+  });
+  current[last] = value;
+}

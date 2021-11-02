@@ -148,3 +148,12 @@ export function computeProjectDropEffect(e: DragEvent): "link" | "none" | "copy"
  * @return An index of the tab
  */
 export function getTabClickIndex(target: Element): number;
+
+/**
+ * Updates the value by path in the settings object.
+ * 
+ * @param settings The object to update.
+ * @param path The path to the data. If the object in the path does not exist it is being created.
+ * @param value The value to set.
+ */
+export function updateDeepValue(settings: unknown, path: string, value: unknown): void;

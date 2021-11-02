@@ -1,4 +1,6 @@
 /* eslint-disable class-methods-use-this */
+import { updateDeepValue } from '../../lib/Utils.js';
+
 /**
  * A base class for all platform bindings.
  * 
@@ -12,20 +14,11 @@ export class PlatformBindings {
   /**
    * Updates the value by path in the settings object.
    * 
-   * @param {any} settings The object to update.
+   * @param {unknown} settings The object to update.
    * @param {string} path The path to the data. If the object in the path does not exist it is being created.
-   * @param {any} value The value to set.
+   * @param {unknown} value The value to set.
    */
   updateValue(settings, path, value) {
-    const parts = path.split('.');
-    const last = parts.pop();
-    let current = settings;
-    parts.forEach((part) => {
-      if (!current[part]) {
-        current[part] = {};
-      }
-      current = current[part];
-    });
-    current[last] = value;
+    updateDeepValue(settings, path, value);
   }
 }

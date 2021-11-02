@@ -6,14 +6,18 @@ import { styleMap } from "lit-html/directives/style-map.js";
 import { EventTypes, Events, ProjectActions } from "@advanced-rest-client/events";
 import { ProjectModel, RequestModel, RestApiModel, AuthDataModel, HostRulesModel, VariablesModel, UrlHistoryModel, HistoryDataModel, ClientCertificateModel, WebsocketUrlHistoryModel, UrlIndexer, ArcDataExport, ArcDataImport } from '@advanced-rest-client/idb-store'
 import '@anypoint-web-components/awc/bottom-sheet.js';
+import '@anypoint-web-components/awc/anypoint-button.js';
+import '@anypoint-web-components/awc/anypoint-icon-button.js';
+import '@advanced-rest-client/icons/arc-icon.js';
+import '@advanced-rest-client/anypoint/define/exchange-search.js';
 
 import { ApplicationScreen } from "./ApplicationScreen.js";
 import { findRoute, navigate, navigatePage } from "../lib/route.js";
+import { getTabClickIndex, updateDeepValue } from '../lib/Utils.js';
 import { ModulesRegistry } from "../request-modules/ModulesRegistry.js";
 import * as RequestCookies from "../request-modules/RequestCookies.js";
 import { ArcContextMenu } from "../context-menu/ArcContextMenu.js";
 import ContextMenuCommands from "../context-menu/ArcContextMenuCommands.js";
-import { getTabClickIndex } from '../lib/Utils.js';
 import * as Constants from '../Constants.js';
 import '../../define/arc-request-workspace.js';
 import '../../define/arc-menu.js';
@@ -24,6 +28,11 @@ import '../../define/request-meta-details.js';
 import '../../define/arc-settings.js';
 import '../../define/cookie-manager.js';
 import '../../define/arc-export-form.js';
+import '../../define/import-data-inspector.js';
+import '../../define/client-certificates-panel.js';
+import '../../define/saved-panel.js';
+import '../../define/history-panel.js';
+import '../../define/variables-overlay.js';
 
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
 /** @typedef {import('@advanced-rest-client/events').Authorization.OAuth2Authorization} OAuth2Authorization */
@@ -107,8 +116,6 @@ const exchangeSearchTemplate = Symbol("exchangeSearchTemplate");
 const exchangeSelectionHandler = Symbol("exchangeSelectionHandler");
 const themeActivateHandler = Symbol("themeActivateHandler");
 const arcLegacyProjectTemplate = Symbol("arcLegacyProjectTemplate");
-const updateIndicatorTemplate = Symbol("updateIndicatorTemplate");
-const updateClickHandler = Symbol("updateClickHandler");
 
 /**
  * Advanced REST CLient - the API Client screen.
@@ -232,19 +239,96 @@ export class ArcScreen extends ApplicationScreen {
     return this.#workspace;
   }
 
+  /**
+   * @returns {boolean} whether the history capturing is enabled in the application.
+   */
+   get historyEnabled() {
+    const { config={} } = this;
+    const { history={} } = config;
+    if (typeof history.enabled === 'boolean') {
+      return history.enabled;
+    }
+    // default
+    return true;
+  }
+
+  /**
+   * @returns {boolean} whether the history / saved search should perform slower but more detailed search
+   */
+  get detailedSearch() {
+    const { config={} } = this;
+    const { history={} } = config;
+    if (typeof history.fastSearch === 'boolean') {
+      return history.fastSearch;
+    }
+    // default
+    return false;
+  }
+
+  /** 
+   * @returns {string} The current setting for the list types view.
+   */
+  get listType() {
+    const { config={} } = this;
+    const { view={} } = config;
+    if (typeof view.listType === 'string') {
+      return view.listType;
+    }
+    // default
+    return 'default';
+  }
+
+  /** 
+   * @returns {boolean} Whether the application menu can be detached to a new window.
+   */
+  get popupMenuEnabled() {
+    const { config={} } = this;
+    const { view={} } = config;
+    if (typeof view.popupMenu === 'boolean') {
+      return view.popupMenu;
+    }
+    // default
+    return true;
+  }
+
+  /** 
+   * @returns {boolean} Whether the application support request object drag and drop
+   */
+  get draggableEnabled() {
+    const { config={} } = this;
+    const { view={} } = config;
+    if (typeof view.draggableEnabled === 'boolean') {
+      return view.draggableEnabled;
+    }
+    // default
+    return true;
+  }
+
+  /** 
+   * Whether the application should process system variables.
+   */
+  get systemVariablesEnabled() {
+    const { config={} } = this;
+    const { request={} } = config;
+    if (typeof request.useSystemVariables === 'boolean') {
+      return request.useSystemVariables;
+    }
+    // default
+    return true;
+  }
+
   constructor() {
     super();
 
     this.initObservableProperties(
       'route', 'routeParams', 'initializing', 'loadingStatus',
       'oauth2RedirectUri',
-      'navigationDetached', 'updateState', 'hasAppUpdate', 'manualUpdateAvailable', 'updateVersion',
-      'popupMenuEnabled', 'draggableEnabled', 'historyEnabled',
-      'listType', 'detailedSearch', 'currentEnvironment',
+      'navigationDetached', 'updateState', 
+      'currentEnvironment',
       'workspaceSendButton', 'workspaceProgressInfo', 'workspaceAutoEncode',
       'navigationWidth', 'navigationSelected',
       'requestDetailsOpened', 'requestMetaOpened', 'metaRequestId', 'metaRequestType',
-      'systemVariablesEnabled', 'variablesEnabled',
+      'variablesEnabled',
     );
 
     /** 
@@ -270,39 +354,11 @@ export class ArcScreen extends ApplicationScreen {
      * @type {string}
      */
     this.updateState = undefined;
-    
-    /** 
-     * Whether the application menu can be detached to a new window.
-     */
-     this.popupMenuEnabled = true;
 
-    /** 
-     * Whether the application support request object drag and drop
-     */
-    this.draggableEnabled = true;
-
-    /** 
-     * Whether the requests history is enabled.
-     */
-    this.historyEnabled = true;
-    /** 
-     * Whether application update is available.
-     */
-    this.hasAppUpdate = false;
-
-    /** 
-     * Set whe an update is available but it has to be triggered manually.
-     */
-    this.manualUpdateAvailable = false;
     /** 
      * The name of the currently selected environment. Null for the default.
      */
     this.currentEnvironment = null;
-
-    /** 
-     * Whether the application should process system variables.
-     */
-    this.systemVariablesEnabled = true;
 
     /** 
      * Enables variables processor.
@@ -331,19 +387,6 @@ export class ArcScreen extends ApplicationScreen {
     /** @type string */
     this.metaRequestType = undefined;
 
-    /** @type string */
-    this.updateVersion = undefined;
-
-    /** 
-     * The current setting for the list types view.
-     */
-    this.listType = 'default';
-
-    /** 
-     * Whether the history / saved search should perform slower but more detailed search
-     */
-    this.detailedSearch = false;
-
     window.onunhandledrejection = this[unhandledRejectionHandler].bind(this);
     
     // todo: do the below when the application is already initialized.
@@ -360,6 +403,9 @@ export class ArcScreen extends ApplicationScreen {
     };
   }
 
+  /**
+   * Runs the logic to initialize the application.
+   */
   async initialize() {
     this.initModels();
     this.listen();
@@ -429,21 +475,8 @@ export class ArcScreen extends ApplicationScreen {
       ModulesRegistry.register(ModulesRegistry.request, 'arc/request/cookies', RequestCookies.processRequestCookies, ['events']);
       ModulesRegistry.register(ModulesRegistry.response, 'arc/response/cookies', RequestCookies.processResponseCookies, ['events']);
     }
-    
-    if (cnf.history) {
-      if (typeof cnf.history.enabled === 'boolean') {
-        this.historyEnabled = cnf.history.enabled;
-      }
-      
-      if (typeof cnf.history.fastSearch === 'boolean') {
-        this.detailedSearch = !cnf.history.fastSearch;
-      }
-    }
 
     if (cnf.request) {
-      if (typeof cnf.request.useSystemVariables === 'boolean') {
-        this.systemVariablesEnabled = cnf.request.useSystemVariables;
-      }
       if (typeof cnf.request.useAppVariables === 'boolean') {
         this.variablesEnabled = cnf.request.useAppVariables;
       }
@@ -455,15 +488,6 @@ export class ArcScreen extends ApplicationScreen {
     if (cnf.view) {
       if (typeof cnf.view.fontSize === 'number') {
         document.body.style.fontSize = `${cnf.view.fontSize}px`;
-      }
-      if (typeof cnf.view.popupMenu === 'boolean') {
-        this.popupMenuEnabled = cnf.view.popupMenu;
-      }
-      if (typeof cnf.view.draggableEnabled === 'boolean') {
-        this.draggableEnabled = cnf.view.draggableEnabled;
-      }
-      if (typeof cnf.view.listType === 'string') {
-        this.listType = cnf.view.listType;
       }
     }
 
@@ -827,6 +851,9 @@ export class ArcScreen extends ApplicationScreen {
    */
   [configStateChangeHandler](e) {
     const { key, value } = e.detail;
+    const { config={} } = this;
+    updateDeepValue(config, key, value);
+    this.render();
     if (key === 'request.ignoreSessionCookies') {
       if (value) {
         ModulesRegistry.register(ModulesRegistry.request, 'arc/request/cookies', RequestCookies.processRequestCookies, ['events']);
@@ -835,20 +862,10 @@ export class ArcScreen extends ApplicationScreen {
         ModulesRegistry.unregister(ModulesRegistry.request, 'arc/request/cookies');
         ModulesRegistry.unregister(ModulesRegistry.response, 'arc/response/cookies');
       }
-    } else if (key === 'view.popupMenu') {
-      this.popupMenuEnabled = value;
-    } else if (key === 'view.draggableEnabled') {
-      this.draggableEnabled = value;
-    } else if (key === 'request.oauth2redirectUri') {
+      return;
+    }
+    if (key === 'request.oauth2redirectUri') {
       this.oauth2RedirectUri = value;
-    } else if (key === 'view.listType') {
-      this.listType = value;
-    } else if (key === 'history.enabled') {
-      this.historyEnabled = value;
-    } else if (key === 'history.fastSearch') {
-      this.detailedSearch = !value;
-    } else if (key === 'request.useSystemVariables') {
-      this.systemVariablesEnabled = value;
     } else if (key === 'request.useAppVariables') {
       this.variablesEnabled = value;
     } else if (key === 'requestEditor.sendButton') {
@@ -1223,23 +1240,6 @@ export class ArcScreen extends ApplicationScreen {
     this.anypoint = e.detail === Constants.anypointTheme;
   }
 
-  /**
-   * A handler for the application update notification click.
-   * It installs the update when manual installation is not requested.
-   * If manual installation is requested then it opens the release page.
-   */
-  [updateClickHandler]() {
-    const { manualUpdateAvailable, hasAppUpdate } = this;
-    if (manualUpdateAvailable) {
-      const { updateVersion } = this;
-      const base = 'https://github.com/advanced-rest-client/arc-electron/releases/tag';
-      const url = `${base}/v${updateVersion}`;
-      Events.Navigation.navigateExternal(this.eventTarget, url);
-    } else if (hasAppUpdate) {
-      Events.Updater.installUpdate(this.eventTarget);
-    }
-  }
-
   appTemplate() {
     const { initializing } = this;
     if (initializing) {
@@ -1280,23 +1280,16 @@ export class ArcScreen extends ApplicationScreen {
       </anypoint-icon-button>`}
       API Client
       <span class="spacer"></span>
-      ${this[updateIndicatorTemplate]()}
+      ${this.toolbarActionsTemplate()}
       ${this[environmentTemplate]()}
     </header>`;
   }
 
   /**
-   * @returns {TemplateResult|string} The template for the app update indicator
+   * @returns {TemplateResult|string} The template for the toolbar actions.
    */
-  [updateIndicatorTemplate]() {
-    const { manualUpdateAvailable, hasAppUpdate } = this;
-    if (!manualUpdateAvailable && !hasAppUpdate) {
-      return '';
-    }
-    return html`
-    <anypoint-icon-button title="Application update available" class="header-action-button" @click="${this[updateClickHandler]}">
-      <arc-icon icon="cloudDownload"></arc-icon>
-    </anypoint-icon-button>`;
+  toolbarActionsTemplate() {
+    return '';
   }
 
   /**
@@ -1440,7 +1433,6 @@ export class ArcScreen extends ApplicationScreen {
       ?renderSend="${workspaceSendButton}"
       ?progressInfo="${workspaceProgressInfo}"
       .oauth2RedirectUri="${oauth2RedirectUri}"
-      backendId="${initOptions.workspaceId}"
       autoRead
       class="screen"
     ></arc-request-workspace>
@@ -1528,6 +1520,10 @@ export class ArcScreen extends ApplicationScreen {
     `;
   }
 
+  /**
+   * @param {string} route 
+   * @returns {TemplateResult|string} The template for the import data inspector.
+   */
   [importInspectorTemplate](route) {
     if (route !== 'data-inspect') {
       return '';
@@ -1664,7 +1660,7 @@ export class ArcScreen extends ApplicationScreen {
     }
     const { anypoint } = this;
     return html`
-    <exchange-search-panel
+    <exchange-search
       ?anypoint="${anypoint}"
       anypointAuth
       columns="auto"
@@ -1673,7 +1669,7 @@ export class ArcScreen extends ApplicationScreen {
       forceOauthEvents
       @selected="${this[exchangeSelectionHandler]}"
       class="screen scroll"
-    ></exchange-search-panel>
+    ></exchange-search>
     `;
   }
 
