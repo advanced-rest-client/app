@@ -1,6 +1,6 @@
 import { MonacoLoader } from "@advanced-rest-client/monaco-support";
 import { DemoBindings } from '../lib/DemoBindings.js';
-import { ArcScreen } from '../../pages.js';
+import { ArcScreenWeb } from '../../pages.js';
 import env from '../env.js';
 
 (async () => {
@@ -12,7 +12,7 @@ import env from '../env.js';
   await MonacoLoader.loadMonaco(base);
   await MonacoLoader.monacoReady();
 
-  const page = new ArcScreen();
+  const page = new ArcScreenWeb();
   page.systemVariables = env;
   page.initialize();
 })();

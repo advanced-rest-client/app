@@ -28,7 +28,6 @@ import '../../define/request-meta-details.js';
 import '../../define/arc-settings.js';
 import '../../define/cookie-manager.js';
 import '../../define/arc-export-form.js';
-import '../../define/import-data-inspector.js';
 import '../../define/client-certificates-panel.js';
 import '../../define/saved-panel.js';
 import '../../define/history-panel.js';
@@ -71,7 +70,7 @@ const mainBackHandler = Symbol("mainBackHandler");
 const historyPanelTemplate = Symbol("historyPanelTemplate");
 const savedPanelTemplate = Symbol("savedPanelTemplate");
 const clientCertScreenTemplate = Symbol("clientCertScreenTemplate");
-const commandHandler = Symbol("commandHandler");
+export const commandHandler = Symbol("commandHandler");
 const requestActionHandler = Symbol("requestActionHandler");
 const configStateChangeHandler = Symbol("configStateChangeHandler");
 const popupMenuOpenedHandler = Symbol("popupMenuOpenedHandler");
@@ -79,16 +78,9 @@ const popupMenuClosedHandler = Symbol("popupMenuClosedHandler");
 const environmentTemplate = Symbol("environmentTemplate");
 const environmentSelectorHandler = Symbol("environmentSelectorHandler");
 const environmentSelectorKeyHandler = Symbol("environmentSelectorKeyHandler");
-const dataImportScreenTemplate = Symbol("dataImportScreenTemplate");
 const dataExportScreenTemplate = Symbol("dataExportScreenTemplate");
 const cookieManagerScreenTemplate = Symbol("cookieManagerScreenTemplate");
 const settingsScreenTemplate = Symbol("settingsScreenTemplate");
-const fileImportHandler = Symbol("fileImportHandler");
-const importInspectorTemplate = Symbol("importInspectorTemplate");
-const dataInspectHandler = Symbol("dataInspectHandler");
-const inspectDataValue = Symbol("inspectDataValue");
-const importDataHandler = Symbol("importDataHandler");
-const notifyIndexer = Symbol("notifyIndexer");
 const workspaceAppendRequestHandler = Symbol("workspaceAppendRequestHandler");
 const workspaceAppendExportHandler = Symbol("workspaceAppendExportHandler");
 const environmentSelectedHandler = Symbol("environmentSelectedHandler");
@@ -412,7 +404,7 @@ export class ArcScreen extends ApplicationScreen {
     super();
 
     this.initObservableProperties(
-      'route', 'routeParams', 'initializing', 'loadingStatus',
+      'route', 'routeParams', 'initializing', 
       'navigationDetached', 'updateState', 
       'currentEnvironment',
       'navigationWidth', 'navigationSelected',
@@ -529,12 +521,14 @@ export class ArcScreen extends ApplicationScreen {
     window.addEventListener(EventTypes.Workspace.appendRequest, this[workspaceAppendRequestHandler].bind(this));
     window.addEventListener(EventTypes.Workspace.appendExport, this[workspaceAppendExportHandler].bind(this));
     window.addEventListener(EventTypes.Config.State.update, this[configStateChangeHandler].bind(this));
-    window.addEventListener(EventTypes.DataImport.inspect, this[dataInspectHandler].bind(this));
     window.addEventListener(EventTypes.Model.Environment.State.select, this[environmentSelectedHandler].bind(this));
     window.addEventListener(EventTypes.RestApiLegacy.processFile, this[processApiFileHandler].bind(this));
+    window.addEventListener(EventTypes.App.command, this[commandHandler].bind(this));
+    window.addEventListener(EventTypes.App.requestAction, this[requestActionHandler].bind(this));
+    window.addEventListener(EventTypes.Theme.State.activated, this[themeActivateHandler].bind(this));
     window.addEventListener('mousemove', this[resizeMouseMove].bind(this));
     window.addEventListener('mouseup', this[resizeMouseUp].bind(this));
-    window.addEventListener('themeactivated', this[themeActivateHandler].bind(this));
+    
   }
 
   /**
@@ -575,7 +569,6 @@ export class ArcScreen extends ApplicationScreen {
    * Initializes ARC datastore models.
    */
   initModels() {
-    
     this.urlIndexer = new UrlIndexer(this.eventTarget);
     this.requestModel.listen(this.eventTarget);
     this.projectModel.listen(this.eventTarget);
@@ -647,6 +640,7 @@ export class ArcScreen extends ApplicationScreen {
       return;
     }
     const { name } = result.route;
+    console.log('Route', result);
     this.route = name;
     this.routeParams = result.params;
     Events.Telemetry.view(this.eventTarget, name);
@@ -809,18 +803,16 @@ export class ArcScreen extends ApplicationScreen {
    * @param {CustomEvent} e 
    */
   [commandHandler](e) {
-    const { action, args } = e.detail;
+    const { action } = e.detail;
     switch (action) {
       case 'open-saved': navigate('saved'); break;
       case 'open-history': navigate('history'); break;
       case 'open-cookie-manager': navigate('cookie-manager'); break;
       case 'open-hosts-editor': navigate('hosts'); break;
-      case 'open-themes': navigate('themes'); break;
       case 'open-client-certificates': navigate('client-certificates'); break;
       case 'open-requests-workspace': navigate('workspace'); break;
       case 'open-web-socket': this.workspaceElement.addWsRequest(); break;
-      case 'process-external-file': this.processExternalFile(args[0]); break;
-      case 'import-data': navigate('data-import'); break;
+      case 'import-data': navigatePage('data-import.html'); break;
       case 'export-data': navigate('data-export'); break;
       case 'show-settings': navigate('settings'); break;
       case 'popup-menu': this.navigationDetached = !this.navigationDetached; break;
@@ -907,65 +899,65 @@ export class ArcScreen extends ApplicationScreen {
     }
   }
 
-  /**
-   * @param {string} filePath
-   */
-  async processExternalFile(filePath) {
-    const factory = new ImportFilePreProcessor(filePath);
-    try {
-      await factory.prepare();
-      const isApiFile = await factory.isApiFile();
-      if (isApiFile) {
-        const result = await this.apiParser.processBuffer(factory.buffer);
-        this.apiConsoleFromParser(result);
-        return;
-      }
-      const contents = factory.readContents();
-      await this.processExternalData(contents);
-    } catch (cause) {
-      // eslint-disable-next-line no-console
-      console.error(cause);
-      this.reportCriticalError(cause);
-    }
-  }
+  // /**
+  //  * @param {any} file Depending on the platform it can be a File or a path to the file in the local filesystem.
+  //  */
+  // async processExternalFile(file) {
+  //   // const factory = new ImportFilePreProcessor(filePath);
+  //   // try {
+  //   //   await factory.prepare();
+  //   //   const isApiFile = await factory.isApiFile();
+  //   //   if (isApiFile) {
+  //   //     const result = await this.apiParser.processBuffer(factory.buffer);
+  //   //     this.apiConsoleFromParser(result);
+  //   //     return;
+  //   //   }
+  //   //   const contents = factory.readContents();
+  //   //   await this.processExternalData(contents);
+  //   // } catch (cause) {
+  //   //   // eslint-disable-next-line no-console
+  //   //   console.error(cause);
+  //   //   this.reportCriticalError(cause);
+  //   // }
+  // }
 
-  /**
-   * Process file contents after importing it to the application.
-   * @param {string} contents
-   */
-  async processExternalData(contents) {
-    const decrypted = await this.decryptIfNeeded(contents);
-    const data = JSON.parse(decrypted);
-    if (data.swagger) {
-      const result = await this.apiParser.processBuffer(Buffer.from(contents));
-      this.apiConsoleFromParser(result);
-      return;
-    }
-    const processor = new ImportNormalize();
-    const normalized = await processor.normalize(data);
+  // /**
+  //  * Process file contents after importing it to the application.
+  //  * @param {string} contents
+  //  */
+  // async processExternalData(contents) {
+  //   const decrypted = await this.decryptIfNeeded(contents);
+  //   const data = JSON.parse(decrypted);
+  //   if (data.swagger) {
+  //     const result = await this.apiParser.processBuffer(Buffer.from(contents));
+  //     this.apiConsoleFromParser(result);
+  //     return;
+  //   }
+  //   const processor = new ImportNormalize();
+  //   const normalized = await processor.normalize(data);
 
-    if (isSingleRequest(normalized)) {
-      const insert = Array.isArray(normalized.requests) ? normalized.requests[0] : data;
-      Events.Workspace.appendRequest(document.body, insert);
-      return;
-    }
+  //   if (isSingleRequest(normalized)) {
+  //     const insert = Array.isArray(normalized.requests) ? normalized.requests[0] : data;
+  //     Events.Workspace.appendRequest(document.body, insert);
+  //     return;
+  //   }
     
-    if (normalized.loadToWorkspace) {
-      Events.Workspace.appendExport(document.body, normalized);
-      return;
-    }
-    this.route = 'data-inspect';
-    this[inspectDataValue] = normalized;
-    this.render();
-  }
+  //   if (normalized.loadToWorkspace) {
+  //     Events.Workspace.appendExport(document.body, normalized);
+  //     return;
+  //   }
+  //   this.route = 'data-inspect';
+  //   this[inspectDataValue] = normalized;
+  //   this.render();
+  // }
 
-  /**
-   * @param {ApiParseResult} result
-   */
-  async apiConsoleFromParser(result) {
-    const id = await this.fs.storeApicModelTmp(result);
-    navigatePage('api-console.html', 'open', 'file', id);
-  }
+  // /**
+  //  * @param {ApiParseResult} result
+  //  */
+  // async apiConsoleFromParser(result) {
+  //   const id = await this.fs.storeApicModelTmp(result);
+  //   navigatePage('api-console.html', 'open', 'file', id);
+  // }
 
   /**
    * Processes incoming data and if encryption is detected then id processes
@@ -1047,59 +1039,6 @@ export class ArcScreen extends ApplicationScreen {
     if (['Space', 'Enter', 'ArrowDown'].includes(e.code)) {
       this[environmentSelectorHandler](e);
     }
-  }
-
-  async [fileImportHandler]() {
-    const result = await this.fs.pickFile();
-    if (result.canceled) {
-      return;
-    }
-    const [file] = result.filePaths;
-    this.processExternalFile(file);
-  }
-
-  /**
-   * @param {ArcImportInspectEvent} e
-   */
-  [dataInspectHandler](e) {
-    const { data } = e.detail;
-    this.route = 'data-inspect';
-    this[inspectDataValue] = data;
-    this.render();
-  }
-
-  /**
-   * @param {CustomEvent} e
-   */
-  async [importDataHandler](e) {
-    const { detail } = e;
-    const store = new ImportFactory();
-    const result = await store.importData(detail);
-    
-    const { savedIndexes, historyIndexes } = store;
-    this[notifyIndexer](savedIndexes, historyIndexes);
-    Events.DataImport.dataImported(document.body);
-    this[mainBackHandler]();
-  }
-
-  /**
-   * Dispatches `url-index-update` event handled by `arc-models/url-indexer`.
-   * It will index URL data for search function.
-   * @param {IndexableRequest[]} saved List of saved requests indexes
-   * @param {IndexableRequest[]} history List of history requests indexes
-   */
-  [notifyIndexer](saved, history) {
-    let indexes = [];
-    if (saved) {
-      indexes = indexes.concat(saved);
-    }
-    if (history) {
-      indexes = indexes.concat(history);
-    }
-    if (!indexes.length) {
-      return;
-    }
-    Events.Model.UrlIndexer.update(document.body, indexes);
   }
 
   /**
@@ -1272,23 +1211,27 @@ export class ArcScreen extends ApplicationScreen {
       return this.loaderTemplate();
     }
     return html`
+    ${this.applicationMenuTemplate()}
     <div class="content">
       ${this[navigationTemplate]()}
       ${this[pageTemplate](this.route)}
     </div>
+    ${this.applicationUtilitiesTemplate()}
     `;
   }
 
   /**
-   * @returns {TemplateResult} A template for the loader
+   * @returns {TemplateResult|string} The template for the application menu, when needed.
    */
-  loaderTemplate() {
-    return html`
-    <div class="app-loader">
-      <p class="message">Preparing something spectacular</p>
-      <p class="sub-message">${this.loadingStatus}</p>
-    </div>
-    `;
+  applicationMenuTemplate() {
+    return '';
+  }
+
+  /**
+   * @returns {TemplateResult|string} The template for any code to be added to the application.
+   */
+  applicationUtilitiesTemplate() {
+    return '';
   }
 
   /**
@@ -1426,11 +1369,9 @@ export class ArcScreen extends ApplicationScreen {
       ${this[historyPanelTemplate](route)}
       ${this[savedPanelTemplate](route)}
       ${this[clientCertScreenTemplate](route)}
-      ${this[dataImportScreenTemplate](route)}
       ${this[dataExportScreenTemplate](route)}
       ${this[cookieManagerScreenTemplate](route)}
       ${this[settingsScreenTemplate](route)}
-      ${this[importInspectorTemplate](route)}
       ${this[hostRulesTemplate](route)}
       ${this[exchangeSearchTemplate](route)}
       ${this[arcLegacyProjectTemplate](route)}
@@ -1523,43 +1464,6 @@ export class ArcScreen extends ApplicationScreen {
       ?anypoint="${anypoint}"
       class="screen"
     ></client-certificates-panel>`;
-  }
-
-  /**
-   * @param {string} route The current route
-   * @returns {TemplateResult|string} The template for the data import screen
-   */
-  [dataImportScreenTemplate](route) {
-    if (route !== 'data-import') {
-      return '';
-    }
-    const { anypoint } = this;
-    return html`
-    <div class="screen">
-      <h2>Data import</h2>
-      <p>You can import ARC data from any previous version, Postman export and backup, and API specification (RAML or OAS)</p>
-      <anypoint-button @click="${this[fileImportHandler]}" ?anypoint="${anypoint}">Select file</anypoint-button>
-    </div>
-    `;
-  }
-
-  /**
-   * @param {string} route 
-   * @returns {TemplateResult|string} The template for the import data inspector.
-   */
-  [importInspectorTemplate](route) {
-    if (route !== 'data-inspect') {
-      return '';
-    }
-    const data = this[inspectDataValue];
-    return html`
-    <import-data-inspector
-      .data="${data}"
-      class="screen"
-      @cancel="${this[mainBackHandler]}"
-      @import="${this[importDataHandler]}"
-    ></import-data-inspector>
-    `;
   }
 
   /**

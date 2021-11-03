@@ -1,5 +1,5 @@
 import { html, css, LitElement } from 'lit-element';
-import { AnypointDialogMixin, AnypointDialogStyles } from '@anypoint-web-components/awc';
+import { AnypointDialogMixin, AnypointDialogStylesInternal } from '@anypoint-web-components/awc';
 import '@anypoint-web-components/awc/anypoint-button.js';
 
 export const closedHandler = Symbol('closedHandler');
@@ -7,7 +7,7 @@ export const closedHandler = Symbol('closedHandler');
 export default class AlertDialogElement extends AnypointDialogMixin(LitElement) {
   static get styles() {
     return [
-      AnypointDialogStyles,
+      AnypointDialogStylesInternal,
       css`
       :host {
         background-color: #F44336;

@@ -1,3 +1,4 @@
+import { TemplateResult } from 'lit-html';
 import { Application } from '@advanced-rest-client/events';
 import { ReactiveMixin } from '../mixins/ReactiveMixin.js';
 import { RenderableMixin } from '../mixins/RenderableMixin.js';
@@ -31,6 +32,10 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
    * True when the app should render mobile friendly view.
    */
   isMobile: boolean;
+  /** 
+   * The loading state information.
+   */
+  loadingStatus: string;
   /**
    * Initializes media queries and observers.
    */
@@ -49,4 +54,8 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
    * This is a safe function. In case of error it returns a default values.
    */
   loadVersionInfo(): Promise<Application.AppVersionInfo>;
+  /**
+   * @returns A template for the loader
+   */
+  loaderTemplate(): TemplateResult;
 }

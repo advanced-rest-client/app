@@ -39,9 +39,6 @@ export { default as OAuth2ScopeSelectorElement } from './src/elements/authorizat
 export { default as OidcAuthorizationElement } from './src/elements/authorization/OidcAuthorizationElement.js';
 export { OAuth2AuthorizationElement } from './src/elements/authorization/OAuth2AuthorizationElement.js';
 export { OAuth1AuthorizationElement } from './src/elements/authorization/OAuth1AuthorizationElement.js';
-export { OAuth2Authorization } from './src/elements/authorization/OAuth2Authorization.js';
-export { OidcAuthorization } from './src/elements/authorization/OidcAuthorization.js';
-export { AuthorizationError, CodeError } from './src/elements/authorization/AuthorizationError.js';
 export { default as AuthUiBase } from './src/elements/authorization/ui/AuthUiBase.js';
 export { default as Digest } from './src/elements/authorization/ui/Digest.js';
 export { default as HttpBasic } from './src/elements/authorization/ui/HttpBasic.js';

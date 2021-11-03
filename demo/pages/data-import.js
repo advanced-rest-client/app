@@ -1,9 +1,10 @@
 import { DemoBindings } from '../lib/DemoBindings.js';
-import { ThemesScreen } from '../../pages.js';
+import { DataImportScreenWeb } from '../../pages.js';
 
 (async () => {
   const bindings = new DemoBindings();
   await bindings.initialize();
-  const page = new ThemesScreen();
-  await page.initialize();
+
+  const page = new DataImportScreenWeb();
+  page.initialize();
 })();

@@ -96,6 +96,10 @@ export class ThemesScreen extends ApplicationScreen {
     await Events.Theme.activate(this.eventTarget, this.activeTheme);
     await Events.Theme.loadTheme(this.eventTarget, this.activeTheme);
     this.anypoint = this.activeTheme === anypointTheme;
+    window.postMessage({ 
+      action: 'theme-selection',
+      id: this.activeTheme,
+    });
   }
 
   _themeNameHandler(e) {
@@ -144,6 +148,12 @@ export class ThemesScreen extends ApplicationScreen {
     try {
       await Events.Theme.setSystemPreferred(this.eventTarget, checked);
       await Events.Theme.loadApplicationTheme(this.eventTarget);
+      await this.refresh();
+
+      window.postMessage({ 
+        action: 'theme-system-preferred-change',
+        state: checked,
+      });
     } catch (error) {
       this.reportCriticalError(error.message);
       this.systemPreferred = !checked;

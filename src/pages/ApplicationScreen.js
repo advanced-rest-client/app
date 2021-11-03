@@ -1,10 +1,12 @@
 /* eslint-disable class-methods-use-this */
+import { html } from 'lit-html';
 import { Events } from '@advanced-rest-client/events';
 import { ReactiveMixin } from '../mixins/ReactiveMixin.js';
 import { RenderableMixin } from '../mixins/RenderableMixin.js';
 import { anypointTheme } from '../Constants.js';
 import '../../define/alert-dialog.js';
 
+/** @typedef {import('lit-html').TemplateResult} TemplateResult */
 /** @typedef {import('@advanced-rest-client/events').Application.AppVersionInfo} AppVersionInfo */
 
 /**
@@ -25,7 +27,7 @@ import '../../define/alert-dialog.js';
 export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget)) {
   constructor() {
     super();
-    this.initObservableProperties('anypoint');
+    this.initObservableProperties('anypoint', 'loadingStatus');
     /** @type boolean */
     this.anypoint = undefined;
     this.eventTarget = document.body;
@@ -33,6 +35,10 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
      * True when the app should render mobile friendly view.
      */
     this.isMobile = false;
+    /** 
+     * @type {string} The loading state information.
+     */
+    this.loadingStatus = 'Initializing the application...';
     this.initMediaQueries();
   }
 
@@ -93,5 +99,17 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
         chrome: 'unknown'
       };
     }
+  }
+  
+  /**
+   * @returns {TemplateResult} A template for the loader
+   */
+  loaderTemplate() {
+    return html`
+    <div class="app-loader">
+      <p class="message">Preparing something spectacular</p>
+      <p class="sub-message">${this.loadingStatus}</p>
+    </div>
+    `;
   }
 }

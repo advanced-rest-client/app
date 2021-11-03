@@ -15,6 +15,9 @@ export { ThemesScreen } from './src/pages/ThemesScreen.js';
 export { LicenseScreen } from './src/pages/LicenseScreen.js';
 export { AnalyticsConsentScreen } from './src/pages/AnalyticsConsentScreen.js';
 export { ArcScreen } from './src/pages/ArcScreen.js';
+export { ArcScreenWeb } from './src/pages/ArcScreenWeb.js';
+export { DataImportScreen } from './src/pages/DataImportScreen.js';
+export { DataImportScreenWeb } from './src/pages/DataImportScreenWeb.js';
 
 // bindings
 export { PlatformBindings } from './src/bindings/base/PlatformBindings.js';
@@ -22,6 +25,8 @@ export { ApplicationBindings } from './src/bindings/base/ApplicationBindings.js'
 export { ConfigurationBindings } from './src/bindings/base/ConfigurationBindings.js';
 export { ThemeBindings } from './src/bindings/base/ThemeBindings.js';
 export { WorkspaceBindings } from './src/bindings/base/WorkspaceBindings.js';
+export { DataExportBindings } from './src/bindings/base/DataExportBindings.js';
+export { EncryptionBindings } from './src/bindings/base/EncryptionBindings.js';
 
 // shortcuts
 export { MonacoLoader } from "@advanced-rest-client/monaco-support";

@@ -3,7 +3,8 @@
 import { Events } from '@advanced-rest-client/events';
 import { v4 } from '@advanced-rest-client/uuid';
 import { get, set } from 'idb-keyval';
-import { WorkspaceBindings } from '../base/WorkspaceBindings.js'
+import { WorkspaceBindings } from '../base/WorkspaceBindings.js';
+import { verifyPermission } from './lib/NativeFilesystem.js';
 
 /** @typedef {import('@advanced-rest-client/events').Workspace.DomainWorkspace} DomainWorkspace */
 /** @typedef {import('@advanced-rest-client/events').Workspace.LegacyWorkspace} LegacyWorkspace */
@@ -11,28 +12,6 @@ import { WorkspaceBindings } from '../base/WorkspaceBindings.js'
 const contentsKey = 'ArcWorkspaceBindings.content';
 const customContentsPrefix = 'Workspace.';
 const lastWorkspaceKey = 'Workspace.Id';
-
-/**
- * @param {any} fileHandle 
- * @param {boolean} readWrite 
- * @returns {Promise<boolean>}
- */
-async function verifyPermission(fileHandle, readWrite) {
-  const options = {};
-  if (readWrite) {
-    options.mode = 'readwrite';
-  }
-  // Check if permission was already granted. If so, return true.
-  if ((await fileHandle.queryPermission(options)) === 'granted') {
-    return true;
-  }
-  // Request permission. If the user grants permission, return true.
-  if ((await fileHandle.requestPermission(options)) === 'granted') {
-    return true;
-  }
-  // The user didn't grant permission, so return false.
-  return false;
-}
 
 /**
  * Web platform bindings for the request workspace related logic.
