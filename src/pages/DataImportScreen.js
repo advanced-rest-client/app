@@ -5,6 +5,7 @@ import { Events } from "@advanced-rest-client/events";
 import '@anypoint-web-components/awc/anypoint-button.js';
 import '@anypoint-web-components/awc/anypoint-radio-button.js';
 import '@anypoint-web-components/awc/anypoint-radio-group.js';
+import '@advanced-rest-client/base/define/import-data-inspector.js';
 import { 
   ProjectModel, 
   RequestModel, 

@@ -1,5 +1,5 @@
 import { DemoBindings } from '../lib/DemoBindings.js';
-import { SearchBar } from '../../pages.js';
+import { SearchBar } from '../../index.js';
 
 const bindings = new DemoBindings();
 bindings.initialize();

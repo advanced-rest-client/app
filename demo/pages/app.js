@@ -1,6 +1,6 @@
 import { MonacoLoader } from "@advanced-rest-client/monaco-support";
 import { DemoBindings } from '../lib/DemoBindings.js';
-import { ArcScreenWeb } from '../../pages.js';
+import { ArcScreenWeb } from '../../index.js';
 import env from '../env.js';
 
 (async () => {

@@ -1,5 +1,5 @@
 import { LitElement, TemplateResult, CSSResult } from 'lit-element';
-import { ContextMenuCommand, MenuItem } from '@api-client/context-menu';
+import { MenuItem } from '@api-client/context-menu';
 import { MenubarMixin } from '@anypoint-web-components/awc';
 
 export default class ArcApplicationMenuElement extends MenubarMixin(LitElement) {

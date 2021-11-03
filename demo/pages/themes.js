@@ -1,5 +1,5 @@
 import { DemoBindings } from '../lib/DemoBindings.js';
-import { ThemesScreen } from '../../pages.js';
+import { ThemesScreen } from '../../index.js';
 
 (async () => {
   const bindings = new DemoBindings();

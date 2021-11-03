@@ -11,7 +11,7 @@ import { ArcMock } from '@advanced-rest-client/arc-mock';
 import listenEncoding from '@advanced-rest-client/arc-demo-helper/src/EncodingHelpers.js';
 import { ExportHandlerMixin } from '@advanced-rest-client/arc-demo-helper/src/ExportHandlerMixin.js';
 import '@anypoint-web-components/awc/colors.js';
-import '../../define/arc-menu.js';
+import '@advanced-rest-client/base/define/arc-menu.js';
 
 /** @typedef {import('@advanced-rest-client/events').ARCProjectNavigationEvent} ARCProjectNavigationEvent */
 /** @typedef {import('@advanced-rest-client/events').ARCRequestNavigationEvent} ARCRequestNavigationEvent */

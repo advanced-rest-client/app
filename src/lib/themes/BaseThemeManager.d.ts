@@ -1,4 +1,3 @@
-import { Themes } from '@advanced-rest-client/events';
 import { ThemeManagerInit } from '../../types';
 
 /**

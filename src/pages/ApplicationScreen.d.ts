@@ -2,7 +2,6 @@ import { TemplateResult } from 'lit-html';
 import { Application } from '@advanced-rest-client/events';
 import { ReactiveMixin } from '../mixins/ReactiveMixin.js';
 import { RenderableMixin } from '../mixins/RenderableMixin.js';
-import '../../define/alert-dialog.js';
 
 /**
  * A base class for pages build outside the LitElement. It uses `lit-html` 

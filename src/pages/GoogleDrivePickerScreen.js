@@ -1,9 +1,9 @@
 /* eslint-disable class-methods-use-this */
 import { html } from 'lit-html';
 import '@advanced-rest-client/google/define/google-drive-browser.js';
+import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 import { EventTypes, Events } from '@advanced-rest-client/events'
 import { ApplicationScreen } from './ApplicationScreen.js';
-import { anypointTheme } from '../Constants.js';
 
 /** @typedef {import('lit-html').TemplateResult} TemplateResult */
 /** @typedef {import('@advanced-rest-client/events').Authorization.OAuth2Authorization} OAuth2Authorization */
@@ -66,7 +66,7 @@ export class GoogleDrivePickerScreen extends ApplicationScreen {
    * @param {CustomEvent} e 
    */
   [themeActivatedHandler](e) {
-    this.anypoint = e.detail.id === anypointTheme;
+    this.anypoint = e.detail.id === Constants.anypointTheme;
   }
 
   async requestGoogleDriveToken() {

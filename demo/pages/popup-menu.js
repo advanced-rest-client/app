@@ -1,6 +1,6 @@
 import { EventTypes } from '@advanced-rest-client/events';
 import { DemoBindings } from '../lib/DemoBindings.js';
-import { MenuScreen } from '../../pages.js';
+import { MenuScreen } from '../../index.js';
 
 const bindings = new DemoBindings();
 bindings.initialize();

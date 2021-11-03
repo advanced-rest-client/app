@@ -1,5 +1,5 @@
 import { DemoBindings } from '../lib/DemoBindings.js';
-import { AnalyticsConsentScreen } from '../../pages.js';
+import { AnalyticsConsentScreen } from '../../index.js';
 
 const bindings = new DemoBindings();
 bindings.initialize();

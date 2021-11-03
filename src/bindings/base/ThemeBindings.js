@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import { EventTypes } from '@advanced-rest-client/events';
+import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 import { PlatformBindings } from './PlatformBindings.js';
 import { BaseThemeManager } from '../../lib/themes/BaseThemeManager.js';
-import * as Constants from '../../Constants.js';
 
 /** @typedef {import('@advanced-rest-client/events').Theme.ArcThemeStore} ArcThemeStore */
 /** @typedef {import('@advanced-rest-client/events').Theme.InstalledTheme} InstalledTheme */

@@ -3,14 +3,14 @@
 import { html } from 'lit-html';
 import { EventTypes, Events } from '@advanced-rest-client/events'
 import { ProjectModel, RequestModel, RestApiModel } from '@advanced-rest-client/idb-store'
+import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 import { ApplicationScreen } from './ApplicationScreen.js';
-import { anypointTheme } from '../Constants.js';
-import '../../define/history-menu.js';
-import '../../define/saved-menu.js';
-import '../../define/projects-menu.js';
-import '../../define/rest-api-menu.js';
-import '../../define/search-menu.js';
-import '../../define/arc-menu.js';
+import '@advanced-rest-client/base/define/history-menu.js';
+import '@advanced-rest-client/base/define/saved-menu.js';
+import '@advanced-rest-client/base/define/projects-menu.js';
+import '@advanced-rest-client/base/define/rest-api-menu.js';
+import '@advanced-rest-client/base/define/search-menu.js';
+import '@advanced-rest-client/base/define/arc-menu.js';
 
 /** @typedef {import('lit-html').TemplateResult} TemplateResult */
 /** @typedef {import('@advanced-rest-client/events').Config.ARCConfig} ARCConfig */
@@ -105,7 +105,7 @@ export class MenuScreen extends ApplicationScreen {
    * @param {CustomEvent} e 
    */
   [themeActivatedHandler](e) {
-    this.anypoint = e.detail.id === anypointTheme;
+    this.anypoint = e.detail.id === Constants.anypointTheme;
   }
 
   /**

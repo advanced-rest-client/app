@@ -10,28 +10,27 @@ import '@anypoint-web-components/awc/anypoint-button.js';
 import '@anypoint-web-components/awc/anypoint-icon-button.js';
 import '@advanced-rest-client/icons/arc-icon.js';
 import '@advanced-rest-client/anypoint/define/exchange-search.js';
+import { Utils, ModulesRegistry, RequestCookies } from "@advanced-rest-client/base";
+import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 
 import { ApplicationScreen } from "./ApplicationScreen.js";
 import { findRoute, navigate, navigatePage } from "../lib/route.js";
-import { getTabClickIndex, updateDeepValue } from '../lib/Utils.js';
-import { ModulesRegistry } from "../request-modules/ModulesRegistry.js";
-import * as RequestCookies from "../request-modules/RequestCookies.js";
+// import * as RequestCookies from "../request-modules/RequestCookies.js";
 import { ArcContextMenu } from "../context-menu/ArcContextMenu.js";
 import ContextMenuCommands from "../context-menu/ArcContextMenuCommands.js";
-import * as Constants from '../Constants.js';
-import '../../define/arc-request-workspace.js';
-import '../../define/arc-menu.js';
-import '../../define/project-screen.js';
-import '../../define/host-rules-editor.js';
-import '../../define/request-meta-editor.js';
-import '../../define/request-meta-details.js';
-import '../../define/arc-settings.js';
-import '../../define/cookie-manager.js';
-import '../../define/arc-export-form.js';
-import '../../define/client-certificates-panel.js';
-import '../../define/saved-panel.js';
-import '../../define/history-panel.js';
-import '../../define/variables-overlay.js';
+import '@advanced-rest-client/base/define/arc-request-workspace.js';
+import '@advanced-rest-client/base/define/arc-menu.js';
+import '@advanced-rest-client/base/define/project-screen.js';
+import '@advanced-rest-client/base/define/host-rules-editor.js';
+import '@advanced-rest-client/base/define/request-meta-editor.js';
+import '@advanced-rest-client/base/define/request-meta-details.js';
+import '@advanced-rest-client/base/define/arc-settings.js';
+import '@advanced-rest-client/base/define/cookie-manager.js';
+import '@advanced-rest-client/base/define/arc-export-form.js';
+import '@advanced-rest-client/base/define/client-certificates-panel.js';
+import '@advanced-rest-client/base/define/saved-panel.js';
+import '@advanced-rest-client/base/define/history-panel.js';
+import '@advanced-rest-client/base/define/variables-overlay.js';
 
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
 /** @typedef {import('@advanced-rest-client/events').Authorization.OAuth2Authorization} OAuth2Authorization */
@@ -52,8 +51,8 @@ import '../../define/variables-overlay.js';
 /** @typedef {import('@advanced-rest-client/events').ARCEnvironmentStateSelectEvent} ARCEnvironmentStateSelectEvent */
 /** @typedef {import('@advanced-rest-client/events').Indexer.IndexableRequest} IndexableRequest */
 /** @typedef {import('@advanced-rest-client/events').Application.AppVersionInfo} AppVersionInfo */
-/** @typedef {import('../../').ArcRequestWorkspaceElement} ArcRequestWorkspaceElement */
-/** @typedef {import('../../').ArcMenuElement} ArcMenuElement */
+/** @typedef {import('@advanced-rest-client/base').ArcRequestWorkspaceElement} ArcRequestWorkspaceElement */
+/** @typedef {import('@advanced-rest-client/base').ArcMenuElement} ArcMenuElement */
 /** @typedef {import('../types').ArcAppInitOptions} ArcAppInitOptions */
 
 const unhandledRejectionHandler = Symbol("unhandledRejectionHandler");
@@ -868,10 +867,10 @@ export class ArcScreen extends ApplicationScreen {
     const { detail } = e;
     const { target, id } = detail;
     switch (id) {
-      case 'close-tab': this.workspaceElement.removeRequest(getTabClickIndex(target)); break;
-      case 'close-other-tabs': this.workspaceElement.closeAllTabs(getTabClickIndex(target)); break;
+      case 'close-tab': this.workspaceElement.removeRequest(Utils.getTabClickIndex(target)); break;
+      case 'close-other-tabs': this.workspaceElement.closeAllTabs(Utils.getTabClickIndex(target)); break;
       case 'close-all-tabs': this.workspaceElement.closeAllTabs(); break;
-      case 'duplicate-tab': this.workspaceElement.duplicateTab(getTabClickIndex(target)); break;
+      case 'duplicate-tab': this.workspaceElement.duplicateTab(Utils.getTabClickIndex(target)); break;
       default:
     }
   }
@@ -882,7 +881,7 @@ export class ArcScreen extends ApplicationScreen {
   [configStateChangeHandler](e) {
     const { key, value } = e.detail;
     const { config={} } = this;
-    updateDeepValue(config, key, value);
+    Utils.updateDeepValue(config, key, value);
     this.render();
     if (key === 'request.ignoreSessionCookies') {
       if (value) {
@@ -1172,7 +1171,7 @@ export class ArcScreen extends ApplicationScreen {
     }
   }
 
-  /** 
+  /**
    * @param {CustomEvent} e
    */
   async [exchangeSelectionHandler](e) {

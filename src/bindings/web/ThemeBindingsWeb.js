@@ -1,9 +1,9 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable import/no-extraneous-dependencies */
 import { get, set } from 'idb-keyval';
+import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 import { Events } from '@advanced-rest-client/events';
 import { ThemeBindings } from '../base/ThemeBindings.js';
-import * as Constants from '../../Constants.js';
 
 /** @typedef {import('@advanced-rest-client/events').Theme.ArcThemeStore} ArcThemeStore */
 /** @typedef {import('@advanced-rest-client/events').Theme.SystemThemeInfo} SystemThemeInfo */

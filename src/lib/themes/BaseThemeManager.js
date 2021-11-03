@@ -1,11 +1,11 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable class-methods-use-this */
 import { Events } from '@advanced-rest-client/events';
-import * as Constants from '../../Constants.js';
+import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 
-/** @typedef {import('@advanced-rest-client/events').Themes.ArcThemeStore} ArcThemeStore */
-/** @typedef {import('@advanced-rest-client/events').Themes.InstalledTheme} InstalledTheme */
-/** @typedef {import('@advanced-rest-client/events').Themes.SystemThemeInfo} SystemThemeInfo */
+/** @typedef {import('@advanced-rest-client/events').Theme.ArcThemeStore} ArcThemeStore */
+/** @typedef {import('@advanced-rest-client/events').Theme.InstalledTheme} InstalledTheme */
+/** @typedef {import('@advanced-rest-client/events').Theme.SystemThemeInfo} SystemThemeInfo */
 /** @typedef {import('../../types').ThemeManagerInit} ThemeManagerInit */
 
 /**

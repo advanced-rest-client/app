@@ -1,6 +1,6 @@
 import { ArcModelEvents, ExportEvents } from '@advanced-rest-client/events';
 import { close, deleteOutline, code } from '@advanced-rest-client/icons/ArcIcons.js';
-import { HarTransformer } from '../lib/har/HarTransformer.js';
+import { HarTransformer } from '@advanced-rest-client/base';
 
 /** @typedef {import('@api-client/context-menu').ContextMenuCommand} ContextMenuCommand */
 /** @typedef {import('@advanced-rest-client/events').ArcRequest.ARCSavedRequest} ARCSavedRequest */

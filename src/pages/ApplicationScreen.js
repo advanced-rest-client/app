@@ -1,10 +1,10 @@
 /* eslint-disable class-methods-use-this */
 import { html } from 'lit-html';
 import { Events } from '@advanced-rest-client/events';
+import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 import { ReactiveMixin } from '../mixins/ReactiveMixin.js';
 import { RenderableMixin } from '../mixins/RenderableMixin.js';
-import { anypointTheme } from '../Constants.js';
-import '../../define/alert-dialog.js';
+import '@advanced-rest-client/base/define/alert-dialog.js';
 
 /** @typedef {import('lit-html').TemplateResult} TemplateResult */
 /** @typedef {import('@advanced-rest-client/events').Application.AppVersionInfo} AppVersionInfo */
@@ -71,7 +71,7 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
   async loadTheme() {
     try {
       const id = await Events.Theme.loadApplicationTheme(this.eventTarget);
-      this.anypoint = id === anypointTheme;
+      this.anypoint = id === Constants.anypointTheme;
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);

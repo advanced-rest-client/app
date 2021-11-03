@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-param-reassign */
 import { html } from 'lit-html';
+import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 import '@anypoint-web-components/awc/anypoint-dropdown-menu.js';
 import '@anypoint-web-components/awc/anypoint-listbox.js';
 import '@anypoint-web-components/awc/anypoint-item.js';
@@ -10,7 +11,6 @@ import '@anypoint-web-components/awc/anypoint-switch.js';
 import '@advanced-rest-client/icons/arc-icon.js';
 import { Events, EventTypes } from '@advanced-rest-client/events';
 import { ApplicationScreen } from './ApplicationScreen.js';
-import { anypointTheme } from '../Constants.js';
 
 /** @typedef {import('lit-html').TemplateResult} TemplateResult */
 /** @typedef {import('@advanced-rest-client/events').Config.ARCConfig} ARCConfig */
@@ -127,7 +127,7 @@ export class AboutScreen extends ApplicationScreen {
    * @param {CustomEvent} e 
    */
   [themeActivatedHandler](e) {
-    this.anypoint = e.detail.id === anypointTheme;
+    this.anypoint = e.detail.id === Constants.anypointTheme;
   }
 
   [checkingUpdateHandler]() {

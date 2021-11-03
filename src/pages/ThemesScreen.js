@@ -2,6 +2,7 @@
 /* eslint-disable no-param-reassign */
 import { html } from 'lit-html';
 import '@anypoint-web-components/awc/anypoint-dropdown-menu.js';
+import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 import '@anypoint-web-components/awc/anypoint-listbox.js';
 import '@anypoint-web-components/awc/anypoint-item.js';
 import '@anypoint-web-components/awc/anypoint-icon-item.js';
@@ -10,7 +11,6 @@ import '@anypoint-web-components/awc/anypoint-switch.js';
 import '@advanced-rest-client/icons/arc-icon.js';
 import { Events } from '@advanced-rest-client/events';
 import { ApplicationScreen } from './ApplicationScreen.js';
-import { defaultTheme, anypointTheme } from '../Constants.js';
 
 /** @typedef {import('lit-html').TemplateResult} TemplateResult */
 /** @typedef {import('@advanced-rest-client/events').Theme.InstalledTheme} InstalledTheme */
@@ -73,8 +73,8 @@ export class ThemesScreen extends ApplicationScreen {
       return;
     }
     this.themes = themes;
-    this.activeTheme = active || defaultTheme;
-    this.anypoint = this.activeTheme === anypointTheme;
+    this.activeTheme = active || Constants.defaultTheme;
+    this.anypoint = this.activeTheme === Constants.anypointTheme;
     this.systemPreferred = systemPreferred || false;
   }
 
@@ -95,7 +95,7 @@ export class ThemesScreen extends ApplicationScreen {
     this.activeTheme = String(selected);
     await Events.Theme.activate(this.eventTarget, this.activeTheme);
     await Events.Theme.loadTheme(this.eventTarget, this.activeTheme);
-    this.anypoint = this.activeTheme === anypointTheme;
+    this.anypoint = this.activeTheme === Constants.anypointTheme;
     window.postMessage({ 
       action: 'theme-selection',
       id: this.activeTheme,
@@ -130,7 +130,7 @@ export class ThemesScreen extends ApplicationScreen {
     this.installPending = true;
     try {
       await Events.Theme.uninstall(this.eventTarget, this.activeTheme);
-      await Events.Theme.activate(this.eventTarget, defaultTheme);
+      await Events.Theme.activate(this.eventTarget, Constants.defaultTheme);
       await this.refresh();
       await Events.Theme.loadTheme(this.eventTarget, this.activeTheme);
     } catch (e) {
