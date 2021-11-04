@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable import/no-extraneous-dependencies */
+import { Events } from '@advanced-rest-client/events';
 import { get, set } from 'idb-keyval';
 import { ConfigurationBindings } from '../base/ConfigurationBindings.js';
 
@@ -32,5 +33,6 @@ export class ConfigurationBindingsWeb extends ConfigurationBindings {
     const settings = await this.readAll();
     this.updateValue(settings, key, value);
     await set(settingsKey, settings);
+    Events.Config.State.update(window, key, value);
   }
 }
