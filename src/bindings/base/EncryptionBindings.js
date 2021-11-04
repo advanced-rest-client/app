@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import { EventTypes } from '@advanced-rest-client/events';
+import '@anypoint-web-components/awc/anypoint-masked-input.js';
 import { PlatformBindings } from './PlatformBindings.js';
 
 /** @typedef {import('@advanced-rest-client/events').ArcEncryptEvent} ArcEncryptEvent */

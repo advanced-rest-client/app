@@ -31,3 +31,12 @@ main {
   width: 128px;
   height: 128px;
 }
+
+.centered {
+  text-align: center;
+}
+
+.api-list {
+  margin: 0;
+  padding: 0;
+}

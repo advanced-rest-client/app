@@ -27,6 +27,7 @@ export { ThemeBindings } from './src/bindings/base/ThemeBindings.js';
 export { WorkspaceBindings } from './src/bindings/base/WorkspaceBindings.js';
 export { DataExportBindings } from './src/bindings/base/DataExportBindings.js';
 export { EncryptionBindings } from './src/bindings/base/EncryptionBindings.js';
+export { GoogleDriveBindings } from './src/bindings/base/GoogleDriveBindings.js';
 
 // shortcuts
 export { MonacoLoader } from "@advanced-rest-client/monaco-support";

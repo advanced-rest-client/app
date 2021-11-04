@@ -53,6 +53,7 @@ import '@advanced-rest-client/base/define/variables-overlay.js';
 /** @typedef {import('@advanced-rest-client/events').Application.AppVersionInfo} AppVersionInfo */
 /** @typedef {import('@advanced-rest-client/base').ArcRequestWorkspaceElement} ArcRequestWorkspaceElement */
 /** @typedef {import('@advanced-rest-client/base').ArcMenuElement} ArcMenuElement */
+/** @typedef {import('@advanced-rest-client/anypoint/src/types').ExchangeAsset} ExchangeAsset */
 /** @typedef {import('../types').ArcAppInitOptions} ArcAppInitOptions */
 
 const unhandledRejectionHandler = Symbol("unhandledRejectionHandler");
@@ -100,7 +101,6 @@ const helpNavigationHandler = Symbol("helpNavigationHandler");
 const contextCommandHandler = Symbol("contextCommandHandler");
 const hostRulesTemplate = Symbol("hostRulesTemplate");
 const processApplicationState = Symbol("processApplicationState");
-const drivePickHandler = Symbol("drivePickHandler");
 const processApiFileHandler = Symbol("processApiFileHandler");
 const arcNavigationTemplate = Symbol("arcNavigationTemplate");
 const exchangeSearchTemplate = Symbol("exchangeSearchTemplate");
@@ -1143,21 +1143,6 @@ export class ArcScreen extends ApplicationScreen {
   [sheetClosedHandler](e) {
     const prop = e.target.dataset.openProperty;
     this[prop] = e.detail.value;
-  }
-
-  /**
-   * @param {Electron.IpcRendererEvent} e
-   * @param {string} fileId
-   */
-  async [drivePickHandler](e, fileId) {
-    try {
-      const result = await Events.Google.Drive.read(this.eventTarget, fileId);
-      await this.processExternalData(result);
-    } catch (cause) {
-      // eslint-disable-next-line no-console
-      console.error(cause);
-      this.reportCriticalError(cause);
-    }
   }
 
   /**
