@@ -35,6 +35,7 @@ export class GoogleDriveBindings extends PlatformBindings {
     window.addEventListener(EventTypes.Google.Drive.read, this.readHandler.bind(this));
     window.addEventListener(EventTypes.Google.Drive.save, this.saveHandler.bind(this));
     window.addEventListener(EventTypes.Google.Drive.listAppFolders, this.listAppFoldersHandler.bind(this));
+    window.addEventListener(EventTypes.Google.Drive.notifyFilePicked, this.notifyFilePickedHandler.bind(this));
   }
 
   /**
@@ -78,6 +79,18 @@ export class GoogleDriveBindings extends PlatformBindings {
   }
 
   /**
+   * @param {CustomEvent} e
+   */
+  notifyFilePickedHandler(e) {
+    e.preventDefault();
+    const { id } = e.detail;
+    if (!id) {
+      return;
+    }
+    this.notifyFilePicked(id);
+  }
+
+  /**
    * Downloads file from Google Drive by its ID.
    * @param {string} fileId The Google Drive file ID
    * @returns {Promise<string>} The contents of the file.
@@ -99,6 +112,15 @@ export class GoogleDriveBindings extends PlatformBindings {
    * @returns {Promise<AppFolder[]>}
    */
   async listFolders() {
+    throw new Error('Not yet implemented.');
+  }
+
+  /**
+   * This is a placeholder for an action when the user picks up a Google Drive item
+   * @param {string} id The Google Drive file id.
+   * @returns {Promise<void>}
+   */
+  async notifyFilePicked(id) {
     throw new Error('Not yet implemented.');
   }
 }

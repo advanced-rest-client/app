@@ -5,6 +5,7 @@ import { WorkspaceBindingsWeb } from '../../src/bindings/web/WorkspaceBindingsWe
 import { DataExportBindingsWeb } from '../../src/bindings/web/DataExportBindingsWeb.js';
 import { EncryptionBindingsWeb } from '../../src/bindings/web/EncryptionBindingsWeb.js';
 import { GoogleDriveBindingsWeb } from '../../src/bindings/web/GoogleDriveBindingsWeb.js';
+import { OAuth2BindingsWeb } from '../../src/bindings/web/OAuth2BindingsWeb.js';
 
 /**
  * A class that mocks Electron APIs.
@@ -19,6 +20,7 @@ export class DemoBindings {
     this.dataExport = new DataExportBindingsWeb();
     this.encryption = new EncryptionBindingsWeb();
     this.googleDrive = new GoogleDriveBindingsWeb();
+    this.oauth2 = new OAuth2BindingsWeb();
   }
 
   async initialize() {
@@ -29,5 +31,6 @@ export class DemoBindings {
     await this.dataExport.initialize();
     await this.encryption.initialize();
     await this.googleDrive.initialize();
+    await this.oauth2.initialize();
   }
 }

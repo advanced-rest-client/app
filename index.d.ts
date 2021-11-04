@@ -16,6 +16,7 @@ export { ArcScreen } from './src/pages/ArcScreen.js';
 export { ArcScreenWeb } from './src/pages/ArcScreenWeb.js';
 export { DataImportScreen } from './src/pages/DataImportScreen.js';
 export { DataImportScreenWeb } from './src/pages/DataImportScreenWeb.js';
+export { GoogleDrivePickerScreen } from './src/pages/GoogleDrivePickerScreen.js';
 
 // bindings
 export { PlatformBindings } from './src/bindings/base/PlatformBindings.js';
@@ -26,6 +27,7 @@ export { WorkspaceBindings } from './src/bindings/base/WorkspaceBindings.js';
 export { DataExportBindings } from './src/bindings/base/DataExportBindings.js';
 export { EncryptionBindings } from './src/bindings/base/EncryptionBindings.js';
 export { GoogleDriveBindings } from './src/bindings/base/GoogleDriveBindings.js';
+export { OAuth2Bindings } from './src/bindings/base/OAuth2Bindings.js';
 
 // shortcuts
 export { MonacoLoader } from "@advanced-rest-client/monaco-support";

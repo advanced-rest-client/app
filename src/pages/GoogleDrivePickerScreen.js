@@ -23,6 +23,7 @@ export class GoogleDrivePickerScreen extends ApplicationScreen {
         'https://www.googleapis.com/auth/drive.file',
         'https://www.googleapis.com/auth/drive.install',
       ],
+      grantType: 'implicit',
     }
   }
 
@@ -49,14 +50,9 @@ export class GoogleDrivePickerScreen extends ApplicationScreen {
   async initialize() {
     await this.loadTheme();
     this.initDomEvents();
-    this.requestGoogleDriveToken();
+    await this.requestGoogleDriveToken();
     this.initializing = false;
   }
-
-  // listen() {
-  //   this.themeProxy.listen();
-  //   this.oauth2Proxy.listen();
-  // }
 
   initDomEvents() {
     window.addEventListener(EventTypes.Theme.State.activated, this[themeActivatedHandler].bind(this));
@@ -72,11 +68,15 @@ export class GoogleDrivePickerScreen extends ApplicationScreen {
   async requestGoogleDriveToken() {
     const cnf = this.oauthConfig;
     cnf.interactive = true;
-    const auth = await Events.Authorization.OAuth2.authorize(this.eventTarget, cnf);
-    if (!auth) {
-      return;
+    try {
+      const auth = await Events.Authorization.OAuth2.authorize(this.eventTarget, cnf);
+      if (!auth) {
+        return;
+      }
+      this.driveToken = auth.accessToken;
+    } catch (e) {
+      console.error(e);
     }
-    this.driveToken = auth.accessToken;
   }
 
   /**
@@ -126,6 +126,3 @@ export class GoogleDrivePickerScreen extends ApplicationScreen {
     `;  
   }
 }
-
-const page = new GoogleDrivePickerScreen();
-page.initialize();

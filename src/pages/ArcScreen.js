@@ -112,22 +112,6 @@ const arcLegacyProjectTemplate = Symbol("arcLegacyProjectTemplate");
  * Advanced REST CLient - the API Client screen.
  */
 export class ArcScreen extends ApplicationScreen {
-  /**
-   * @returns {OAuth2Authorization}
-   */
-  get oauthConfig() {
-    return {
-      clientId:
-        "1076318174169-u4a5d3j2v0tbie1jnjgsluqk1ti7ged3.apps.googleusercontent.com",
-      authorizationUri: "https://accounts.google.com/o/oauth2/v2/auth",
-      redirectUri: "https://auth.advancedrestclient.com/oauth2",
-      scopes: [
-        "https://www.googleapis.com/auth/drive.file",
-        "https://www.googleapis.com/auth/drive.install",
-      ],
-    };
-  }
-
   static get routes() {
     return [
       {
@@ -153,10 +137,6 @@ export class ArcScreen extends ApplicationScreen {
       {
         name: "client-certificates",
         pattern: "client-certificates",
-      },
-      {
-        name: "data-import",
-        pattern: "data-import",
       },
       {
         name: "data-export",

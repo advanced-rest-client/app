@@ -6,6 +6,7 @@ import {
   ArcScreen, 
   commandHandler,
 } from './ArcScreen.js';
+import { navigatePage } from '../lib/route.js';
 import '../../define/arc-application-menu.js';
 
 export class ArcScreenWeb extends ArcScreen {
@@ -18,6 +19,7 @@ export class ArcScreenWeb extends ArcScreen {
     const { action } = e.detail;
     switch (action) {
       case 'open-themes': this.openThemes(); break;
+      case 'open-drive': this.openDrivePicker(); break;
       default: super[commandHandler](e);
     }
   }
@@ -30,6 +32,10 @@ export class ArcScreenWeb extends ArcScreen {
       return;
     }
     ref.addEventListener('message', this.themeWindowMessageHandler.bind(this));
+  }
+
+  openDrivePicker() {
+    navigatePage('drive-picker.html');
   }
 
   /**

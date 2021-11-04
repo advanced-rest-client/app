@@ -32,6 +32,10 @@ const commands = /** @type MenuItem[] */ ([
         id: 'application:open-file',
       })),
       new MenuItem(/** @type ContextMenuCommand */ ({
+        label: 'Open from Google Drive',
+        id: 'application:open-drive',
+      })),
+      new MenuItem(/** @type ContextMenuCommand */ ({
         label: 'Open saved request',
         id: 'application:open-saved',
       })),
