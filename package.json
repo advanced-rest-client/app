@@ -23,7 +23,7 @@
   "dependencies": {
     "@advanced-rest-client/anypoint": "^1.0.1",
     "@advanced-rest-client/base": "^0.1.0",
-    "@advanced-rest-client/events": "^0.2.28",
+    "@advanced-rest-client/events": "^0.2.29",
     "@advanced-rest-client/google": "^1.0.0",
     "@advanced-rest-client/highlight": "^2.0.1",
     "@advanced-rest-client/http-code-snippets": "^4.0.0",

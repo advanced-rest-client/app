@@ -101,7 +101,6 @@ const helpNavigationHandler = Symbol("helpNavigationHandler");
 const contextCommandHandler = Symbol("contextCommandHandler");
 const hostRulesTemplate = Symbol("hostRulesTemplate");
 const processApplicationState = Symbol("processApplicationState");
-const processApiFileHandler = Symbol("processApiFileHandler");
 const arcNavigationTemplate = Symbol("arcNavigationTemplate");
 const exchangeSearchTemplate = Symbol("exchangeSearchTemplate");
 const exchangeSelectionHandler = Symbol("exchangeSelectionHandler");
@@ -501,7 +500,6 @@ export class ArcScreen extends ApplicationScreen {
     window.addEventListener(EventTypes.Workspace.appendExport, this[workspaceAppendExportHandler].bind(this));
     window.addEventListener(EventTypes.Config.State.update, this[configStateChangeHandler].bind(this));
     window.addEventListener(EventTypes.Model.Environment.State.select, this[environmentSelectedHandler].bind(this));
-    window.addEventListener(EventTypes.RestApiLegacy.processFile, this[processApiFileHandler].bind(this));
     window.addEventListener(EventTypes.App.command, this[commandHandler].bind(this));
     window.addEventListener(EventTypes.App.requestAction, this[requestActionHandler].bind(this));
     window.addEventListener(EventTypes.Theme.State.activated, this[themeActivateHandler].bind(this));
@@ -1126,17 +1124,6 @@ export class ArcScreen extends ApplicationScreen {
   }
 
   /**
-   * @param {RestApiProcessFileEvent} e
-   */
-  async [processApiFileHandler](e) {
-    const { file } = e;
-    const result = await this.apiParser.processApiFile(file);
-    if (result) {
-      this.apiConsoleFromParser(result);
-    }
-  }
-
-  /**
    * @param {CustomEvent} e
    */
   async [exchangeSelectionHandler](e) {
@@ -1155,7 +1142,7 @@ export class ArcScreen extends ApplicationScreen {
     }
     const { externalLink, mainFile, md5, packaging } = file;
     try {
-      const result = await this.apiParser.processApiLink(externalLink, mainFile, md5, packaging);
+      const result = await Events.Amf.processApiLink(this.eventTarget, externalLink, mainFile, md5, packaging);
       this.apiConsoleFromParser(result);
     } catch (cause) {
       this.reportCriticalError(cause.message);

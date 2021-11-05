@@ -28,6 +28,7 @@ export { DataExportBindings } from './src/bindings/base/DataExportBindings.js';
 export { EncryptionBindings } from './src/bindings/base/EncryptionBindings.js';
 export { GoogleDriveBindings } from './src/bindings/base/GoogleDriveBindings.js';
 export { OAuth2Bindings } from './src/bindings/base/OAuth2Bindings.js';
+export { ApiParserBindings } from './src/bindings/base/ApiParserBindings.js';
 
 // shortcuts
 export { MonacoLoader } from "@advanced-rest-client/monaco-support";

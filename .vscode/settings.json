@@ -33,6 +33,7 @@
     "urlchange",
     "urldecode",
     "urlencode",
-    "valuechange"
+    "valuechange",
+    "webservice"
   ]
 }
