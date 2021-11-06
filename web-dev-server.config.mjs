@@ -1,13 +1,44 @@
+/* eslint-disable consistent-return */
+import { ApiRoutes } from '@api-components/amf-web-api/src/ApiRoutes.js';
+// import getPort, {portNumbers} from 'get-port';
+
 /** @typedef {import('@web/dev-server').DevServerConfig} DevServerConfig */
+/** @typedef {import('@web/dev-server-core').ServerStartParams} ServerStartParams */
+
+// /** @type number */
+// let amfParserPort;
 
 export default /** @type DevServerConfig */ ({
   plugins: [
     {
       name: 'env',
 
+      /**
+       * @param {ServerStartParams} args
+       */
+      async serverStart(args) {
+        // amfParserPort = await getPort({ port: portNumbers(8000, 8100) });
+        const handler = new ApiRoutes();
+        const apiRouter = handler.setup('/api/v1');
+        args.app.use(apiRouter.routes());
+        args.app.use(apiRouter.allowedMethods());
+      },
+
+      /**
+       * @param {ServerStartParams} args
+       */
       serve(context) {
+        
         if (context.path === '/demo/env.js') {
-          return `export default ${JSON.stringify(process.env)}`;
+          const env = {
+            variables: process.env,
+            amfService: {
+              // hostname: `${context.hostname}:${amfParserPort}`,
+              // port: amfParserPort,
+              path: '/api/v1',
+            },
+          };
+          return `export default ${JSON.stringify(env)}`;
         }
       },
     },

@@ -9,6 +9,8 @@ import '@advanced-rest-client/base/define/alert-dialog.js';
 /** @typedef {import('lit-html').TemplateResult} TemplateResult */
 /** @typedef {import('@advanced-rest-client/events').Application.AppVersionInfo} AppVersionInfo */
 
+const unhandledRejectionHandler = Symbol("unhandledRejectionHandler");
+
 /**
  * A base class for pages build outside the LitElement. It uses `lit-html` 
  * as the template renderer.
@@ -27,6 +29,7 @@ import '@advanced-rest-client/base/define/alert-dialog.js';
 export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget)) {
   constructor() {
     super();
+    window.onunhandledrejection = this[unhandledRejectionHandler].bind(this);
     this.initObservableProperties('anypoint', 'loadingStatus');
     /** @type boolean */
     this.anypoint = undefined;
@@ -63,6 +66,15 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
     dialog.modal = true;
     dialog.open();
     document.body.appendChild(dialog);
+  }
+
+  /**
+   * @param {PromiseRejectionEvent} e
+   */
+  [unhandledRejectionHandler](e) {
+    /* eslint-disable-next-line no-console */
+    console.error(e);
+    this.reportCriticalError(e.reason);
   }
 
   /**

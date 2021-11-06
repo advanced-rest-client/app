@@ -15,6 +15,7 @@ export class ApiParserBindings extends PlatformBindings {
     window.addEventListener(EventTypes.Amf.processApiFile, this.processApiFileHandler.bind(this));
     window.addEventListener(EventTypes.Amf.processApiLink, this.processApiLinkHandler.bind(this));
     window.addEventListener(EventTypes.Amf.processBuffer, this.processBufferHandler.bind(this));
+    window.addEventListener(EventTypes.RestApiLegacy.processFile, this.processLegacyFileHandler.bind(this));
   }
 
   /**
@@ -27,6 +28,18 @@ export class ApiParserBindings extends PlatformBindings {
     e.preventDefault();
     const { file } = e.detail;
     e.detail.result = this.processApiFile(file);
+  }
+
+  /**
+   * @param {RestApiProcessFileEvent} e
+   */
+  processLegacyFileHandler(e) {
+    if (e.defaultPrevented) {
+      return;
+    }
+    e.preventDefault();
+    const { file } = e;
+    e.detail.result = this.legacyProcessApiFile(file);
   }
 
   /**
@@ -90,10 +103,38 @@ export class ApiParserBindings extends PlatformBindings {
   }
 
   /**
+   * Handles the file change event and processes the file as an API.
+   * This is a legacy flow as this should not trigger an arbitrary process that changes the state of the application
+   * (like this one). This should have more intentional flow.
+   *
+   * @param {File|Blob} file File to process.
+   * @returns {Promise<any>}
+   */
+  async legacyProcessApiFile(file) {
+    throw new Error('Not yet implemented');
+  }
+
+  /**
    * @param {string[]} candidates
    * @return {Promise<string|undefined>}
    */
   async selectApiMainFile(candidates) {
     throw new Error('Not yet implemented');
+  }
+
+  /**
+   * Downloads an API project as zip and returns the ArrayBuffer
+   *
+   * @TODO: Handle authorization.
+   *
+   * @param {string} url URL to RAML zip asset.
+   * @return {Promise<ArrayBuffer>}
+   */
+  async downloadApiProject(url) {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Unable to download the asset. Status: ${response.status}`);
+    }
+    return response.arrayBuffer();
   }
 }

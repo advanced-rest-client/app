@@ -5,6 +5,8 @@ import { classMap } from "lit-html/directives/class-map.js";
 import { styleMap } from "lit-html/directives/style-map.js";
 import { EventTypes, Events, ProjectActions } from "@advanced-rest-client/events";
 import { ProjectModel, RequestModel, RestApiModel, AuthDataModel, HostRulesModel, VariablesModel, UrlHistoryModel, HistoryDataModel, ClientCertificateModel, WebsocketUrlHistoryModel, UrlIndexer, ArcDataExport, ArcDataImport } from '@advanced-rest-client/idb-store'
+import { set } from 'idb-keyval';
+import { v4 } from '@advanced-rest-client/uuid';
 import '@anypoint-web-components/awc/bottom-sheet.js';
 import '@anypoint-web-components/awc/anypoint-button.js';
 import '@anypoint-web-components/awc/anypoint-icon-button.js';
@@ -56,7 +58,6 @@ import '@advanced-rest-client/base/define/variables-overlay.js';
 /** @typedef {import('@advanced-rest-client/anypoint/src/types').ExchangeAsset} ExchangeAsset */
 /** @typedef {import('../types').ArcAppInitOptions} ArcAppInitOptions */
 
-const unhandledRejectionHandler = Symbol("unhandledRejectionHandler");
 const headerTemplate = Symbol("headerTemplate");
 const pageTemplate = Symbol("pageTemplate");
 const workspaceTemplate = Symbol("workspaceTemplate");
@@ -428,8 +429,6 @@ export class ArcScreen extends ApplicationScreen {
     
     /** @type string */
     this.metaRequestType = undefined;
-
-    window.onunhandledrejection = this[unhandledRejectionHandler].bind(this);
     
     // todo: do the below when the application is already initialized.
     // this[navigationHandler] = this[navigationHandler].bind(this);
@@ -596,15 +595,6 @@ export class ArcScreen extends ApplicationScreen {
   }
 
   /**
-   * @param {PromiseRejectionEvent} e
-   */
-  [unhandledRejectionHandler](e) {
-    /* eslint-disable-next-line no-console */
-    console.error(e);
-    this.reportCriticalError(e.reason);
-  }
-
-  /**
    * Called when route change
    */
   onRoute() {
@@ -617,7 +607,6 @@ export class ArcScreen extends ApplicationScreen {
       return;
     }
     const { name } = result.route;
-    console.log('Route', result);
     this.route = name;
     this.routeParams = result.params;
     Events.Telemetry.view(this.eventTarget, name);
@@ -876,85 +865,6 @@ export class ArcScreen extends ApplicationScreen {
     }
   }
 
-  // /**
-  //  * @param {any} file Depending on the platform it can be a File or a path to the file in the local filesystem.
-  //  */
-  // async processExternalFile(file) {
-  //   // const factory = new ImportFilePreProcessor(filePath);
-  //   // try {
-  //   //   await factory.prepare();
-  //   //   const isApiFile = await factory.isApiFile();
-  //   //   if (isApiFile) {
-  //   //     const result = await this.apiParser.processBuffer(factory.buffer);
-  //   //     this.apiConsoleFromParser(result);
-  //   //     return;
-  //   //   }
-  //   //   const contents = factory.readContents();
-  //   //   await this.processExternalData(contents);
-  //   // } catch (cause) {
-  //   //   // eslint-disable-next-line no-console
-  //   //   console.error(cause);
-  //   //   this.reportCriticalError(cause);
-  //   // }
-  // }
-
-  // /**
-  //  * Process file contents after importing it to the application.
-  //  * @param {string} contents
-  //  */
-  // async processExternalData(contents) {
-  //   const decrypted = await this.decryptIfNeeded(contents);
-  //   const data = JSON.parse(decrypted);
-  //   if (data.swagger) {
-  //     const result = await this.apiParser.processBuffer(Buffer.from(contents));
-  //     this.apiConsoleFromParser(result);
-  //     return;
-  //   }
-  //   const processor = new ImportNormalize();
-  //   const normalized = await processor.normalize(data);
-
-  //   if (isSingleRequest(normalized)) {
-  //     const insert = Array.isArray(normalized.requests) ? normalized.requests[0] : data;
-  //     Events.Workspace.appendRequest(document.body, insert);
-  //     return;
-  //   }
-    
-  //   if (normalized.loadToWorkspace) {
-  //     Events.Workspace.appendExport(document.body, normalized);
-  //     return;
-  //   }
-  //   this.route = 'data-inspect';
-  //   this[inspectDataValue] = normalized;
-  //   this.render();
-  // }
-
-  // /**
-  //  * @param {ApiParseResult} result
-  //  */
-  // async apiConsoleFromParser(result) {
-  //   const id = await this.fs.storeApicModelTmp(result);
-  //   navigatePage('api-console.html', 'open', 'file', id);
-  // }
-
-  /**
-   * Processes incoming data and if encryption is detected then id processes
-   * the file for decryption.
-   *
-   * @param {string} content File content
-   * @return {Promise<string>} The content of the file.
-   */
-  async decryptIfNeeded(content) {
-    const headerIndex = content.indexOf('\n');
-    const header = content.substr(0, headerIndex).trim();
-    if (header === 'aes') {
-      const data = content.substr(headerIndex + 1);
-      // eslint-disable-next-line no-param-reassign
-      content = await Events.Encryption.decrypt(this.eventTarget, data, undefined, 'aes');
-      // content = await this.encryption.decode('aes', data);
-    }
-    return content;
-  }
-
   [popupMenuOpenedHandler](e, type) {
     this.menuToggleOption(type, true);
   }
@@ -1128,22 +1038,21 @@ export class ArcScreen extends ApplicationScreen {
    */
   async [exchangeSelectionHandler](e) {
     const asset = /** @type ExchangeAsset */ (e.detail);
-    let file;
     const types = ['fat-raml', 'raml', 'oas'];
-    for (let i = 0, len = asset.files.length; i < len; i++) {
-      if (types.indexOf(asset.files[i].classifier) !== -1) {
-        file = asset.files[i];
-        break;
-      }
-    }
+    const file = asset.files.find((item) => types.includes(item.classifier));
     if (!file || !file.externalLink) {
-      this.reportCriticalError('RAML data not found in the asset.');
+      this.reportCriticalError('API data not found in the asset.');
       return;
     }
     const { externalLink, mainFile, md5, packaging } = file;
     try {
       const result = await Events.Amf.processApiLink(this.eventTarget, externalLink, mainFile, md5, packaging);
-      this.apiConsoleFromParser(result);
+      if (!result) {
+        throw new Error('The API parser is not correctly initialized.');
+      }
+      const key = v4();
+      await set(key, result);
+      navigatePage('api-console.html', 'open', 'file', key);
     } catch (cause) {
       this.reportCriticalError(cause.message);
     }

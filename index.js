@@ -7,7 +7,7 @@ export * as Route from './src/lib/route.js';
 export { ArcContextMenu } from './src/context-menu/ArcContextMenu.js';
 export { default as ArcContextCommands } from './src/context-menu/ArcContextMenuCommands.js';
 
-export { ApplicationScreen as ApplicationPage } from './src/pages/ApplicationScreen.js'
+export { ApplicationScreen } from './src/pages/ApplicationScreen.js'
 export { AboutScreen } from './src/pages/AboutScreen.js';
 export { MenuScreen } from './src/pages/MenuScreen.js';
 export { SearchBar } from './src/pages/SearchBar.js';
@@ -16,6 +16,7 @@ export { LicenseScreen } from './src/pages/LicenseScreen.js';
 export { AnalyticsConsentScreen } from './src/pages/AnalyticsConsentScreen.js';
 export { ArcScreen } from './src/pages/ArcScreen.js';
 export { ArcScreenWeb } from './src/pages/ArcScreenWeb.js';
+export { ApiConsoleScreen } from './src/pages/ApiConsoleScreen.js';
 export { DataImportScreen } from './src/pages/DataImportScreen.js';
 export { DataImportScreenWeb } from './src/pages/DataImportScreenWeb.js';
 export { GoogleDrivePickerScreen } from './src/pages/GoogleDrivePickerScreen.js';
