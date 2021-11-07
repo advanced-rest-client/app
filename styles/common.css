@@ -109,16 +109,6 @@ nav.minimized {
   border-right: 1px solid #e5e5e5;
 }
 
-.nav-resize-rail {
-  background-color: transparent;
-  width: 8px;
-  right: -4px;
-  top: 0;
-  bottom: 0;
-  position: absolute;
-  cursor: col-resize;
-}
-
 .page {
   flex: 1;
 }

@@ -1,6 +1,5 @@
 /* eslint-disable consistent-return */
 import { ApiRoutes } from '@api-components/amf-web-api/src/ApiRoutes.js';
-// import getPort, {portNumbers} from 'get-port';
 
 /** @typedef {import('@web/dev-server').DevServerConfig} DevServerConfig */
 /** @typedef {import('@web/dev-server-core').ServerStartParams} ServerStartParams */

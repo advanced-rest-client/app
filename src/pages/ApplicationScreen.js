@@ -1,15 +1,14 @@
 /* eslint-disable class-methods-use-this */
 import { html } from 'lit-html';
-import { Events } from '@advanced-rest-client/events';
+import { Events, EventTypes } from '@advanced-rest-client/events';
 import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 import { ReactiveMixin } from '../mixins/ReactiveMixin.js';
 import { RenderableMixin } from '../mixins/RenderableMixin.js';
 import '@advanced-rest-client/base/define/alert-dialog.js';
+import '@advanced-rest-client/base/resizable-elements.js';
 
 /** @typedef {import('lit-html').TemplateResult} TemplateResult */
 /** @typedef {import('@advanced-rest-client/events').Application.AppVersionInfo} AppVersionInfo */
-
-const unhandledRejectionHandler = Symbol("unhandledRejectionHandler");
 
 /**
  * A base class for pages build outside the LitElement. It uses `lit-html` 
@@ -29,7 +28,7 @@ const unhandledRejectionHandler = Symbol("unhandledRejectionHandler");
 export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget)) {
   constructor() {
     super();
-    window.onunhandledrejection = this[unhandledRejectionHandler].bind(this);
+    window.onunhandledrejection = this.unhandledRejectionHandler.bind(this);
     this.initObservableProperties('anypoint', 'loadingStatus');
     /** @type boolean */
     this.anypoint = undefined;
@@ -42,6 +41,7 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
      * @type {string} The loading state information.
      */
     this.loadingStatus = 'Initializing the application...';
+    window.addEventListener(EventTypes.Theme.State.activated, this.themeActivateHandler.bind(this));
     this.initMediaQueries();
   }
 
@@ -71,10 +71,17 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
   /**
    * @param {PromiseRejectionEvent} e
    */
-  [unhandledRejectionHandler](e) {
+  unhandledRejectionHandler(e) {
     /* eslint-disable-next-line no-console */
     console.error(e);
     this.reportCriticalError(e.reason);
+  }
+
+  /**
+   * @param {CustomEvent} e
+   */
+  themeActivateHandler(e) {
+    this.anypoint = e.detail === Constants.anypointTheme;
   }
 
   /**

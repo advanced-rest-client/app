@@ -2,13 +2,10 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-param-reassign */
 import { html } from 'lit-html';
-import { classMap } from "lit-html/directives/class-map.js";
-import { styleMap } from "lit-html/directives/style-map.js";
 import { get, del } from 'idb-keyval';
 import { Events, EventTypes } from '@advanced-rest-client/events';
 import { RequestModel, RestApiModel, AuthDataModel, HostRulesModel, VariablesModel, UrlHistoryModel, HistoryDataModel, UrlIndexer } from '@advanced-rest-client/idb-store'
 import { Utils } from "@advanced-rest-client/base";
-import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 import '@api-components/amf-components/define/api-documentation.js';
 import '@api-components/amf-components/define/api-request.js';
 import '@api-components/amf-components/define/api-navigation.js';
@@ -32,11 +29,6 @@ import { findRoute, navigatePage, navigate } from "../lib/route.js";
 /** @typedef {import('@api-components/amf-components/src/events/NavigationEvents').ApiNavigationEvent} ApiNavigationEvent */
 
 const configStateChangeHandler = Symbol("configStateChangeHandler");
-const themeActivateHandler = Symbol("themeActivateHandler");
-const navResizeMousedown = Symbol("navResizeMousedown");
-const resizeMouseUp = Symbol("resizeMouseUp");
-const resizeMouseMove = Symbol("resizeMouseMove");
-const isResizing = Symbol("isResizing");
 const mainBackHandler = Symbol("mainBackHandler");
 const apiTitleValue = Symbol('apiTitleValue');
 
@@ -190,9 +182,6 @@ export class ApiConsoleScreen extends ApplicationScreen {
     this.apiStore.listen();
     window.addEventListener(ApiEventTypes.Navigation.apiNavigate, this.apiNavigationHandler.bind(this));
     window.addEventListener(EventTypes.Config.State.update, this[configStateChangeHandler].bind(this));
-    window.addEventListener(EventTypes.Theme.State.activated, this[themeActivateHandler].bind(this));
-    window.addEventListener('mousemove', this[resizeMouseMove].bind(this));
-    window.addEventListener('mouseup', this[resizeMouseUp].bind(this)); 
     // window.addEventListener('beforeunload', this.beforeunloadHandler.bind(this));
   }
 
@@ -451,46 +440,13 @@ export class ApiConsoleScreen extends ApplicationScreen {
   }
 
   /**
-   * @param {CustomEvent} e
+   * @param {ResizeEvent} e
    */
-  [themeActivateHandler](e) {
-    this.anypoint = e.detail === Constants.anypointTheme;
-  }
-
-  /**
-   * @param {MouseEvent} e
-   */
-  [navResizeMousedown](e) {
-    this[isResizing] = true;
-    e.preventDefault();
-  }
-
-  /**
-   * @param {MouseEvent} e
-   */
-  [resizeMouseUp](e) {
-    if (!this[isResizing]) {
-      return;
+  navigationResizeHandler(e) {
+    const { width } = e;
+    if (width < 100) {
+      e.preventDefault();
     }
-    this[isResizing] = false;
-    e.preventDefault();
-  }
-
-  /**
-   * @param {MouseEvent} e
-   */
-  [resizeMouseMove](e) {
-    if (!this[isResizing]) {
-      return;
-    }
-    const { pageX } = e;
-    if (pageX < 100) {
-      return;
-    }
-    if (pageX > window.innerWidth - 100) {
-      return;
-    }
-    this.navigationWidth = pageX;
   }
 
   [mainBackHandler]() {
@@ -588,27 +544,15 @@ export class ApiConsoleScreen extends ApplicationScreen {
   }
 
   navigationTemplate() {
-    const { navigationWidth } = this;
-    const hasWidth = typeof navigationWidth === 'number';
-    const classes = {
-      'auto-width': hasWidth,
-    };
-    const styles = {
-      width: '',
-    };
-    if (hasWidth) {
-      styles.width = `${navigationWidth}px`;
-    }
     return html`
     <nav
-      class="${classMap(classes)}"
-      style="${styleMap(styles)}"
+      resize="east"
+      @resize="${this.navigationResizeHandler}"
     >
       <div class="menu-title">
         API index
       </div>
       ${this.apiNavigationTemplate()}
-      <div class="nav-resize-rail" @mousedown="${this[navResizeMousedown]}"></div>
     </nav>
     `;
   }

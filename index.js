@@ -35,3 +35,4 @@ export { ApiParserBindings } from './src/bindings/base/ApiParserBindings.js';
 
 // shortcuts
 export { MonacoLoader } from "@advanced-rest-client/monaco-support";
+export { LitElement, html, css, svg } from 'lit-element';

@@ -44,6 +44,8 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
    * @param message The message to render
    */
   reportCriticalError(message: string): void;
+  unhandledRejectionHandler(e: PromiseRejectionEvent): void;
+  themeActivateHandler(e: CustomEvent): void;
   /**
    * Loads the current application theme and sets the value of `anypoint`.
    */

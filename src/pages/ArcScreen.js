@@ -1,8 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable class-methods-use-this */
 import { html } from "lit-html";
-import { classMap } from "lit-html/directives/class-map.js";
-import { styleMap } from "lit-html/directives/style-map.js";
 import { EventTypes, Events, ProjectActions } from "@advanced-rest-client/events";
 import { ProjectModel, RequestModel, RestApiModel, AuthDataModel, HostRulesModel, VariablesModel, UrlHistoryModel, HistoryDataModel, ClientCertificateModel, WebsocketUrlHistoryModel, UrlIndexer, ArcDataExport, ArcDataImport } from '@advanced-rest-client/idb-store'
 import { set } from 'idb-keyval';
@@ -13,8 +11,6 @@ import '@anypoint-web-components/awc/anypoint-icon-button.js';
 import '@advanced-rest-client/icons/arc-icon.js';
 import '@advanced-rest-client/anypoint/define/exchange-search.js';
 import { Utils, ModulesRegistry, RequestCookies } from "@advanced-rest-client/base";
-import * as Constants from '@advanced-rest-client/base/src/Constants.js';
-
 import { ApplicationScreen } from "./ApplicationScreen.js";
 import { findRoute, navigate, navigatePage } from "../lib/route.js";
 // import * as RequestCookies from "../request-modules/RequestCookies.js";
@@ -87,10 +83,6 @@ const workspaceAppendExportHandler = Symbol("workspaceAppendExportHandler");
 const environmentSelectedHandler = Symbol("environmentSelectedHandler");
 const navMinimizedHandler = Symbol("navMinimizedHandler");
 const menuRailSelected = Symbol("menuRailSelected");
-const navResizeMousedown = Symbol("navResizeMousedown");
-const resizeMouseUp = Symbol("resizeMouseUp");
-const resizeMouseMove = Symbol("resizeMouseMove");
-const isResizing = Symbol("isResizing");
 const mainNavigateHandler = Symbol("mainNavigateHandler");
 const requestDetailTemplate = Symbol("requestDetailTemplate");
 const requestMetaTemplate = Symbol("requestMetaTemplate");
@@ -105,7 +97,6 @@ const processApplicationState = Symbol("processApplicationState");
 const arcNavigationTemplate = Symbol("arcNavigationTemplate");
 const exchangeSearchTemplate = Symbol("exchangeSearchTemplate");
 const exchangeSelectionHandler = Symbol("exchangeSelectionHandler");
-const themeActivateHandler = Symbol("themeActivateHandler");
 const arcLegacyProjectTemplate = Symbol("arcLegacyProjectTemplate");
 
 /**
@@ -386,7 +377,7 @@ export class ArcScreen extends ApplicationScreen {
       'route', 'routeParams', 'initializing', 
       'navigationDetached', 'updateState', 
       'currentEnvironment',
-      'navigationWidth', 'navigationSelected',
+      'navigationSelected',
       'requestDetailsOpened', 'requestMetaOpened', 'metaRequestId', 'metaRequestType',
     );
 
@@ -501,9 +492,6 @@ export class ArcScreen extends ApplicationScreen {
     window.addEventListener(EventTypes.Model.Environment.State.select, this[environmentSelectedHandler].bind(this));
     window.addEventListener(EventTypes.App.command, this[commandHandler].bind(this));
     window.addEventListener(EventTypes.App.requestAction, this[requestActionHandler].bind(this));
-    window.addEventListener(EventTypes.Theme.State.activated, this[themeActivateHandler].bind(this));
-    window.addEventListener('mousemove', this[resizeMouseMove].bind(this));
-    window.addEventListener('mouseup', this[resizeMouseUp].bind(this));
     
   }
 
@@ -984,39 +972,13 @@ export class ArcScreen extends ApplicationScreen {
   }
 
   /**
-   * @param {MouseEvent} e
+   * @param {ResizeEvent} e
    */
-  [navResizeMousedown](e) {
-    this[isResizing] = true;
-    e.preventDefault();
-  }
-
-  /**
-   * @param {MouseEvent} e
-   */
-  [resizeMouseUp](e) {
-    if (!this[isResizing]) {
-      return;
+  navigationResizeHandler(e) {
+    const { width } = e;
+    if (width < 180) {
+      e.preventDefault();
     }
-    this[isResizing] = false;
-    e.preventDefault();
-  }
-
-  /**
-   * @param {MouseEvent} e
-   */
-  [resizeMouseMove](e) {
-    if (!this[isResizing]) {
-      return;
-    }
-    const { pageX } = e;
-    if (pageX < 100) {
-      return;
-    }
-    if (pageX > window.innerWidth - 100) {
-      return;
-    }
-    this.navigationWidth = pageX;
   }
 
   [metaRequestHandler]() {
@@ -1056,13 +1018,6 @@ export class ArcScreen extends ApplicationScreen {
     } catch (cause) {
       this.reportCriticalError(cause.message);
     }
-  }
-
-  /**
-   * @param {CustomEvent} e
-   */
-  [themeActivateHandler](e) {
-    this.anypoint = e.detail === Constants.anypointTheme;
   }
 
   appTemplate() {
@@ -1166,24 +1121,12 @@ export class ArcScreen extends ApplicationScreen {
     if (this.navigationDetached) {
       return '';
     }
-    const { navigationWidth } = this;
-    const hasWidth = typeof navigationWidth === 'number';
-    const classes = {
-      'auto-width': hasWidth,
-    };
-    const styles = {
-      width: '',
-    };
-    if (hasWidth) {
-      styles.width = `${navigationWidth}px`;
-    }
     return html`
     <nav
-      class="${classMap(classes)}"
-      style="${styleMap(styles)}"
+      resize="east"
+      @resize="${this.navigationResizeHandler}"
     >
       ${this[arcNavigationTemplate]()}
-      <div class="nav-resize-rail" @mousedown="${this[navResizeMousedown]}"></div>
     </nav>
     `;
   }
