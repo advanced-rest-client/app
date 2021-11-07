@@ -12,6 +12,12 @@ import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 import '@api-components/amf-components/define/api-documentation.js';
 import '@api-components/amf-components/define/api-request.js';
 import '@api-components/amf-components/define/api-navigation.js';
+import '@anypoint-web-components/awc/anypoint-menu-button.js';
+import '@anypoint-web-components/awc/anypoint-icon-button.js';
+import '@anypoint-web-components/awc/anypoint-button.js';
+import '@anypoint-web-components/awc/anypoint-listbox.js';
+import '@anypoint-web-components/awc/anypoint-item.js';
+import '@advanced-rest-client/icons/arc-icon.js';
 import { DomEventsAmfStore, ApiEventTypes } from '@api-components/amf-components';
 import { ApplicationScreen } from './ApplicationScreen.js';
 import { findRoute, navigatePage, navigate } from "../lib/route.js";
@@ -499,7 +505,7 @@ export class ApiConsoleScreen extends ApplicationScreen {
    * Stores the API in the data store.
    */
   async saveApi() {
-    const { baseUri, apiVersion, amfType, apiTitle='Unnamed API' } = this;
+    const { baseUri, apiVersion, amfType, apiTitle='Unnamed API', apiId } = this;
     let { indexItem } = this;
     if (indexItem) {
       indexItem.versions.push(apiVersion);
@@ -524,6 +530,9 @@ export class ApiConsoleScreen extends ApplicationScreen {
       version: apiVersion,
       amfVersion: '5.0.0',
     });
+    
+    await del(apiId);
+    navigate('api', 'db', record.id, apiVersion, this.domainId || 'summary', this.domainType || 'summary');
   }
 
   /**

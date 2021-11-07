@@ -59,15 +59,21 @@ h2.title {
 }
 
 header {
-  height: 56px;
-  background-color: var(--arc-toolbar-background);
-  color: var(--arc-toolbar-color);
+  /* height: 56px; */
+  height: 64px;
   display: flex;
   flex-direction: row;
   align-items: center;
   border-bottom: 1px solid #e5e5e5;
   padding: 20px;
   box-sizing: border-box;
+  background-color: var(--arc-toolbar-background);
+  color: var(--arc-toolbar-color);
+}
+
+header anypoint-button[emphasis=high] {
+  color: var(--arc-toolbar-background);
+  background-color: var(--arc-toolbar-color);
 }
 
 .header-action-button {
