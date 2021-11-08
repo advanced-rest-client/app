@@ -7,6 +7,7 @@ import { EncryptionBindingsWeb } from '../../src/bindings/web/EncryptionBindings
 import { GoogleDriveBindingsWeb } from '../../src/bindings/web/GoogleDriveBindingsWeb.js';
 import { OAuth2BindingsWeb } from '../../src/bindings/web/OAuth2BindingsWeb.js';
 import { DemoApiParserBindings } from './DemoApiParserBindings.js';
+import { HttpProxyBindings } from './HttpProxyBindings.js';
 
 /**
  * A class that mocks Electron APIs.
@@ -23,6 +24,7 @@ export class DemoBindings {
     this.googleDrive = new GoogleDriveBindingsWeb();
     this.oauth2 = new OAuth2BindingsWeb();
     this.apiParser = new DemoApiParserBindings();
+    this.http = new HttpProxyBindings();
   }
 
   async initialize() {
@@ -35,5 +37,6 @@ export class DemoBindings {
     await this.googleDrive.initialize();
     await this.oauth2.initialize();
     await this.apiParser.initialize();
+    await this.http.initialize();
   }
 }

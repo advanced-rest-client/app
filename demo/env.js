@@ -2,8 +2,10 @@
 export default {
   variables: /** @type NodeJS.ProcessEnv */ ({}),
   amfService: {
-    // hostname: '',
     path: '',
-    // port: 0,
+  },
+  httpProxy: {
+    port: 0,
+    base: '',
   },
 };

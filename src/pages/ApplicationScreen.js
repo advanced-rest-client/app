@@ -32,7 +32,7 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
     this.initObservableProperties('anypoint', 'loadingStatus');
     /** @type boolean */
     this.anypoint = undefined;
-    this.eventTarget = document.body;
+    this.eventTarget = window;
     /** 
      * True when the app should render mobile friendly view.
      */
