@@ -28,7 +28,7 @@
     "@advanced-rest-client/highlight": "^2.0.1",
     "@advanced-rest-client/http-code-snippets": "^4.0.0",
     "@advanced-rest-client/icons": "^4.0.0",
-    "@advanced-rest-client/libs": "^1.0.1",
+    "@advanced-rest-client/libs": "^1.0.2",
     "@advanced-rest-client/monaco-support": "^1.0.1",
     "@advanced-rest-client/oauth": "^0.1.0",
     "@advanced-rest-client/uuid": "^4.0.0",
@@ -47,6 +47,7 @@
   "devDependencies": {
     "@advanced-rest-client/arc-demo-helper": "^5.0.2",
     "@advanced-rest-client/arc-mock": "^5.0.0",
+    "@advanced-rest-client/arc-proxy": "^0.1.0",
     "@advanced-rest-client/electron": "^0.1.0",
     "@advanced-rest-client/idb-store": "^1.0.0",
     "@api-components/amf-web-api": "^0.1.0",

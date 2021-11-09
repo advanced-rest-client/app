@@ -59,8 +59,8 @@ h2.title {
 }
 
 header {
-  /* height: 56px; */
-  height: 64px;
+  height: 56px;
+  /* height: 64px; */
   display: flex;
   flex-direction: row;
   align-items: center;

@@ -1,17 +1,9 @@
 /* eslint-disable consistent-return */
 import { ApiRoutes } from '@api-components/amf-web-api/src/ApiRoutes.js';
-import getPort, {portNumbers} from 'get-port';
-import pkg from './demo/proxy/Server.js';
-
-const { ProxyServer } = pkg;
+import { ApiRoutes as ProxyRoutes } from '@advanced-rest-client/arc-proxy/src/ApiRoutes.js';
 
 /** @typedef {import('@web/dev-server').DevServerConfig} DevServerConfig */
 /** @typedef {import('@web/dev-server-core').ServerStartParams} ServerStartParams */
-
-/** @type number */
-let proxyPort;
-
-const proxyServer = new ProxyServer();
 
 export default /** @type DevServerConfig */ ({
   plugins: [
@@ -21,12 +13,15 @@ export default /** @type DevServerConfig */ ({
        * @param {ServerStartParams} args
        */
       async serverStart(args) {
-        proxyPort = await getPort({ port: portNumbers(8000, 8100) });
+        const proxyHandler = new ProxyRoutes();
+        const proxyRouter = proxyHandler.setup('/proxy/v1');
+        args.app.use(proxyRouter.routes());
+        args.app.use(proxyRouter.allowedMethods());
+
         const handler = new ApiRoutes();
         const apiRouter = handler.setup('/api/v1');
         args.app.use(apiRouter.routes());
         args.app.use(apiRouter.allowedMethods());
-        await proxyServer.start(proxyPort);
       },
 
       /**
@@ -38,10 +33,6 @@ export default /** @type DevServerConfig */ ({
             variables: process.env,
             amfService: {
               path: '/api/v1',
-            },
-            httpProxy: {
-              port: proxyPort,
-              base: `//localhost:${proxyPort}/proxy?u=`,
             },
           };
           return `export default ${JSON.stringify(env)}`;

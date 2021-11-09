@@ -4,8 +4,4 @@ export default {
   amfService: {
     path: '',
   },
-  httpProxy: {
-    port: 0,
-    base: '',
-  },
 };

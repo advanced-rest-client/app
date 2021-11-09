@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import { EventTypes, Events } from '@advanced-rest-client/events';
+import { ApiEventTypes, ApiEvents } from '@api-components/amf-components';
 import { RequestFactory } from '@advanced-rest-client/base';
 import { PlatformBindings } from './PlatformBindings.js';
 
@@ -16,6 +17,11 @@ import { PlatformBindings } from './PlatformBindings.js';
 /** @typedef {import('@advanced-rest-client/events').ArcResponse.ErrorResponse} ErrorResponse */
 /** @typedef {import('@advanced-rest-client/events').HostRule.HostRule} HostRule */
 /** @typedef {import('@advanced-rest-client/events').Config.ARCConfig} ARCConfig */
+/** @typedef {import('@api-components/amf-components').ApiRequestEvent} ApiRequestEvent */
+/** @typedef {import('@api-components/amf-components').AbortRequestEvent} AbortRequestEvent */
+/** @typedef {import('@api-components/amf-components').ApiConsoleRequest} ApiConsoleRequest */
+/** @typedef {import('@api-components/amf-components').AbortRequestEventDetail} AbortRequestEventDetail */
+/** @typedef {import('@api-components/amf-components').ApiConsoleResponse} ApiConsoleResponse */
 
 /**
  * Base bindings for handling HTTP request for ARC and API Console.
@@ -188,6 +194,8 @@ export class HttpRequestBindings extends PlatformBindings {
     window.addEventListener(EventTypes.Transport.abort, this.abortRequestHandler.bind(this));
     window.addEventListener(EventTypes.Transport.transport, this.transportRequestHandler.bind(this));
     window.addEventListener(EventTypes.Config.State.update, this.configStateChangeHandler.bind(this));
+    window.addEventListener(ApiEventTypes.Request.apiRequest, this.apicRequestHandler.bind(this));
+    window.addEventListener(ApiEventTypes.Request.abortApiRequest, this.apicAbortHandler.bind(this));
   }
 
   /**
@@ -342,5 +350,83 @@ export class HttpRequestBindings extends PlatformBindings {
         id,
       }
     }));
+  }
+
+  /**
+   * @param {ApiRequestEvent} e
+   */
+  apicRequestHandler(e) {
+    if (e.defaultPrevented) {
+      return;
+    }
+    e.preventDefault();
+    const request = /** @type ApiConsoleRequest */ (e.detail);
+    this.apiConsoleRequest(request);
+  }
+
+  /**
+   * @param {AbortRequestEvent} e
+   */
+  apicAbortHandler(e) {
+    if (e.defaultPrevented) {
+      return;
+    }
+    e.preventDefault();
+    const info = /** @type AbortRequestEventDetail */ (e.detail);
+    this.apiConsoleAbort(info.id);
+  }
+
+  /**
+   * @param {ApiConsoleRequest} request
+   * @returns {Promise<void>}
+   */
+  async apiConsoleRequest(request) {
+    const transportRequest = /** @type ArcEditorRequest */ ({
+      id: request.id,
+      request: {
+        url: request.url,
+        method: request.method,
+        headers: request.headers,
+        payload: request.payload,
+        authorization: request.authorization,
+      },
+    });
+    try {
+      const processed = await this.factory.processRequest(transportRequest, {
+        evaluateVariables: this.variablesEnabled,
+        evaluateSystemVariables: this.systemVariablesEnabled,
+      });
+      await this.transportApiConsole(processed.id, request, processed.request);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      const { id } = transportRequest;
+      const info = /** @type ApiConsoleResponse */ ({
+        id,
+        isError: true,
+        loadingTime: 0,
+        request,
+        response: undefined,
+        error: err,
+      });
+      ApiEvents.Request.apiResponse(document.body, info);
+    }
+  }
+
+  /**
+   * @param {string} id
+   * @returns {Promise<void>}
+   */
+  async apiConsoleAbort(id) {
+    throw new Error('Not implemented');
+  }
+
+  /**
+   * @param {string} id
+   * @param {ApiConsoleRequest} sourceRequest
+   * @param {ArcBaseRequest} arcRequest
+   */
+  async transportApiConsole(id, sourceRequest, arcRequest) {
+    throw new Error(`Not implemented.`);
   }
 }

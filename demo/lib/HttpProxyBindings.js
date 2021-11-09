@@ -1,11 +1,12 @@
-import { Events } from '@advanced-rest-client/events';
-import { ArcHeaders } from '@advanced-rest-client/base';
+import { ApiEvents } from '@api-components/amf-components';
 import { HttpRequestBindings } from "../../src/bindings/base/HttpRequestBindings.js";
-import env from "../env.js";
 
 /** @typedef {import('@advanced-rest-client/events').ArcRequest.ArcBaseRequest} ArcBaseRequest */
 /** @typedef {import('@advanced-rest-client/events').ArcRequest.RequestConfig} RequestConfig */
 /** @typedef {import('@advanced-rest-client/events').ArcResponse.ErrorResponse} ErrorResponse */
+/** @typedef {import('@api-components/amf-components').ApiConsoleRequest} ApiConsoleRequest */
+/** @typedef {import('@advanced-rest-client/events').ArcRequest.ArcEditorRequest} ArcEditorRequest */
+/** @typedef {import('@api-components/amf-components').ApiConsoleResponse} ApiConsoleResponse */
 
 export class HttpProxyBindings extends HttpRequestBindings {
   /**
@@ -14,58 +15,47 @@ export class HttpProxyBindings extends HttpRequestBindings {
    * @param {RequestConfig=} config
    */
   async transport(request, id, config = { enabled: false }) {
-    const proxyUrl = `${window.location.protocol}${env.httpProxy.base}${encodeURIComponent(request.url)}`
     const rConf = /** @type RequestConfig */ (request.config || {});
     const configInit = rConf.enabled ? rConf : /** @type RequestConfig */ ({});
-    const headers = this.prepareRequestOptions(config, configInit);
-    if (request.headers) {
-      const arcHeaders = new ArcHeaders(request.headers);
-      for (const [key, value] of arcHeaders) {
-        headers[key] = value;
-      }
-    }
-    const proxyResponse = await fetch(proxyUrl, {
-      headers,
-      method: request.method,
-      body: request.payload,
-    });
-    if (!proxyResponse.ok) {
-      const errorResponse = {
-        error: new Error(`Unable to make the request. Proxy error.`),
-        status: 0,
-      };
-      Events.Transport.response(document.body, id, request, undefined, errorResponse);
-      return;
-    }
-    const body = await proxyResponse.json();
-    const { response, transport } = body;
-    if (response.payload) {
-      response.payload = this.transformedToBuffer(response.payload);
-    }
-    if (transport.payload) {
-      transport.payload = this.transformedToBuffer(transport.payload);
-    }
-    const er = {
-      id,
+    const finalConfig = this.prepareRequestOptions(config, configInit);
+
+    const ctrl = new AbortController();
+    this.connections.set(id, {
+      connection: ctrl,
       request,
+      aborted: false,
+    });
+    const body = JSON.stringify({
+      request,
+      config: finalConfig,
+    });
+    const rsp = await fetch('/proxy/v1/proxy', {
+      body,
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      signal: ctrl.signal,
+    });
+    const info = await rsp.json();
+    const { response, transport } = info;
+    if (response.payload) {
+      const array = new Uint8Array(response.payload.data);
+      response.payload = array.buffer;
     }
-    try {
-      await this.factory.processResponse(er, transport, response, {
-        evaluateVariables: this.variablesEnabled,
-        evaluateSystemVariables: this.systemVariablesEnabled,
-      });
-      Events.Transport.response(document.body, id, request, transport, response);
-    } catch (e) {
-      const errorResponse = /** @type ErrorResponse */ ({
-        error: e,
-        status: response.status,
-        headers: response.headers,
-        payload: response.payload,
-        statusText: response.statusText,
-        id: response.id,
-      });
-      Events.Transport.response(document.body, id, request, transport, errorResponse);
+    if (transport.httpMessage) {
+      const array = new Uint8Array(transport.httpMessage.data);
+      const enc = new TextDecoder("utf-8");
+      transport.httpMessage = enc.decode(array);
     }
+    const arcTransport = {
+      url: request.url,
+      method: request.method,
+      headers: request.headers,
+      payload: request.payload,
+      ...transport 
+    };
+    this.loadHandler(id, response, arcTransport);
   }
 
   /**
@@ -79,25 +69,18 @@ export class HttpProxyBindings extends HttpRequestBindings {
       ...primary,
     }));
     const result = /** @type Record<string, string> */ ({});
-    if (typeof config.timeout === 'number') {
-      result['x-arc-proxy-timeout'] = String(config.timeout);
-    } else {
-      result['x-arc-proxy-timeout'] = String(this.requestTimeout);
+    if (typeof config.timeout !== 'number') {
+      config.timeout = this.requestTimeout;
     }
-    if (typeof config.followRedirects === 'boolean') {
-      result['x-arc-proxy-follow-redirects'] = String(config.followRedirects);
-    } else {
-      result['x-arc-proxy-follow-redirects'] = String(this.followRedirects);
+    if (typeof config.followRedirects !== 'boolean') {
+      config.followRedirects = this.followRedirects;
     }
-    if (typeof config.defaultHeaders === 'boolean') {
-      result['x-arc-proxy-default-headers'] = String(config.defaultHeaders);
-    } else {
-      result['x-arc-proxy-default-headers'] = String(this.defaultHeaders);
+    if (typeof config.defaultHeaders !== 'boolean') {
+      // @ts-ignore
+      config.defaultHeaders = this.defaultHeaders;
     }
-    if (typeof config.validateCertificates === 'boolean') {
-      result['x-arc-proxy-validate-certificates'] = String(config.validateCertificates);
-    } else {
-      result['x-arc-proxy-validate-certificates'] = String(this.validateCertificates);
+    if (typeof config.validateCertificates !== 'boolean') {
+      config.validateCertificates = this.validateCertificates;
     }
     return result;
   }
@@ -112,5 +95,49 @@ export class HttpProxyBindings extends HttpRequestBindings {
       return buffer;
     }
     return undefined;
+  }
+
+  /**
+   * @param {string} id
+   * @param {ApiConsoleRequest} sourceRequest
+   * @param {ArcBaseRequest} arcRequest
+   */
+  async transportApiConsole(id, sourceRequest, arcRequest) {
+    const ctrl = new AbortController();
+    this.connections.set(id, {
+      connection: ctrl,
+      request: arcRequest,
+      aborted: false,
+    });
+    const body = JSON.stringify({
+      request: arcRequest,
+      config: {
+        timeout: 90000,
+        followRedirects: true,
+        validateCertificates: false,
+      },
+    });
+    const rsp = await fetch('/proxy/v1/proxy', {
+      body,
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      signal: ctrl.signal,
+    });
+    const info = await rsp.json();
+    const { response } = info;
+    if (response.payload) {
+      const array = new Uint8Array(response.payload.data);
+      response.payload = array.buffer;
+    }
+    const apiResponse = /** @type ApiConsoleResponse */ ({
+      id,
+      isError: false,
+      loadingTime: response.loadingTime,
+      request: sourceRequest,
+      response,
+    });
+    ApiEvents.Request.apiResponse(document.body, apiResponse);
   }
 }
