@@ -12,22 +12,30 @@ import { verifyPermission } from './lib/NativeFilesystem.js';
 const contentsKey = 'ArcWorkspaceBindings.content';
 const customContentsPrefix = 'Workspace.';
 const lastWorkspaceKey = 'Workspace.Id';
+const idSymbol = Symbol('idSymbol');
+const storeIdSymbol = Symbol('storeIdSymbol');
+const storeDefaultSymbol = Symbol('storeDefaultSymbol');
+const restoreIdSymbol = Symbol('restoreIdSymbol');
+const restoreDefaultSymbol = Symbol('restoreDefaultSymbol');
 
 /**
  * Web platform bindings for the request workspace related logic.
  */
 export class WorkspaceBindingsWeb extends WorkspaceBindings {
-  /** @type {string} */
-  #id = undefined;
+  constructor() {
+    super();
+    /** @type {string} */
+    this[idSymbol] = undefined;
+  }
 
   /**
    * @param {DomainWorkspace} contents The workspace to store.
    */
   async store(contents) {
-    if (this.#id) {
-      await this.#storeId(this.#id, contents);
+    if (this[idSymbol]) {
+      await this[storeIdSymbol](this[idSymbol], contents);
     } else {
-      await this.#storeDefault(contents);
+      await this[storeDefaultSymbol](contents);
     }
     Events.Workspace.State.write(window);
   }
@@ -36,11 +44,11 @@ export class WorkspaceBindingsWeb extends WorkspaceBindings {
    * @param {string} id The workspace id to use.
    * @param {DomainWorkspace} contents The workspace to store.
    */
-  async #storeId(id, contents) {
+  async [storeIdSymbol](id, contents) {
     const key = `${customContentsPrefix}${id}`;
     const fileRef = await get(key);
     if (!fileRef) {
-      await this.#storeDefault(contents);
+      await this[storeDefaultSymbol](contents);
       return;
     }
     const granted = await verifyPermission(fileRef, true);
@@ -55,7 +63,7 @@ export class WorkspaceBindingsWeb extends WorkspaceBindings {
   /**
    * @param {DomainWorkspace} contents The workspace to store.
    */
-  async #storeDefault(contents) {
+  async [storeDefaultSymbol](contents) {
     await set(contentsKey, contents);
   }
 
@@ -64,7 +72,7 @@ export class WorkspaceBindingsWeb extends WorkspaceBindings {
    * @param {string} id The new workspace ID.
    */
   setId(id) {
-    this.#id = id;
+    this[idSymbol] = id;
   }
 
   /**
@@ -76,7 +84,7 @@ export class WorkspaceBindingsWeb extends WorkspaceBindings {
     if (!id) {
       return;
     }
-    this.#id = id;
+    this[idSymbol] = id;
     localStorage.setItem(lastWorkspaceKey, id);
     Events.Workspace.triggerWrite(window);
   }
@@ -113,21 +121,21 @@ export class WorkspaceBindingsWeb extends WorkspaceBindings {
    * @returns {Promise<DomainWorkspace>}
    */
   async restore() {
-    if (this.#id) {
-      return this.#restoreId(this.#id);
+    if (this[idSymbol]) {
+      return this[restoreIdSymbol](this[idSymbol]);
     }
-    return this.#restoreDefault();
+    return this[restoreDefaultSymbol]();
   }
 
   /**
    * @param {string} id 
    * @returns {Promise<DomainWorkspace>}
    */
-  async #restoreId(id) {
+  async [restoreIdSymbol](id) {
     const key = `${customContentsPrefix}${id}`;
     const fileRef = await get(key);
     if (!fileRef) {
-      return this.#restoreDefault();
+      return this[restoreDefaultSymbol]();
     }
     const granted = await verifyPermission(fileRef, false);
     if (!granted) {
@@ -139,7 +147,7 @@ export class WorkspaceBindingsWeb extends WorkspaceBindings {
     return this.processWorkspaceInput(data);
   }
 
-  async #restoreDefault() {
+  async [restoreDefaultSymbol]() {
     return this.processWorkspaceInput(await get(contentsKey));
   }
 }

@@ -43,3 +43,4 @@ export { WorkspaceBindings } from './src/bindings/base/WorkspaceBindings.js';
 export { MonacoLoader } from "@advanced-rest-client/monaco-support";
 export { LitElement, html, css, svg } from 'lit-element';
 export { ArcContextMenu, ArcContextMenuCommands } from '@advanced-rest-client/base';
+export * as Constants from '@advanced-rest-client/base/src/Constants.js';

@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { Utils } from '@advanced-rest-client/base';
+import { updateDeepValue } from '@advanced-rest-client/base/src/lib/Utils.js';
 
 /**
  * A base class for all platform bindings.
@@ -19,6 +19,6 @@ export class PlatformBindings {
    * @param {unknown} value The value to set.
    */
   updateValue(settings, path, value) {
-    Utils.updateDeepValue(settings, path, value);
+    updateDeepValue(settings, path, value);
   }
 }

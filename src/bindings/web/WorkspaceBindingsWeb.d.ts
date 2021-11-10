@@ -1,11 +1,17 @@
 import { Workspace } from '@advanced-rest-client/events';
 import { WorkspaceBindings } from '../base/WorkspaceBindings.js';
 
+declare const idSymbol: unique symbol;
+declare const storeIdSymbol: unique symbol;
+declare const storeDefaultSymbol: unique symbol;
+declare const restoreIdSymbol: unique symbol;
+declare const restoreDefaultSymbol: unique symbol;
+
 /**
  * Web platform bindings for the request workspace related logic.
  */
 export class WorkspaceBindingsWeb extends WorkspaceBindings {
-  #id: string;
+  [idSymbol]: string;
   /**
    * @param contents The workspace to store.
    */
@@ -14,11 +20,11 @@ export class WorkspaceBindingsWeb extends WorkspaceBindings {
    * @param id The workspace id to use.
    * @param contents The workspace to store.
    */
-  #storeId(id: string, contents: Workspace.DomainWorkspace): Promise<void>;
+  [storeIdSymbol](id: string, contents: Workspace.DomainWorkspace): Promise<void>;
   /**
    * @param contents The workspace to store.
    */
-  #storeDefault(contents: Workspace.DomainWorkspace): Promise<void>;
+  [storeDefaultSymbol](contents: Workspace.DomainWorkspace): Promise<void>;
   /**
    * Executes the logic to change the workspace id.
    * @param id The new workspace ID.
@@ -37,6 +43,6 @@ export class WorkspaceBindingsWeb extends WorkspaceBindings {
    * Reads the current state of the workspace.
    */
   restore(): Promise<Workspace.DomainWorkspace>;
-  #restoreId(id: string): Promise<Workspace.DomainWorkspace>;
-  #restoreDefault(): Promise<Workspace.DomainWorkspace>;
+  [restoreIdSymbol](id: string): Promise<Workspace.DomainWorkspace>;
+  [restoreDefaultSymbol](): Promise<Workspace.DomainWorkspace>;
 }
