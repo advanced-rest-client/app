@@ -1,42 +1,34 @@
 import { TemplateResult } from "lit-html";
 import { ARCRequestNavigationEvent, ARCProjectNavigationEvent, ARCRestApiNavigationEvent, Config, ARCMenuPopupEvent, ArcState, Application, ARCNavigationEvent, ConfigStateUpdateEvent, WorkspaceAppendRequestEvent, WorkspaceAppendExportEvent, ARCEnvironmentStateSelectEvent } from "@advanced-rest-client/events";
-import { ProjectModel, RequestModel, RestApiModel, AuthDataModel, HostRulesModel, VariablesModel, UrlHistoryModel, HistoryDataModel, ClientCertificateModel, WebsocketUrlHistoryModel, UrlIndexer, ArcDataExport, ArcDataImport } from '@advanced-rest-client/idb-store'
+import { ArcDataExport, ArcDataImport } from '@advanced-rest-client/idb-store'
 import { ArcContextMenu, ArcRequestWorkspaceElement } from "@advanced-rest-client/base";
 import { ApplicationScreen } from "./ApplicationScreen.js";
 import { Route } from "../lib/route.js";
 import { ArcAppInitOptions } from '../types';
+
+export const workspaceSymbol: unique symbol;
 
 /**
  * Advanced REST CLient - the API Client screen.
  */
 export class ArcScreen extends ApplicationScreen {
   static get routes(): Route[];
-  #workspace: ArcRequestWorkspaceElement;
-  #contextMenu: ArcContextMenu;
+  [workspaceSymbol]: ArcRequestWorkspaceElement;
+  contextMenu: ArcContextMenu;
   /** 
    * IDB data export processor.
    */
-  #dataExport: ArcDataExport;
+  dataExport: ArcDataExport;
   /** 
    * IDB data import processor.
    */
-  #dataImport: ArcDataImport;
+  dataImport: ArcDataImport;
   config: Config.ARCConfig;
   /**
    * A list of detached menu panels.
    */
   menuPopup: string[];
-  requestModel: RequestModel;
-  projectModel: ProjectModel;
-  restApiModel: RestApiModel;
-  authDataModel: AuthDataModel;
-  hostRulesModel: HostRulesModel;
-  variablesModel: VariablesModel;
-  urlHistoryModel: UrlHistoryModel;
-  historyDataModel: HistoryDataModel;
-  clientCertificateModel: ClientCertificateModel;
-  websocketUrlHistoryModel: WebsocketUrlHistoryModel;
-  urlIndexer: UrlIndexer;
+  
   get workspaceElement(): ArcRequestWorkspaceElement;
 
   /**

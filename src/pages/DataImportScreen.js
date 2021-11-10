@@ -62,34 +62,9 @@ export class DataImportScreen extends ApplicationScreen {
     ];
   }
 
-  /** 
-   * IDB data import processor.
-   */
-  #dataImport = new ArcDataImport(window);
-
-  requestModel = new RequestModel();
-
-  projectModel = new ProjectModel();
-
-  restApiModel = new RestApiModel();
-
-  authDataModel = new AuthDataModel();
-
-  hostRulesModel = new HostRulesModel();
-
-  variablesModel = new VariablesModel();
-
-  urlHistoryModel = new UrlHistoryModel();
-
-  historyDataModel = new HistoryDataModel();
-
-  clientCertificateModel = new ClientCertificateModel();
-
-  websocketUrlHistoryModel = new WebsocketUrlHistoryModel();
-
   constructor() {
     super();
-
+    window.onunhandledrejection = this.unhandledRejectionHandler.bind(this);
     this.initObservableProperties(
       'route', 'routeParams', 'initializing', 'startSelection'
     );
@@ -104,7 +79,10 @@ export class DataImportScreen extends ApplicationScreen {
      * @type {string} A loading state information.
      */
     this.loadingStatus = 'Initializing import feature...';
-    window.onunhandledrejection = this.unhandledRejectionHandler.bind(this);
+    /** 
+     * IDB data import processor.
+     */
+    this.dataImport = new ArcDataImport(window);
   }
 
   /**
@@ -118,26 +96,8 @@ export class DataImportScreen extends ApplicationScreen {
     this.initializing = false;
   }
 
-  /**
-   * Initializes ARC datastore models.
-   */
-  initModels() {
-    this.urlIndexer = new UrlIndexer(this.eventTarget);
-    this.requestModel.listen(this.eventTarget);
-    this.projectModel.listen(this.eventTarget);
-    this.restApiModel.listen(this.eventTarget);
-    this.authDataModel.listen(this.eventTarget);
-    this.hostRulesModel.listen(this.eventTarget);
-    this.variablesModel.listen(this.eventTarget);
-    this.urlHistoryModel.listen(this.eventTarget);
-    this.historyDataModel.listen(this.eventTarget);
-    this.clientCertificateModel.listen(this.eventTarget);
-    this.websocketUrlHistoryModel.listen(this.eventTarget);
-    this.urlIndexer.listen();
-  }
-
   listen() {
-    this.#dataImport.listen();
+    this.dataImport.listen();
   }
 
   /**

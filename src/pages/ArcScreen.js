@@ -2,7 +2,7 @@
 /* eslint-disable class-methods-use-this */
 import { html } from "lit-html";
 import { EventTypes, Events, ProjectActions } from "@advanced-rest-client/events";
-import { ProjectModel, RequestModel, RestApiModel, AuthDataModel, HostRulesModel, VariablesModel, UrlHistoryModel, HistoryDataModel, ClientCertificateModel, WebsocketUrlHistoryModel, UrlIndexer, ArcDataExport, ArcDataImport } from '@advanced-rest-client/idb-store'
+import { ArcDataExport, ArcDataImport } from '@advanced-rest-client/idb-store'
 import { set } from 'idb-keyval';
 import { v4 } from '@advanced-rest-client/uuid';
 import { Utils, ModulesRegistry, RequestCookies, ArcContextMenu, ArcContextMenuCommands } from "@advanced-rest-client/base";
@@ -43,6 +43,8 @@ import { findRoute, navigate, navigatePage } from "../lib/route.js";
 /** @typedef {import('@advanced-rest-client/anypoint/src/types').ExchangeAsset} ExchangeAsset */
 /** @typedef {import('@anypoint-web-components/awc').BottomSheetElement} BottomSheetElement */
 /** @typedef {import('../types').ArcAppInitOptions} ArcAppInitOptions */
+
+export const workspaceSymbol = Symbol('workspaceSymbol');
 
 /**
  * Advanced REST CLient - the API Client screen.
@@ -109,61 +111,13 @@ export class ArcScreen extends ApplicationScreen {
   }
 
   /**
-   * @type {ArcRequestWorkspaceElement}
-   */
-  #workspace = undefined;
-
-  #contextMenu = new ArcContextMenu(document.body, { cancelNativeWhenHandled: true });
-
-  /** 
-   * IDB data export processor.
-   */
-  #dataExport = new ArcDataExport(window); 
-
-  /** 
-   * IDB data import processor.
-   */
-  #dataImport = new ArcDataImport(window);
-
-  /**
-   * @type {ARCConfig}
-   */
-  config = undefined
-
-  /**
-   * A list of detached menu panels.
-   * @type {string[]}
-   */
-  menuPopup = [];
-
-  requestModel = new RequestModel();
-
-  projectModel = new ProjectModel();
-
-  restApiModel = new RestApiModel();
-
-  authDataModel = new AuthDataModel();
-
-  hostRulesModel = new HostRulesModel();
-
-  variablesModel = new VariablesModel();
-
-  urlHistoryModel = new UrlHistoryModel();
-
-  historyDataModel = new HistoryDataModel();
-
-  clientCertificateModel = new ClientCertificateModel();
-
-  websocketUrlHistoryModel = new WebsocketUrlHistoryModel();
-
-  /**
    * @returns {ArcRequestWorkspaceElement}
    */
   get workspaceElement() {
-    if (!this.#workspace) {
-      this.#workspace = document.querySelector('arc-request-workspace');
+    if (!this[workspaceSymbol]) {
+      this[workspaceSymbol] = document.querySelector('arc-request-workspace');
     }
-    return this.#workspace;
+    return this[workspaceSymbol];
   }
 
   /**
@@ -317,7 +271,6 @@ export class ArcScreen extends ApplicationScreen {
 
   constructor() {
     super();
-
     this.initObservableProperties(
       'route', 'routeParams', 'initializing', 
       'navigationDetached', 'updateState', 
@@ -325,8 +278,7 @@ export class ArcScreen extends ApplicationScreen {
       'navigationSelected',
       'requestDetailsOpened', 'requestMetaOpened', 'metaRequestId', 'metaRequestType',
     );
-
-    /** 
+    /**
      * @type {boolean} Whether the project is being restored from the metadata store.
      */
     this.initializing = false;
@@ -338,34 +290,26 @@ export class ArcScreen extends ApplicationScreen {
      * When set the navigation element is detached from the main application window.
      */
     this.navigationDetached = false;
-
     /** 
      * The current state of checking for update.
      * @type {string}
      */
     this.updateState = undefined;
-
     /** 
      * The name of the currently selected environment. Null for the default.
      */
     this.currentEnvironment = null;
-
     /** 
      * The currently selected navigation group.
      * @type {number}
      */
     this.navigationSelected = undefined;
-
     this.requestDetailsOpened = false;
-
     this.requestMetaOpened = false;
-
     /** @type string */
     this.metaRequestId = undefined;
-    
     /** @type string */
     this.metaRequestType = undefined;
-    
     /**
      * Current application version info.
      * @type {AppVersionInfo}
@@ -374,13 +318,31 @@ export class ArcScreen extends ApplicationScreen {
       appVersion: 'loading...',
       chrome: 'loading...',
     };
+    this.contextMenu = new ArcContextMenu(document.body, { cancelNativeWhenHandled: true });
+    /** 
+     * IDB data export processor.
+     */
+    this.dataExport = new ArcDataExport(window); 
+    /** 
+     * IDB data import processor.
+     */
+    this.dataImport = new ArcDataImport(window);
+    /**
+     * @type {ARCConfig}
+     */
+    this.config = undefined
+    /**
+     * A list of detached menu panels.
+     * @type {string[]}
+     */
+    this.menuPopup = [];
+    this.initModels();
   }
 
   /**
    * Runs the logic to initialize the application.
    */
   async initialize() {
-    this.initModels();
     this.listen();
     const init = this.collectInitOptions();
     this.initOptions = init;
@@ -407,18 +369,18 @@ export class ArcScreen extends ApplicationScreen {
     }
     this.processApplicationState(state);
     this.versionInfo = await this.loadVersionInfo();
-    this.#dataExport.appVersion = this.versionInfo.appVersion;
+    this.dataExport.appVersion = this.versionInfo.appVersion;
     await this.afterInitialization();
     this.initializing = false;
   }
 
   listen() {
-    this.#contextMenu.connect();
-    this.#contextMenu.registerCommands(ArcContextMenuCommands);
-    this.#contextMenu.addEventListener('execute', this.contextCommandHandler.bind(this));
+    this.contextMenu.connect();
+    this.contextMenu.registerCommands(ArcContextMenuCommands);
+    this.contextMenu.addEventListener('execute', this.contextCommandHandler.bind(this));
 
-    this.#dataExport.listen();
-    this.#dataImport.listen();
+    this.dataExport.listen();
+    this.dataImport.listen();
 
     window.addEventListener(EventTypes.Navigation.navigateRequest, this.navigateRequestHandler.bind(this));
     window.addEventListener(EventTypes.Navigation.navigate, this.navigateHandler.bind(this));
@@ -465,24 +427,6 @@ export class ArcScreen extends ApplicationScreen {
         this.navigationSelected = state.navigation.selected;
       }
     }
-  }
-
-  /**
-   * Initializes ARC datastore models.
-   */
-  initModels() {
-    this.urlIndexer = new UrlIndexer(this.eventTarget);
-    this.requestModel.listen(this.eventTarget);
-    this.projectModel.listen(this.eventTarget);
-    this.restApiModel.listen(this.eventTarget);
-    this.authDataModel.listen(this.eventTarget);
-    this.hostRulesModel.listen(this.eventTarget);
-    this.variablesModel.listen(this.eventTarget);
-    this.urlHistoryModel.listen(this.eventTarget);
-    this.historyDataModel.listen(this.eventTarget);
-    this.clientCertificateModel.listen(this.eventTarget);
-    this.websocketUrlHistoryModel.listen(this.eventTarget);
-    this.urlIndexer.listen();
   }
 
   /**

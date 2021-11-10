@@ -1,5 +1,6 @@
 import { TemplateResult } from 'lit-html';
 import { Application } from '@advanced-rest-client/events';
+import { ProjectModel, RequestModel, RestApiModel, AuthDataModel, HostRulesModel, VariablesModel, UrlHistoryModel, HistoryDataModel, ClientCertificateModel, WebsocketUrlHistoryModel, UrlIndexer } from '@advanced-rest-client/idb-store'
 import { ReactiveMixin } from '../mixins/ReactiveMixin.js';
 import { RenderableMixin } from '../mixins/RenderableMixin.js';
 
@@ -35,6 +36,17 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
    * The loading state information.
    */
   loadingStatus: string;
+  requestModel?: RequestModel;
+  projectModel?: ProjectModel;
+  restApiModel?: RestApiModel;
+  authDataModel?: AuthDataModel;
+  hostRulesModel?: HostRulesModel;
+  variablesModel?: VariablesModel;
+  urlHistoryModel?: UrlHistoryModel;
+  historyDataModel?: HistoryDataModel;
+  clientCertificateModel?: ClientCertificateModel;
+  websocketUrlHistoryModel?: WebsocketUrlHistoryModel;
+  urlIndexer?: UrlIndexer;
   /**
    * Initializes media queries and observers.
    */
@@ -59,4 +71,8 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
    * @returns A template for the loader
    */
   loaderTemplate(): TemplateResult;
+  /**
+   * Initializes all ARCs models.
+   */
+  initModels(): void;
 }

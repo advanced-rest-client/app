@@ -1,18 +1,5 @@
 import { TemplateResult } from 'lit-html';
-import { 
-  ProjectModel, 
-  RequestModel, 
-  RestApiModel, 
-  AuthDataModel, 
-  HostRulesModel, 
-  VariablesModel, 
-  UrlHistoryModel, 
-  HistoryDataModel, 
-  ClientCertificateModel, 
-  WebsocketUrlHistoryModel, 
-  UrlIndexer, 
-  ArcDataImport,
-} from '@advanced-rest-client/idb-store'
+import { ArcDataImport } from '@advanced-rest-client/idb-store'
 import { Route } from "../lib/route.js";
 import { ApplicationScreen } from './ApplicationScreen.js';
 
@@ -24,18 +11,7 @@ export class DataImportScreen extends ApplicationScreen {
   /** 
    * IDB data import processor.
    */
-  #dataImport: ArcDataImport;
-  requestModel: RequestModel;
-  projectModel: ProjectModel;
-  restApiModel: RestApiModel;
-  authDataModel: AuthDataModel;
-  hostRulesModel: HostRulesModel;
-  variablesModel: VariablesModel;
-  urlHistoryModel: UrlHistoryModel;
-  historyDataModel: HistoryDataModel;
-  clientCertificateModel: ClientCertificateModel;
-  websocketUrlHistoryModel: WebsocketUrlHistoryModel;
-  urlIndexer: UrlIndexer;
+  dataImport: ArcDataImport;
   route: string;
   routeParams: Record<string, string|string[]>;
   /** 

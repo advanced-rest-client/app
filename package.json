@@ -1,7 +1,7 @@
 {
   "name": "@advanced-rest-client/app",
   "description": "Advanced REST Client application sources.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "Apache-2.0",
   "main": "index.js",
   "module": "index.js",
@@ -52,8 +52,6 @@
     "@advanced-rest-client/idb-store": "^1.0.0",
     "@api-components/amf-web-api": "^0.1.0",
     "@babel/core": "^7.16.0",
-    "@babel/eslint-parser": "^7.16.0",
-    "@babel/eslint-plugin": "^7.14.5",
     "@babel/preset-env": "^7.16.0",
     "@commitlint/cli": "^14.1.0",
     "@commitlint/config-conventional": "^14.1.0",
@@ -69,6 +67,7 @@
     "babel-plugin-minify-mangle-names": "^0.5.0",
     "browserify": "^17.0.0",
     "electron-updater": "^4.3.9",
+    "esbuild": "^0.13.13",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.2",
@@ -97,7 +96,8 @@
     "test:all": "web-test-runner --config web-test-runner.config.mjs test/**/*.test.js --coverage --playwright --browsers chromium firefox webkit",
     "test:watch": "web-test-runner --config web-test-runner.config.mjs --watch",
     "gen:wc": "wca analyze \"*.js\" --outFile custom-elements.json",
-    "prepare": "husky install && node dev/prepare.mjs"
+    "prepare": "husky install && node dev/prepare.mjs",
+    "bundle": "node tasks/esbuild.js"
   },
   "eslintConfig": {
     "env": {
@@ -107,10 +107,6 @@
       "@open-wc/eslint-config",
       "eslint-config-prettier"
     ],
-    "plugins": [
-      "@babel"
-    ],
-    "parser": "@babel/eslint-parser",
     "parserOptions": {
       "ecmaVersion": 2021,
       "sourceType": "module",

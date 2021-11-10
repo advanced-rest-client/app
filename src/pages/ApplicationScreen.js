@@ -1,6 +1,8 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable class-methods-use-this */
 import { html } from 'lit-html';
 import { Events, EventTypes } from '@advanced-rest-client/events';
+import { ProjectModel, RequestModel, RestApiModel, AuthDataModel, HostRulesModel, VariablesModel, UrlHistoryModel, HistoryDataModel, ClientCertificateModel, WebsocketUrlHistoryModel, UrlIndexer } from '@advanced-rest-client/idb-store';
 import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 import { ReactiveMixin } from '../mixins/ReactiveMixin.js';
 import { RenderableMixin } from '../mixins/RenderableMixin.js';
@@ -130,5 +132,33 @@ export class ApplicationScreen extends RenderableMixin(ReactiveMixin(EventTarget
       <p class="sub-message">${this.loadingStatus}</p>
     </div>
     `;
+  }
+
+  /**
+   * Initializes all ARCs models.
+   */
+  initModels() {
+    this.requestModel = new RequestModel();
+    this.projectModel = new ProjectModel();
+    this.restApiModel = new RestApiModel();
+    this.authDataModel = new AuthDataModel();
+    this.hostRulesModel = new HostRulesModel();
+    this.variablesModel = new VariablesModel();
+    this.urlHistoryModel = new UrlHistoryModel();
+    this.historyDataModel = new HistoryDataModel();
+    this.clientCertificateModel = new ClientCertificateModel();
+    this.websocketUrlHistoryModel = new WebsocketUrlHistoryModel();
+    this.urlIndexer = new UrlIndexer(this.eventTarget);
+    this.requestModel.listen(this.eventTarget);
+    this.projectModel.listen(this.eventTarget);
+    this.restApiModel.listen(this.eventTarget);
+    this.authDataModel.listen(this.eventTarget);
+    this.hostRulesModel.listen(this.eventTarget);
+    this.variablesModel.listen(this.eventTarget);
+    this.urlHistoryModel.listen(this.eventTarget);
+    this.historyDataModel.listen(this.eventTarget);
+    this.clientCertificateModel.listen(this.eventTarget);
+    this.websocketUrlHistoryModel.listen(this.eventTarget);
+    this.urlIndexer.listen();
   }
 }

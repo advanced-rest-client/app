@@ -12,13 +12,6 @@ declare const mainBackHandler: unique symbol;
 
 export class ApiConsoleScreen extends ApplicationScreen {
   static get routes(): Route[];
-  requestModel: RequestModel;
-  restApiModel: RestApiModel;
-  authDataModel: AuthDataModel;
-  hostRulesModel: HostRulesModel;
-  variablesModel: VariablesModel;
-  urlHistoryModel: UrlHistoryModel;
-  historyDataModel: HistoryDataModel;
   /**
    * @returns The default OAuth2 redirect URI.
    */

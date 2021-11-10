@@ -4,7 +4,6 @@
 import { html } from 'lit-html';
 import { get, del } from 'idb-keyval';
 import { Events, EventTypes } from '@advanced-rest-client/events';
-import { RequestModel, RestApiModel, AuthDataModel, HostRulesModel, VariablesModel, UrlHistoryModel, HistoryDataModel, UrlIndexer } from '@advanced-rest-client/idb-store'
 import { Utils } from "@advanced-rest-client/base";
 import '@api-components/amf-components/define/api-documentation.js';
 import '@api-components/amf-components/define/api-request.js';
@@ -63,20 +62,6 @@ export class ApiConsoleScreen extends ApplicationScreen {
     ];
   }
 
-  requestModel = new RequestModel();
-
-  restApiModel = new RestApiModel();
-
-  authDataModel = new AuthDataModel();
-
-  hostRulesModel = new HostRulesModel();
-
-  variablesModel = new VariablesModel();
-
-  urlHistoryModel = new UrlHistoryModel();
-
-  historyDataModel = new HistoryDataModel();
-
   /**
    * @returns {string} The default OAuth2 redirect URI.
    */
@@ -98,7 +83,6 @@ export class ApiConsoleScreen extends ApplicationScreen {
 
   constructor() {
     super();
-
     this.initObservableProperties(
       'route', 'routeParams', 'initializing', 
       'amfType', 'domainId', 'domainType', 'operationId',
@@ -142,12 +126,11 @@ export class ApiConsoleScreen extends ApplicationScreen {
      * @type string
      */
     this[apiTitleValue] = undefined;
-
+    this.initModels();
     this.apiStore = new DomEventsAmfStore();
   }
 
   async initialize() {
-    this.initModels();
     this.listen();
     let settings = /** @type ARCConfig */ ({});
     try {
@@ -161,21 +144,6 @@ export class ApiConsoleScreen extends ApplicationScreen {
     await this.loadTheme();
     await this.afterInitialization();
     this.initializing = false;
-  }
-
-  /**
-   * Initializes ARC datastore models.
-   */
-  initModels() {
-    this.urlIndexer = new UrlIndexer(this.eventTarget);
-    this.requestModel.listen(this.eventTarget);
-    this.restApiModel.listen(this.eventTarget);
-    this.authDataModel.listen(this.eventTarget);
-    this.hostRulesModel.listen(this.eventTarget);
-    this.variablesModel.listen(this.eventTarget);
-    this.urlHistoryModel.listen(this.eventTarget);
-    this.historyDataModel.listen(this.eventTarget);
-    this.urlIndexer.listen();
   }
 
   listen() {
