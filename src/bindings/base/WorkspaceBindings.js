@@ -149,9 +149,6 @@ export class WorkspaceBindings extends PlatformBindings {
       info.meta.published = old.published;
       info.meta.updated = old.published;
     }
-    if (typeof old.version === 'string') {
-      info.meta.version = old.version;
-    }
     if (old.provider) {
       info.provider = old.provider;
       info.provider.kind = 'ARC#Provider';

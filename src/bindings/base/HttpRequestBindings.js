@@ -139,7 +139,7 @@ export class HttpRequestBindings extends PlatformBindings {
     const { config={} } = this;
     const { request={} } = config;
     const value = Number(request.timeout);
-    if (typeof value === 'number') {
+    if (typeof value === 'number' && !Number.isNaN(value)) {
       return value;
     }
     // default

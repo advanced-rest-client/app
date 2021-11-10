@@ -83,7 +83,7 @@ export class EncryptionBindings extends PlatformBindings {
     const ctArray = Array.from(new Uint8Array(ctBuffer));
     const ctStr = ctArray.map(byte => String.fromCharCode(byte)).join('');
     const ctBase64 = btoa(ctStr);
-    const ivHex = Array.from(iv).map(b => (`00${  b.toString(16)}`).slice(-2)).join('');
+    const ivHex = Array.from(iv).map(b => (`00${b.toString(16)}`).slice(-2)).join('');
     return ivHex+ctBase64;
   }
 
