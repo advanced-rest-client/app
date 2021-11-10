@@ -32,6 +32,7 @@ export { DataExportBindings } from './src/bindings/base/DataExportBindings';
 export { EncryptionBindings } from './src/bindings/base/EncryptionBindings';
 export { GoogleDriveBindings } from './src/bindings/base/GoogleDriveBindings';
 export { HttpRequestBindings } from './src/bindings/base/HttpRequestBindings';
+export { MenuBindings } from './src/bindings/base/MenuBindings';
 export { NavigationBindings } from './src/bindings/base/NavigationBindings';
 export { OAuth2Bindings } from './src/bindings/base/OAuth2Bindings';
 export { PlatformBindings } from './src/bindings/base/PlatformBindings';

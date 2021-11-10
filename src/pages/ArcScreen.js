@@ -36,13 +36,12 @@ import { findRoute, navigate, navigatePage } from "../lib/route.js";
 /** @typedef {import('@advanced-rest-client/events').ARCMenuPopupEvent} ARCMenuPopupEvent */
 /** @typedef {import('@advanced-rest-client/events').ARCNavigationEvent} ARCNavigationEvent */
 /** @typedef {import('@advanced-rest-client/events').ConfigStateUpdateEvent} ConfigStateUpdateEvent */
-/** @typedef {import('@advanced-rest-client/events').WorkspaceAppendRequestEvent} WorkspaceAppendRequestEvent */
-/** @typedef {import('@advanced-rest-client/events').WorkspaceAppendExportEvent} WorkspaceAppendExportEvent */
 /** @typedef {import('@advanced-rest-client/events').ARCEnvironmentStateSelectEvent} ARCEnvironmentStateSelectEvent */
 /** @typedef {import('@advanced-rest-client/events').Application.AppVersionInfo} AppVersionInfo */
 /** @typedef {import('@advanced-rest-client/base').ArcRequestWorkspaceElement} ArcRequestWorkspaceElement */
 /** @typedef {import('@advanced-rest-client/base').ArcMenuElement} ArcMenuElement */
 /** @typedef {import('@advanced-rest-client/anypoint/src/types').ExchangeAsset} ExchangeAsset */
+/** @typedef {import('@anypoint-web-components/awc').BottomSheetElement} BottomSheetElement */
 /** @typedef {import('../types').ArcAppInitOptions} ArcAppInitOptions */
 
 /**
@@ -425,14 +424,13 @@ export class ArcScreen extends ApplicationScreen {
     window.addEventListener(EventTypes.Navigation.navigate, this.navigateHandler.bind(this));
     window.addEventListener(EventTypes.Navigation.navigateProject, this.navigateProjectHandler.bind(this));
     window.addEventListener(EventTypes.Navigation.navigateRestApi, this.navigateRestApiHandler.bind(this));
-    window.addEventListener(EventTypes.Navigation.popupMenu, this.popupMenuHandler.bind(this));
-    window.addEventListener(EventTypes.Workspace.appendRequest, this.workspaceAppendRequestHandler.bind(this));
-    window.addEventListener(EventTypes.Workspace.appendExport, this.workspaceAppendExportHandler.bind(this));
+    window.addEventListener(EventTypes.Workspace.appendRequest, this.navigateWorkspaceHandler.bind(this));
+    window.addEventListener(EventTypes.Workspace.appendExport, this.navigateWorkspaceHandler.bind(this));
     window.addEventListener(EventTypes.Config.State.update, this.configStateChangeHandler.bind(this));
     window.addEventListener(EventTypes.Model.Environment.State.select, this.environmentSelectedHandler.bind(this));
     window.addEventListener(EventTypes.App.command, this.commandHandler.bind(this));
-    window.addEventListener(EventTypes.App.requestAction, this.requestActionHandler.bind(this));
-    
+    window.addEventListener(EventTypes.Menu.State.close, this.popupMenuToggledHandler.bind(this));
+    window.addEventListener(EventTypes.Menu.State.open, this.popupMenuToggledHandler.bind(this));
   }
 
   /**
@@ -541,37 +539,6 @@ export class ArcScreen extends ApplicationScreen {
   }
 
   /**
-   * Closes a tab in the request workspace at the specified position
-   * @param {number} index 
-   */
-  closeWorkspaceTab(index) {
-    this.workspaceElement.removeRequest(index);
-  }
-
-  /**
-   * Closes all tabs in the request workspace
-   */
-  closeAllWorkspaceTabs() {
-    this.workspaceElement.clear();
-  }
-
-  /**
-   * Closes all tabs in the request workspace except for the given index.
-   * @param {number} index 
-   */
-  closeOtherWorkspaceTabs(index) {
-    this.workspaceElement.closeAllTabs(index);
-  }
-
-  /**
-   * Duplicates a tab at the given index.
-   * @param {number} index 
-   */
-  duplicateWorkspaceTab(index) {
-    this.workspaceElement.duplicateTab(index);
-  }
-
-  /**
    * @param {ARCRequestNavigationEvent} e 
    */
   navigateRequestHandler(e) {
@@ -627,20 +594,6 @@ export class ArcScreen extends ApplicationScreen {
   }
 
   /**
-   * @param {ARCMenuPopupEvent} e
-   */
-  popupMenuHandler(e) {
-    const { menu } = e;
-    const element = document.querySelector('arc-menu');
-    const rect = element.getBoundingClientRect();
-    const sizing = {
-      height: rect.height,
-      width: rect.width
-    };
-    Events.Menu.popup(this.eventTarget, menu, sizing);
-  }
-
-  /**
    * @param {ARCNavigationEvent} e
    */
   navigateHandler(e) {
@@ -665,7 +618,9 @@ export class ArcScreen extends ApplicationScreen {
    * Always navigates to the workspace.
    */
   mainBackHandler() {
-    navigate('workspace');
+    if (this.route !== 'workspace') {
+      navigate('workspace');
+    }
   }
 
   /**
@@ -694,41 +649,6 @@ export class ArcScreen extends ApplicationScreen {
       default:
         // eslint-disable-next-line no-console
         console.warn(`Unhandled IO command ${action}`);
-    }
-  }
-
-  /**
-   * Handles action performed in main thread (menu action) related to a request.
-   *
-   * @param {CustomEvent} e
-   */
-  requestActionHandler(e) {
-    const { action, /* args */ } = e.detail;
-    if (this.route !== 'workspace') {
-      navigate('workspace');
-    }
-    switch (action) {
-      case 'save':
-        this.workspaceElement.saveOpened();
-        break;
-      case 'save-as':
-        this.workspaceElement.saveAsOpened();
-        break;
-      case 'new-http-tab':
-        this.workspaceElement.addHttpRequest();
-        break;
-      case 'new-websocket-tab':
-        this.workspaceElement.addWsRequest();
-        break;
-      case 'send-current':
-        this.workspaceElement.sendCurrent();
-        break;
-      case 'close-tab':
-        this.workspaceElement.closeActiveTab();
-        break;
-      default:
-        // eslint-disable-next-line no-console
-        console.warn(`Unhandled IO request command ${action}`);
     }
   }
 
@@ -770,12 +690,13 @@ export class ArcScreen extends ApplicationScreen {
     }
   }
 
-  popupMenuOpenedHandler(e, type) {
-    this.menuToggleOption(type, true);
-  }
-
-  popupMenuClosedHandler(e, type) {
-    this.menuToggleOption(type, false);
+  /**
+   * @param {CustomEvent} e
+   */
+  popupMenuToggledHandler(e) {
+    const opened = e.type === EventTypes.Menu.State.open;
+    const { menu } = e.detail;
+    this.menuToggleOption(menu, opened);
   }
 
   /**
@@ -799,23 +720,6 @@ export class ArcScreen extends ApplicationScreen {
   }
 
   /**
-   * @param {*} e
-   * @param {string} type
-   * @param {string[]} args
-   */
-  mainNavigateHandler(e, type, args) {
-    switch (type) {
-      // @ts-ignore
-      case 'request': Events.Navigation.navigateRequest(document.body, ...args); break;
-      // @ts-ignore
-      case 'project': Events.Navigation.navigateProject(document.body, ...args); break;
-      // @ts-ignore
-      case 'navigate': Events.Navigation.navigate(document.body, ...args); break;
-      default:
-    }
-  }
-
-  /**
    * @param {Event} e
    */
   environmentSelectorHandler(e) {
@@ -833,23 +737,7 @@ export class ArcScreen extends ApplicationScreen {
     }
   }
 
-  /**
-   * @param {WorkspaceAppendRequestEvent} e
-   */
-  workspaceAppendRequestHandler(e) {
-    const { request } = e.detail;
-    this.workspaceElement.add(request);
-    navigate('workspace');
-  }
-
-  /**
-   * @param {WorkspaceAppendExportEvent} e
-   */
-  workspaceAppendExportHandler(e) {
-    const { requests, history } = e.detail.data;
-    const { workspaceElement } = this;
-    (requests || []).forEach((request) => workspaceElement.add(request));
-    (history || []).forEach((request) => workspaceElement.add(request));
+  navigateWorkspaceHandler() {
     navigate('workspace');
   }
 
@@ -907,9 +795,13 @@ export class ArcScreen extends ApplicationScreen {
     this.requestMetaOpened = false;
   }
 
+  /**
+   * @param {Event} e
+   */
   sheetClosedHandler(e) {
-    const prop = e.target.dataset.openProperty;
-    this[prop] = e.detail.value;
+    const node = /** @type BottomSheetElement */ (e.target);
+    const prop = node.dataset.openProperty;
+    this[prop] = node.opened;
   }
 
   /**
