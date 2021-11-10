@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { OAuth2Authorization, OidcAuthorization } from '@advanced-rest-client/oauth';
 import { OAuth2Bindings } from '../base/OAuth2Bindings.js';
 

@@ -2,10 +2,7 @@
 import { html } from "lit-html";
 import { Events } from '@advanced-rest-client/events';
 import '@api-client/context-menu/context-menu.js';
-import { 
-  ArcScreen, 
-  commandHandler,
-} from './ArcScreen.js';
+import { ArcScreen } from './ArcScreen.js';
 import { navigatePage } from '../lib/route.js';
 import '../../define/arc-application-menu.js';
 
@@ -15,12 +12,12 @@ export class ArcScreenWeb extends ArcScreen {
    *
    * @param {CustomEvent} e 
    */
-  [commandHandler](e) {
+  commandHandler(e) {
     const { action } = e.detail;
     switch (action) {
       case 'open-themes': this.openThemes(); break;
       case 'open-drive': this.openDrivePicker(); break;
-      default: super[commandHandler](e);
+      default: super.commandHandler(e);
     }
   }
 

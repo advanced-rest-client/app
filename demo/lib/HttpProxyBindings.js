@@ -1,20 +1,26 @@
-import { ApiEvents } from '@api-components/amf-components';
 import { HttpRequestBindings } from "../../src/bindings/base/HttpRequestBindings.js";
 
 /** @typedef {import('@advanced-rest-client/events').ArcRequest.ArcBaseRequest} ArcBaseRequest */
 /** @typedef {import('@advanced-rest-client/events').ArcRequest.RequestConfig} RequestConfig */
 /** @typedef {import('@advanced-rest-client/events').ArcResponse.ErrorResponse} ErrorResponse */
-/** @typedef {import('@api-components/amf-components').ApiConsoleRequest} ApiConsoleRequest */
+/** @typedef {import('@advanced-rest-client/events').TransportRequestSource} TransportRequestSource */
 /** @typedef {import('@advanced-rest-client/events').ArcRequest.ArcEditorRequest} ArcEditorRequest */
+/** @typedef {import('@api-components/amf-components').ApiConsoleRequest} ApiConsoleRequest */
 /** @typedef {import('@api-components/amf-components').ApiConsoleResponse} ApiConsoleResponse */
 
 export class HttpProxyBindings extends HttpRequestBindings {
+  constructor() {
+    // @ts-ignore
+    super(window.Jexl);
+  }
+
   /**
    * @param {ArcBaseRequest} request
    * @param {string} id
    * @param {RequestConfig=} config
+   * @param {TransportRequestSource=} source
    */
-  async transport(request, id, config = { enabled: false }) {
+  async transport(request, id, config = { enabled: false }, source) {
     const rConf = /** @type RequestConfig */ (request.config || {});
     const configInit = rConf.enabled ? rConf : /** @type RequestConfig */ ({});
     const finalConfig = this.prepareRequestOptions(config, configInit);
@@ -24,6 +30,7 @@ export class HttpProxyBindings extends HttpRequestBindings {
       connection: ctrl,
       request,
       aborted: false,
+      source,
     });
     const body = JSON.stringify({
       request,
@@ -95,49 +102,5 @@ export class HttpProxyBindings extends HttpRequestBindings {
       return buffer;
     }
     return undefined;
-  }
-
-  /**
-   * @param {string} id
-   * @param {ApiConsoleRequest} sourceRequest
-   * @param {ArcBaseRequest} arcRequest
-   */
-  async transportApiConsole(id, sourceRequest, arcRequest) {
-    const ctrl = new AbortController();
-    this.connections.set(id, {
-      connection: ctrl,
-      request: arcRequest,
-      aborted: false,
-    });
-    const body = JSON.stringify({
-      request: arcRequest,
-      config: {
-        timeout: 90000,
-        followRedirects: true,
-        validateCertificates: false,
-      },
-    });
-    const rsp = await fetch('/proxy/v1/proxy', {
-      body,
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      signal: ctrl.signal,
-    });
-    const info = await rsp.json();
-    const { response } = info;
-    if (response.payload) {
-      const array = new Uint8Array(response.payload.data);
-      response.payload = array.buffer;
-    }
-    const apiResponse = /** @type ApiConsoleResponse */ ({
-      id,
-      isError: false,
-      loadingTime: response.loadingTime,
-      request: sourceRequest,
-      response,
-    });
-    ApiEvents.Request.apiResponse(document.body, apiResponse);
   }
 }

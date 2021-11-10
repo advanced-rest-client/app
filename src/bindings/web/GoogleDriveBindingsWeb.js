@@ -1,5 +1,8 @@
+/* eslint-disable class-methods-use-this */
 import { GoogleDriveBindings } from '../base/GoogleDriveBindings.js';
 import { navigatePage } from '../../lib/route.js';
+
+/* global gapi */
 
 /** @typedef {import('@advanced-rest-client/events').GoogleDrive.AppFolder} AppFolder */
 /** @typedef {import('@advanced-rest-client/events').DataExport.ArcExportResult} ArcExportResult */
@@ -121,13 +124,13 @@ export class GoogleDriveBindingsWeb extends GoogleDriveBindings {
       orderBy: 'modifiedTime desc',
     });
     return result.result.files;
-      
   }
 
   async loadSdk() {
     if (sdkLoaded) {
       return undefined;
     }
+    sdkLoaded = true;
     let finished = false;
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');

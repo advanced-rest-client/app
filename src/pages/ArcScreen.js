@@ -5,17 +5,12 @@ import { EventTypes, Events, ProjectActions } from "@advanced-rest-client/events
 import { ProjectModel, RequestModel, RestApiModel, AuthDataModel, HostRulesModel, VariablesModel, UrlHistoryModel, HistoryDataModel, ClientCertificateModel, WebsocketUrlHistoryModel, UrlIndexer, ArcDataExport, ArcDataImport } from '@advanced-rest-client/idb-store'
 import { set } from 'idb-keyval';
 import { v4 } from '@advanced-rest-client/uuid';
+import { Utils, ModulesRegistry, RequestCookies, ArcContextMenu, ArcContextMenuCommands } from "@advanced-rest-client/base";
 import '@anypoint-web-components/awc/bottom-sheet.js';
 import '@anypoint-web-components/awc/anypoint-button.js';
 import '@anypoint-web-components/awc/anypoint-icon-button.js';
 import '@advanced-rest-client/icons/arc-icon.js';
 import '@advanced-rest-client/anypoint/define/exchange-search.js';
-import { Utils, ModulesRegistry, RequestCookies } from "@advanced-rest-client/base";
-import { ApplicationScreen } from "./ApplicationScreen.js";
-import { findRoute, navigate, navigatePage } from "../lib/route.js";
-// import * as RequestCookies from "../request-modules/RequestCookies.js";
-import { ArcContextMenu } from "../context-menu/ArcContextMenu.js";
-import ContextMenuCommands from "../context-menu/ArcContextMenuCommands.js";
 import '@advanced-rest-client/base/define/arc-request-workspace.js';
 import '@advanced-rest-client/base/define/arc-menu.js';
 import '@advanced-rest-client/base/define/project-screen.js';
@@ -29,9 +24,10 @@ import '@advanced-rest-client/base/define/client-certificates-panel.js';
 import '@advanced-rest-client/base/define/saved-panel.js';
 import '@advanced-rest-client/base/define/history-panel.js';
 import '@advanced-rest-client/base/define/variables-overlay.js';
+import { ApplicationScreen } from "./ApplicationScreen.js";
+import { findRoute, navigate, navigatePage } from "../lib/route.js";
 
 /** @typedef {import('lit-element').TemplateResult} TemplateResult */
-/** @typedef {import('@advanced-rest-client/events').Authorization.OAuth2Authorization} OAuth2Authorization */
 /** @typedef {import('@advanced-rest-client/events').Config.ARCConfig} ARCConfig */
 /** @typedef {import('@advanced-rest-client/events').ArcState.ARCState} ARCState */
 /** @typedef {import('@advanced-rest-client/events').ARCRequestNavigationEvent} ARCRequestNavigationEvent */
@@ -39,65 +35,15 @@ import '@advanced-rest-client/base/define/variables-overlay.js';
 /** @typedef {import('@advanced-rest-client/events').ARCRestApiNavigationEvent} ARCRestApiNavigationEvent */
 /** @typedef {import('@advanced-rest-client/events').ARCMenuPopupEvent} ARCMenuPopupEvent */
 /** @typedef {import('@advanced-rest-client/events').ARCNavigationEvent} ARCNavigationEvent */
-/** @typedef {import('@advanced-rest-client/events').ARCExternalNavigationEvent} ARCExternalNavigationEvent */
-/** @typedef {import('@advanced-rest-client/events').ARCHelpTopicEvent} ARCHelpTopicEvent */
 /** @typedef {import('@advanced-rest-client/events').ConfigStateUpdateEvent} ConfigStateUpdateEvent */
-/** @typedef {import('@advanced-rest-client/events').ArcImportInspectEvent} ArcImportInspectEvent */
 /** @typedef {import('@advanced-rest-client/events').WorkspaceAppendRequestEvent} WorkspaceAppendRequestEvent */
 /** @typedef {import('@advanced-rest-client/events').WorkspaceAppendExportEvent} WorkspaceAppendExportEvent */
-/** @typedef {import('@advanced-rest-client/events').RestApiProcessFileEvent} RestApiProcessFileEvent */
 /** @typedef {import('@advanced-rest-client/events').ARCEnvironmentStateSelectEvent} ARCEnvironmentStateSelectEvent */
-/** @typedef {import('@advanced-rest-client/events').Indexer.IndexableRequest} IndexableRequest */
 /** @typedef {import('@advanced-rest-client/events').Application.AppVersionInfo} AppVersionInfo */
 /** @typedef {import('@advanced-rest-client/base').ArcRequestWorkspaceElement} ArcRequestWorkspaceElement */
 /** @typedef {import('@advanced-rest-client/base').ArcMenuElement} ArcMenuElement */
 /** @typedef {import('@advanced-rest-client/anypoint/src/types').ExchangeAsset} ExchangeAsset */
 /** @typedef {import('../types').ArcAppInitOptions} ArcAppInitOptions */
-
-const headerTemplate = Symbol("headerTemplate");
-const pageTemplate = Symbol("pageTemplate");
-const workspaceTemplate = Symbol("workspaceTemplate");
-const navigationTemplate = Symbol("navigationTemplate");
-const navigateRequestHandler = Symbol("navigateRequestHandler");
-const navigateHandler = Symbol("navigateHandler");
-const navigateProjectHandler = Symbol("navigateProjectHandler");
-const navigateRestApiHandler = Symbol("navigateRestApiHandler");
-const popupMenuHandler = Symbol("popupMenuHandler");
-const mainBackHandler = Symbol("mainBackHandler");
-const historyPanelTemplate = Symbol("historyPanelTemplate");
-const savedPanelTemplate = Symbol("savedPanelTemplate");
-const clientCertScreenTemplate = Symbol("clientCertScreenTemplate");
-export const commandHandler = Symbol("commandHandler");
-const requestActionHandler = Symbol("requestActionHandler");
-const configStateChangeHandler = Symbol("configStateChangeHandler");
-const popupMenuOpenedHandler = Symbol("popupMenuOpenedHandler");
-const popupMenuClosedHandler = Symbol("popupMenuClosedHandler");
-const environmentTemplate = Symbol("environmentTemplate");
-const environmentSelectorHandler = Symbol("environmentSelectorHandler");
-const environmentSelectorKeyHandler = Symbol("environmentSelectorKeyHandler");
-const dataExportScreenTemplate = Symbol("dataExportScreenTemplate");
-const cookieManagerScreenTemplate = Symbol("cookieManagerScreenTemplate");
-const settingsScreenTemplate = Symbol("settingsScreenTemplate");
-const workspaceAppendRequestHandler = Symbol("workspaceAppendRequestHandler");
-const workspaceAppendExportHandler = Symbol("workspaceAppendExportHandler");
-const environmentSelectedHandler = Symbol("environmentSelectedHandler");
-const navMinimizedHandler = Symbol("navMinimizedHandler");
-const menuRailSelected = Symbol("menuRailSelected");
-const mainNavigateHandler = Symbol("mainNavigateHandler");
-const requestDetailTemplate = Symbol("requestDetailTemplate");
-const requestMetaTemplate = Symbol("requestMetaTemplate");
-const sheetClosedHandler = Symbol("sheetClosedHandler");
-const metaRequestHandler = Symbol("metaRequestHandler");
-const requestMetaCloseHandler = Symbol("requestMetaCloseHandler");
-const externalNavigationHandler = Symbol("externalNavigationHandler");
-const helpNavigationHandler = Symbol("helpNavigationHandler");
-const contextCommandHandler = Symbol("contextCommandHandler");
-const hostRulesTemplate = Symbol("hostRulesTemplate");
-const processApplicationState = Symbol("processApplicationState");
-const arcNavigationTemplate = Symbol("arcNavigationTemplate");
-const exchangeSearchTemplate = Symbol("exchangeSearchTemplate");
-const exchangeSelectionHandler = Symbol("exchangeSelectionHandler");
-const arcLegacyProjectTemplate = Symbol("arcLegacyProjectTemplate");
 
 /**
  * Advanced REST CLient - the API Client screen.
@@ -421,10 +367,6 @@ export class ArcScreen extends ApplicationScreen {
     /** @type string */
     this.metaRequestType = undefined;
     
-    // todo: do the below when the application is already initialized.
-    // this[navigationHandler] = this[navigationHandler].bind(this);
-    // window.addEventListener(ModelingEventTypes.State.Navigation.change, this[navigationHandler]);
-
     /**
      * Current application version info.
      * @type {AppVersionInfo}
@@ -464,7 +406,7 @@ export class ArcScreen extends ApplicationScreen {
         kind: 'ARC#AppState',
       };
     }
-    this[processApplicationState](state);
+    this.processApplicationState(state);
     this.versionInfo = await this.loadVersionInfo();
     this.#dataExport.appVersion = this.versionInfo.appVersion;
     await this.afterInitialization();
@@ -473,25 +415,23 @@ export class ArcScreen extends ApplicationScreen {
 
   listen() {
     this.#contextMenu.connect();
-    this.#contextMenu.registerCommands(ContextMenuCommands);
-    this.#contextMenu.addEventListener('execute', this[contextCommandHandler].bind(this));
+    this.#contextMenu.registerCommands(ArcContextMenuCommands);
+    this.#contextMenu.addEventListener('execute', this.contextCommandHandler.bind(this));
 
     this.#dataExport.listen();
     this.#dataImport.listen();
 
-    window.addEventListener(EventTypes.Navigation.navigateRequest, this[navigateRequestHandler].bind(this));
-    window.addEventListener(EventTypes.Navigation.navigate, this[navigateHandler].bind(this));
-    window.addEventListener(EventTypes.Navigation.navigateProject, this[navigateProjectHandler].bind(this));
-    window.addEventListener(EventTypes.Navigation.navigateRestApi, this[navigateRestApiHandler].bind(this));
-    window.addEventListener(EventTypes.Navigation.popupMenu, this[popupMenuHandler].bind(this));
-    window.addEventListener(EventTypes.Navigation.navigateExternal, this[externalNavigationHandler].bind(this));
-    window.addEventListener(EventTypes.Navigation.helpTopic, this[helpNavigationHandler].bind(this));
-    window.addEventListener(EventTypes.Workspace.appendRequest, this[workspaceAppendRequestHandler].bind(this));
-    window.addEventListener(EventTypes.Workspace.appendExport, this[workspaceAppendExportHandler].bind(this));
-    window.addEventListener(EventTypes.Config.State.update, this[configStateChangeHandler].bind(this));
-    window.addEventListener(EventTypes.Model.Environment.State.select, this[environmentSelectedHandler].bind(this));
-    window.addEventListener(EventTypes.App.command, this[commandHandler].bind(this));
-    window.addEventListener(EventTypes.App.requestAction, this[requestActionHandler].bind(this));
+    window.addEventListener(EventTypes.Navigation.navigateRequest, this.navigateRequestHandler.bind(this));
+    window.addEventListener(EventTypes.Navigation.navigate, this.navigateHandler.bind(this));
+    window.addEventListener(EventTypes.Navigation.navigateProject, this.navigateProjectHandler.bind(this));
+    window.addEventListener(EventTypes.Navigation.navigateRestApi, this.navigateRestApiHandler.bind(this));
+    window.addEventListener(EventTypes.Navigation.popupMenu, this.popupMenuHandler.bind(this));
+    window.addEventListener(EventTypes.Workspace.appendRequest, this.workspaceAppendRequestHandler.bind(this));
+    window.addEventListener(EventTypes.Workspace.appendExport, this.workspaceAppendExportHandler.bind(this));
+    window.addEventListener(EventTypes.Config.State.update, this.configStateChangeHandler.bind(this));
+    window.addEventListener(EventTypes.Model.Environment.State.select, this.environmentSelectedHandler.bind(this));
+    window.addEventListener(EventTypes.App.command, this.commandHandler.bind(this));
+    window.addEventListener(EventTypes.App.requestAction, this.requestActionHandler.bind(this));
     
   }
 
@@ -515,7 +455,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {ARCState} state
    */
-  [processApplicationState](state) {
+  processApplicationState(state) {
     if (state.environment) {
       if (state.environment.variablesEnvironment) {
         // this.currentEnvironment = state.environment.variablesEnvironment;
@@ -634,7 +574,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {ARCRequestNavigationEvent} e 
    */
-  [navigateRequestHandler](e) {
+  navigateRequestHandler(e) {
     const { requestId, requestType, action } = e;
     if (action === 'open') {
       this.workspaceElement.addByRequestId(requestType, requestId);
@@ -661,7 +601,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {ARCProjectNavigationEvent} e
    */
-  [navigateProjectHandler](e) {
+  navigateProjectHandler(e) {
     const { id, action, route } = e;
     if (route !== 'project') {
       return;
@@ -681,7 +621,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {ARCRestApiNavigationEvent} e
    */
-  [navigateRestApiHandler](e) {
+  navigateRestApiHandler(e) {
     const { api, version } = e;
     navigatePage('api-console.html', 'open', 'db', api, version);
   }
@@ -689,7 +629,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {ARCMenuPopupEvent} e
    */
-  [popupMenuHandler](e) {
+  popupMenuHandler(e) {
     const { menu } = e;
     const element = document.querySelector('arc-menu');
     const rect = element.getBoundingClientRect();
@@ -703,7 +643,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {ARCNavigationEvent} e
    */
-  [navigateHandler](e) {
+  navigateHandler(e) {
     const allowed = [
       'rest-projects',
       'exchange-search',
@@ -721,33 +661,10 @@ export class ArcScreen extends ApplicationScreen {
   }
 
   /**
-   * @param {ARCExternalNavigationEvent} e
-   * @todo: Move this to the bindings!
-   */
-  [externalNavigationHandler](e) {
-    const { url, detail } = e;
-    const { purpose } = detail;
-    if (!purpose) {
-      Events.Navigation.navigateExternal(this.eventTarget, url);
-    } else {
-      Events.Navigation.openWebUrl(this.eventTarget, url, purpose);
-    }
-  }
-
-  /**
-   * @param {ARCHelpTopicEvent} e
-   * @todo: Move this to the bindings!
-   */
-  [helpNavigationHandler](e) {
-    const { topic } = e;
-    Events.Navigation.helpTopic(this.eventTarget, topic);
-  }
-
-  /**
    * A handler for the main toolbar arrow back click.
    * Always navigates to the workspace.
    */
-  [mainBackHandler]() {
+  mainBackHandler() {
     navigate('workspace');
   }
 
@@ -756,7 +673,7 @@ export class ArcScreen extends ApplicationScreen {
    *
    * @param {CustomEvent} e 
    */
-  [commandHandler](e) {
+  commandHandler(e) {
     const { action } = e.detail;
     switch (action) {
       case 'open-saved': navigate('saved'); break;
@@ -785,7 +702,7 @@ export class ArcScreen extends ApplicationScreen {
    *
    * @param {CustomEvent} e
    */
-  [requestActionHandler](e) {
+  requestActionHandler(e) {
     const { action, /* args */ } = e.detail;
     if (this.route !== 'workspace') {
       navigate('workspace');
@@ -818,7 +735,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {CustomEvent} e
    */
-  [contextCommandHandler](e) {
+  contextCommandHandler(e) {
     const { detail } = e;
     const { target, id } = detail;
     switch (id) {
@@ -833,7 +750,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {ConfigStateUpdateEvent} e
    */
-  [configStateChangeHandler](e) {
+  configStateChangeHandler(e) {
     const { key, value } = e.detail;
     const { config={} } = this;
     Utils.updateDeepValue(config, key, value);
@@ -853,11 +770,11 @@ export class ArcScreen extends ApplicationScreen {
     }
   }
 
-  [popupMenuOpenedHandler](e, type) {
+  popupMenuOpenedHandler(e, type) {
     this.menuToggleOption(type, true);
   }
 
-  [popupMenuClosedHandler](e, type) {
+  popupMenuClosedHandler(e, type) {
     this.menuToggleOption(type, false);
   }
 
@@ -886,7 +803,7 @@ export class ArcScreen extends ApplicationScreen {
    * @param {string} type
    * @param {string[]} args
    */
-  [mainNavigateHandler](e, type, args) {
+  mainNavigateHandler(e, type, args) {
     switch (type) {
       // @ts-ignore
       case 'request': Events.Navigation.navigateRequest(document.body, ...args); break;
@@ -901,7 +818,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {Event} e
    */
-  [environmentSelectorHandler](e) {
+  environmentSelectorHandler(e) {
     const overlay = document.querySelector('variables-overlay');
     overlay.positionTarget = /** @type HTMLElement */ (e.target);
     overlay.opened = true;
@@ -910,16 +827,16 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {KeyboardEvent} e
    */
-  [environmentSelectorKeyHandler](e) {
+  environmentSelectorKeyHandler(e) {
     if (['Space', 'Enter', 'ArrowDown'].includes(e.code)) {
-      this[environmentSelectorHandler](e);
+      this.environmentSelectorHandler(e);
     }
   }
 
   /**
    * @param {WorkspaceAppendRequestEvent} e
    */
-  [workspaceAppendRequestHandler](e) {
+  workspaceAppendRequestHandler(e) {
     const { request } = e.detail;
     this.workspaceElement.add(request);
     navigate('workspace');
@@ -928,7 +845,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {WorkspaceAppendExportEvent} e
    */
-  [workspaceAppendExportHandler](e) {
+  workspaceAppendExportHandler(e) {
     const { requests, history } = e.detail.data;
     const { workspaceElement } = this;
     (requests || []).forEach((request) => workspaceElement.add(request));
@@ -939,7 +856,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {ARCEnvironmentStateSelectEvent} e
    */
-  [environmentSelectedHandler](e) {
+  environmentSelectedHandler(e) {
     const { environment } = e.detail;
     if (environment) {
       this.currentEnvironment = environment.name;
@@ -953,7 +870,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {Event} e
    */
-  [navMinimizedHandler](e) {
+  navMinimizedHandler(e) {
     const menu = /** @type ArcMenuElement */ (e.target);
     if (menu.minimized) {
       menu.parentElement.classList.add('minimized');
@@ -965,7 +882,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {Event} e
    */
-  async [menuRailSelected](e) {
+  async menuRailSelected(e) {
     const menu = /** @type ArcMenuElement */ (e.target);
     this.navigationSelected = menu.selected;
     await Events.App.updateStateProperty(this.eventTarget, 'navigation.selected', menu.selected);
@@ -981,16 +898,16 @@ export class ArcScreen extends ApplicationScreen {
     }
   }
 
-  [metaRequestHandler]() {
+  metaRequestHandler() {
     this.requestMetaOpened = true;
     this.requestDetailsOpened = false;
   }
 
-  [requestMetaCloseHandler]() {
+  requestMetaCloseHandler() {
     this.requestMetaOpened = false;
   }
 
-  [sheetClosedHandler](e) {
+  sheetClosedHandler(e) {
     const prop = e.target.dataset.openProperty;
     this[prop] = e.detail.value;
   }
@@ -998,7 +915,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @param {CustomEvent} e
    */
-  async [exchangeSelectionHandler](e) {
+  async exchangeSelectionHandler(e) {
     const asset = /** @type ExchangeAsset */ (e.detail);
     const types = ['fat-raml', 'raml', 'oas'];
     const file = asset.files.find((item) => types.includes(item.classifier));
@@ -1028,8 +945,8 @@ export class ArcScreen extends ApplicationScreen {
     return html`
     ${this.applicationMenuTemplate()}
     <div class="content">
-      ${this[navigationTemplate]()}
-      ${this[pageTemplate](this.route)}
+      ${this.navigationTemplate()}
+      ${this.pageTemplate(this.route)}
     </div>
     ${this.applicationUtilitiesTemplate()}
     `;
@@ -1052,20 +969,20 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @returns {TemplateResult} The template for the header
    */
-  [headerTemplate]() {
+  headerTemplate() {
     const { route } = this;
     const isWorkspace = route === 'workspace';
     return html`
     <header>
       ${isWorkspace ? '' : 
       html`
-      <anypoint-icon-button title="Back to the request workspace" @click="${this[mainBackHandler]}"  class="header-action-button">
+      <anypoint-icon-button title="Back to the request workspace" @click="${this.mainBackHandler}"  class="header-action-button">
         <arc-icon icon="arrowBack"></arc-icon>
       </anypoint-icon-button>`}
       API Client
       <span class="spacer"></span>
       ${this.toolbarActionsTemplate()}
-      ${this[environmentTemplate]()}
+      ${this.environmentTemplate()}
     </header>`;
   }
 
@@ -1079,7 +996,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @returns {TemplateResult|string} The template for the environment selector and the overlay.
    */
-  [environmentTemplate]() {
+  environmentTemplate() {
     const { anypoint, variablesEnabled } = this;
     if (!variablesEnabled) {
       return '';
@@ -1095,8 +1012,8 @@ export class ArcScreen extends ApplicationScreen {
       title="The current environment" 
       aria-label="Activate to select an environment"
       tabindex="0"
-      @click="${this[environmentSelectorHandler]}"
-      @keydown="${this[environmentSelectorKeyHandler]}"
+      @click="${this.environmentSelectorHandler}"
+      @keydown="${this.environmentSelectorKeyHandler}"
     >
       Environment: ${currentEnvironment}
       <arc-icon icon="chevronRight" class="env-dropdown"></arc-icon>
@@ -1117,7 +1034,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @returns {TemplateResult|string} The template for the application main navigation area
    */
-  [navigationTemplate]() {
+  navigationTemplate() {
     if (this.navigationDetached) {
       return '';
     }
@@ -1126,7 +1043,7 @@ export class ArcScreen extends ApplicationScreen {
       resize="east"
       @resize="${this.navigationResizeHandler}"
     >
-      ${this[arcNavigationTemplate]()}
+      ${this.arcNavigationTemplate()}
     </nav>
     `;
   }
@@ -1134,7 +1051,7 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @returns {TemplateResult} The template for the ARC navigation
    */
-  [arcNavigationTemplate]() {
+  arcNavigationTemplate() {
     const { anypoint, menuPopup, listType, historyEnabled, popupMenuEnabled, draggableEnabled, navigationSelected } = this;
     const hideHistory = menuPopup.includes('history-menu');
     const hideSaved = menuPopup.includes('saved-menu');
@@ -1154,8 +1071,8 @@ export class ArcScreen extends ApplicationScreen {
       ?hideSearch="${hideSearch}"
       ?popup="${popupMenuEnabled}"
       ?dataTransfer="${draggableEnabled}"
-      @minimized="${this[navMinimizedHandler]}"
-      @selected="${this[menuRailSelected]}"
+      @minimized="${this.navMinimizedHandler}"
+      @selected="${this.menuRailSelected}"
     ></arc-menu>
     `;
   }
@@ -1164,22 +1081,22 @@ export class ArcScreen extends ApplicationScreen {
    * @param {string} route The current route
    * @returns {TemplateResult} The template for the page content
    */
-  [pageTemplate](route) {
+  pageTemplate(route) {
     return html`
     <main id="main">
-      ${this[headerTemplate]()}
-      ${this[workspaceTemplate](route === 'workspace')}
-      ${this[historyPanelTemplate](route)}
-      ${this[savedPanelTemplate](route)}
-      ${this[clientCertScreenTemplate](route)}
-      ${this[dataExportScreenTemplate](route)}
-      ${this[cookieManagerScreenTemplate](route)}
-      ${this[settingsScreenTemplate](route)}
-      ${this[hostRulesTemplate](route)}
-      ${this[exchangeSearchTemplate](route)}
-      ${this[arcLegacyProjectTemplate](route)}
-      ${this[requestDetailTemplate]()}
-      ${this[requestMetaTemplate]()}
+      ${this.headerTemplate()}
+      ${this.workspaceTemplate(route === 'workspace')}
+      ${this.historyPanelTemplate(route)}
+      ${this.savedPanelTemplate(route)}
+      ${this.clientCertScreenTemplate(route)}
+      ${this.dataExportScreenTemplate(route)}
+      ${this.cookieManagerScreenTemplate(route)}
+      ${this.settingsScreenTemplate(route)}
+      ${this.hostRulesTemplate(route)}
+      ${this.exchangeSearchTemplate(route)}
+      ${this.arcLegacyProjectTemplate(route)}
+      ${this.requestDetailTemplate()}
+      ${this.requestMetaTemplate()}
     </main>
     `;
   }
@@ -1188,7 +1105,7 @@ export class ArcScreen extends ApplicationScreen {
    * @param {boolean} visible Whether the workspace is rendered in the view
    * @returns
    */
-  [workspaceTemplate](visible) {
+  workspaceTemplate(visible) {
     const { oauth2RedirectUri, anypoint, workspaceSendButton, workspaceProgressInfo } = this;
     // if (typeof cnf.requestEditor.autoEncode === 'boolean') {
     //   this.workspaceAutoEncode = cnf.requestEditor.autoEncode;
@@ -1210,7 +1127,7 @@ export class ArcScreen extends ApplicationScreen {
    * @param {string} route The current route
    * @returns {TemplateResult|string} The template for the history screen
    */
-  [historyPanelTemplate](route) {
+  historyPanelTemplate(route) {
     if (route !== 'history') {
       return '';
     }
@@ -1235,7 +1152,7 @@ export class ArcScreen extends ApplicationScreen {
    * @param {string} route The current route
    * @returns {TemplateResult|string} The template for the history screen
    */
-  [savedPanelTemplate](route) {
+  savedPanelTemplate(route) {
     if (route !== 'saved') {
       return '';
     }
@@ -1257,7 +1174,7 @@ export class ArcScreen extends ApplicationScreen {
    * @param {string} route The current route
    * @returns {TemplateResult|string} The template for client certificates screen
    */
-  [clientCertScreenTemplate](route) {
+  clientCertScreenTemplate(route) {
     if (route !== 'client-certificates') {
       return '';
     }
@@ -1273,7 +1190,7 @@ export class ArcScreen extends ApplicationScreen {
    * @param {string} route The current route
    * @returns {TemplateResult|string} The template for the data export screen
    */
-  [dataExportScreenTemplate](route) {
+  dataExportScreenTemplate(route) {
     if (route !== 'data-export') {
       return '';
     }
@@ -1291,7 +1208,7 @@ export class ArcScreen extends ApplicationScreen {
    * @param {string} route The current route
    * @returns {TemplateResult|string} The template for the cookie manager
    */
-  [cookieManagerScreenTemplate](route) {
+  cookieManagerScreenTemplate(route) {
     if (route !== 'cookie-manager') {
       return '';
     }
@@ -1308,7 +1225,7 @@ export class ArcScreen extends ApplicationScreen {
    * @param {string} route The current route
    * @returns {TemplateResult|string} The template for the application settings
    */
-  [settingsScreenTemplate](route) {
+  settingsScreenTemplate(route) {
     if (route !== 'settings') {
       return '';
     }
@@ -1324,20 +1241,20 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @returns {TemplateResult} The template for the request metadata info dialog
    */
-  [requestDetailTemplate]() {
+  requestDetailTemplate() {
     const { anypoint, requestDetailsOpened, metaRequestId, metaRequestType } = this;
     return html`
     <bottom-sheet
       class="bottom-sheet-container"
       .opened="${requestDetailsOpened}"
       data-open-property="requestDetailsOpened"
-      @closed="${this[sheetClosedHandler]}"
+      @closed="${this.sheetClosedHandler}"
     >
       <request-meta-details
         ?anypoint="${anypoint}"
         .requestId="${metaRequestId}"
         .requestType="${metaRequestType}"
-        @edit="${this[metaRequestHandler]}"
+        @edit="${this.metaRequestHandler}"
       ></request-meta-details>
     </bottom-sheet>`;
   }
@@ -1345,20 +1262,20 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @returns {TemplateResult} The template for the request metadata editor dialog
    */
-  [requestMetaTemplate]() {
+  requestMetaTemplate() {
     const { anypoint, requestMetaOpened, metaRequestId, metaRequestType } = this;
     return html`
     <bottom-sheet
       class="bottom-sheet-container"
       .opened="${requestMetaOpened}"
       data-open-property="requestMetaOpened"
-      @closed="${this[sheetClosedHandler]}"
+      @closed="${this.sheetClosedHandler}"
     >
       <request-meta-editor
         ?anypoint="${anypoint}"
         .requestId="${metaRequestId}"
         .requestType="${metaRequestType}"
-        @close="${this[requestMetaCloseHandler]}"
+        @close="${this.requestMetaCloseHandler}"
       ></request-meta-editor>
     </bottom-sheet>`;
   }
@@ -1367,7 +1284,7 @@ export class ArcScreen extends ApplicationScreen {
    * @param {string} route The current route
    * @returns {TemplateResult|string} The template for the host rules mapping element
    */
-  [hostRulesTemplate](route) {
+  hostRulesTemplate(route) {
     if (route !== 'hosts') {
       return '';
     }
@@ -1384,7 +1301,7 @@ export class ArcScreen extends ApplicationScreen {
    * @param {string} route The current route
    * @returns {TemplateResult|string} The template for the host rules mapping element
    */
-  [exchangeSearchTemplate](route) {
+  exchangeSearchTemplate(route) {
     if (route !== 'exchange-search') {
       return '';
     }
@@ -1397,7 +1314,7 @@ export class ArcScreen extends ApplicationScreen {
       exchangeRedirectUri="https://auth.advancedrestclient.com/"
       exchangeClientId="2dc40927457042b5862864c3c97737d7"
       forceOauthEvents
-      @selected="${this[exchangeSelectionHandler]}"
+      @selected="${this.exchangeSelectionHandler}"
       class="screen scroll"
     ></exchange-search>
     `;
@@ -1407,14 +1324,14 @@ export class ArcScreen extends ApplicationScreen {
    * @param {string} route The current route
    * @returns {TemplateResult|string} The template for the ARC legacy projects.
    */
-  [arcLegacyProjectTemplate](route) {
+  arcLegacyProjectTemplate(route) {
     if (route !== 'project') {
       return '';
     }
     const { routeParams={}, anypoint } = this;
     return html`
     <project-screen 
-      .projectId="${routeParams.pid}"
+      .projectId="${/** @type string */(routeParams.pid)}"
       ?anypoint="${anypoint}"
       class="screen scroll"
     ></project-screen>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable class-methods-use-this */
 import { html, svg } from 'lit-html';
@@ -175,7 +176,7 @@ export class DataImportScreen extends ApplicationScreen {
     this.routeParams = result.params;
     Events.Telemetry.view(this.eventTarget, name);
     if (name === 'google-drive') {
-      this.readDriveFile(result.params.id);
+      this.readDriveFile(/** @type string */ (result.params.id));
     }
   }
 
@@ -202,7 +203,6 @@ export class DataImportScreen extends ApplicationScreen {
       // eslint-disable-next-line no-console
       console.error(cause);
       this.reportCriticalError(cause.message);
-      return;
     }
   }
 
@@ -416,7 +416,7 @@ export class DataImportScreen extends ApplicationScreen {
   }
 
   backHandler() {
-    history.back();
+    window.history.back();
   }
 
   appTemplate() {

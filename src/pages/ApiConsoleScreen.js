@@ -102,7 +102,7 @@ export class ApiConsoleScreen extends ApplicationScreen {
     this.initObservableProperties(
       'route', 'routeParams', 'initializing', 
       'amfType', 'domainId', 'domainType', 'operationId',
-      'navigationWidth', 'isStored',
+      'isStored',
       'indexItem', 'apiVersion',
     );
     /**
@@ -231,14 +231,6 @@ export class ApiConsoleScreen extends ApplicationScreen {
     if (key === 'view.fontSize') {
       document.body.style.fontSize = `${value}px`;
     }
-    // const { key, value } = e.detail;
-    // if (key === 'request.timeout') {
-    //   this.requestFactory.requestTimeout = value;
-    // } else if (key === 'request.validateCertificates') {
-    //   this.requestFactory.validateCertificates = value;
-    // } else if (key === 'request.nativeTransport') {
-    //   this.requestFactory.nativeTransport = value;
-    // }
   }
 
   /**
@@ -280,20 +272,20 @@ export class ApiConsoleScreen extends ApplicationScreen {
     this.routeParams = result.params;
     Events.Telemetry.view(this.eventTarget, name);
     if (name === 'open') {
-      this.openApi(result.params.src, result.params.id, result.params.version);
+      this.openApi( /** @type string */ (result.params.src),  /** @type string */ (result.params.id),  /** @type string */ (result.params.version));
     } else if (name === 'api') {
       if (!this.apiId) {
-        this.openApi(result.params.src, result.params.id, result.params.version);
-        this.apiId = result.params.id;
+        this.openApi( /** @type string */ (result.params.src), /** @type string */ (result.params.id),  /** @type string */ (result.params.version));
+        this.apiId = /** @type string */ (result.params.id);
       }
       if (result.params.domainId) {
-        this.domainId = result.params.domainId;
+        this.domainId = /** @type string */ (result.params.domainId);
       }
       if (result.params.domainType) {
-        this.domainType = result.params.domainType;
+        this.domainType = /** @type SelectionType */ (result.params.domainType);
       }
       if (result.params.operationId) {
-        this.operationId = result.params.operationId;
+        this.operationId = /** @type string */ (result.params.operationId);
       }
     }
   }

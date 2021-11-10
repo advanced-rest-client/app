@@ -5,23 +5,24 @@ import { ApiEventTypes, ApiEvents } from '@api-components/amf-components';
 import { RequestFactory } from '@advanced-rest-client/base';
 import { PlatformBindings } from './PlatformBindings.js';
 
-/* global Jexl */
-
 /** @typedef {import('@advanced-rest-client/events').ApiTransportEvent} ApiTransportEvent */
 /** @typedef {import('@advanced-rest-client/events').ConfigStateUpdateEvent} ConfigStateUpdateEvent */
 /** @typedef {import('@advanced-rest-client/events').ArcRequest.ArcEditorRequest} ArcEditorRequest */
 /** @typedef {import('@advanced-rest-client/events').ArcRequest.ArcBaseRequest} ArcBaseRequest */
 /** @typedef {import('@advanced-rest-client/events').ArcRequest.TransportRequest} TransportRequest */
+/** @typedef {import('@advanced-rest-client/events').ArcResponse.TransformedPayload} TransformedPayload */
 /** @typedef {import('@advanced-rest-client/events').ArcRequest.RequestConfig} RequestConfig */
 /** @typedef {import('@advanced-rest-client/events').ArcResponse.Response} Response */
 /** @typedef {import('@advanced-rest-client/events').ArcResponse.ErrorResponse} ErrorResponse */
 /** @typedef {import('@advanced-rest-client/events').HostRule.HostRule} HostRule */
 /** @typedef {import('@advanced-rest-client/events').Config.ARCConfig} ARCConfig */
+/** @typedef {import('@advanced-rest-client/events').TransportRequestSource} TransportRequestSource */
 /** @typedef {import('@api-components/amf-components').ApiRequestEvent} ApiRequestEvent */
 /** @typedef {import('@api-components/amf-components').AbortRequestEvent} AbortRequestEvent */
 /** @typedef {import('@api-components/amf-components').ApiConsoleRequest} ApiConsoleRequest */
 /** @typedef {import('@api-components/amf-components').AbortRequestEventDetail} AbortRequestEventDetail */
 /** @typedef {import('@api-components/amf-components').ApiConsoleResponse} ApiConsoleResponse */
+/** @typedef {import('./HttpRequestBindings').ConnectionInfo} ConnectionInfo */
 
 /**
  * Base bindings for handling HTTP request for ARC and API Console.
@@ -172,12 +173,14 @@ export class HttpRequestBindings extends PlatformBindings {
     return proxy.url;
   }
 
-  constructor() {
+  /**
+   * @param {import('jexl')} Jexl
+   */
+  constructor(Jexl) {
     super();
-    // @ts-ignore
-    this.factory = new RequestFactory(window, window.Jexl);
+    this.factory = new RequestFactory(window, Jexl);
     /** 
-     * @type {Map<string, {connection: any, request: ArcBaseRequest, aborted: boolean}>}
+     * @type {Map<string, ConnectionInfo>}
      */
     this.connections = new Map();
   }
@@ -219,8 +222,8 @@ export class HttpRequestBindings extends PlatformBindings {
    */
   async transportRequestHandler(e) {
     const transportRequest = e.detail;
-    const { config, id, request } = transportRequest;
-    await this.transport(request, id, config);
+    const { config, id, request, source } = transportRequest;
+    await this.transport(request, id, config, source);
   }
 
   /**
@@ -273,8 +276,9 @@ export class HttpRequestBindings extends PlatformBindings {
    * @param {ArcBaseRequest} request
    * @param {string} id
    * @param {RequestConfig=} config
+   * @param {TransportRequestSource=} source
    */
-  async transport(request, id, config={ enabled: false }) {
+  async transport(request, id, config={ enabled: false }, source) {
     throw new Error('Not yet implemented');
   }
 
@@ -289,6 +293,23 @@ export class HttpRequestBindings extends PlatformBindings {
     if (!info || info.aborted) {
       return;
     }
+    const typed = /** @type Response */ (response);
+    if (info.source === 'api-console') {
+      await this.respondApiConsole(info, id, response, transport);
+    } else {
+      await this.respondArc(info, id, response, transport);
+    }
+  }
+
+  /**
+   * Prepares response for Advanced REST Client.
+   * @param {ConnectionInfo} info
+   * @param {string} id
+   * @param {Response | ErrorResponse} response
+   * @param {TransportRequest} transport
+   * @returns {Promise<void>}
+   */
+  async respondArc(info, id, response, transport) {
     const fr = {
       id,
       request: info.request,
@@ -313,6 +334,34 @@ export class HttpRequestBindings extends PlatformBindings {
   }
 
   /**
+   * Prepares response forAPI Console.
+   * @param {ConnectionInfo} info
+   * @param {string} id
+   * @param {Response | ErrorResponse} response
+   * @param {TransportRequest} transport
+   * @returns {Promise<void>}
+   */
+  async respondApiConsole(info, id, response, transport) {
+    const typed = /** @type Response */ (response);
+    const apiConsoleRequest = /** @type ApiConsoleRequest */ ({
+      method: info.request.method,
+      url: info.request.url,
+      authorization: info.request.authorization,
+      headers: info.request.headers,
+      id,
+      payload: info.request.payload,
+    });
+    const apiResponse = /** @type ApiConsoleResponse */ ({
+      id,
+      isError: false,
+      loadingTime: typed.loadingTime,
+      request: apiConsoleRequest,
+      response,
+    });
+    ApiEvents.Request.apiResponse(document.body, apiResponse);
+  }
+
+  /**
    * A handler for the request error.
    * 
    * @param {Error} error
@@ -326,12 +375,58 @@ export class HttpRequestBindings extends PlatformBindings {
     if (!info || info.aborted) {
       return;
     }
+    if (info.source === 'api-console') {
+      this.errorApiConsole(info, error, id, transport, response);
+    } else {
+      this.errorArc(info, error, id, transport, response);
+    }
+  }
+
+  /**
+   * A handler for the request error for ARC.
+   * 
+   * @param {ConnectionInfo} info
+   * @param {Error} error
+   * @param {string} id
+   * @param {TransportRequest=} transport
+   * @param {ErrorResponse=} response
+   */
+  errorArc(info, error, id, transport, response) {
     const errorResponse = response || {
       error,
       status: 0,
     };
 
     Events.Transport.response(document.body, id, info.request, transport, errorResponse);
+  }
+
+  /**
+   * A handler for the request error for API Console.
+   * 
+   * @param {ConnectionInfo} info
+   * @param {Error} error
+   * @param {string} id
+   * @param {TransportRequest=} transport
+   * @param {ErrorResponse=} response
+   */
+  errorApiConsole(info, error, id, transport, response) {
+    const request = /** @type ApiConsoleRequest */ ({
+      method: info.request.method,
+      url: info.request.url,
+      authorization: info.request.authorization,
+      headers: info.request.headers,
+      id,
+      payload: info.request.payload,
+    });
+    const errorResponse = /** @type ApiConsoleResponse */ ({
+      id,
+      isError: true,
+      loadingTime: 0,
+      request,
+      response,
+      error,
+    });
+    ApiEvents.Request.apiResponse(document.body, errorResponse);
   }
 
   /**
@@ -373,7 +468,7 @@ export class HttpRequestBindings extends PlatformBindings {
     }
     e.preventDefault();
     const info = /** @type AbortRequestEventDetail */ (e.detail);
-    this.apiConsoleAbort(info.id);
+    this.abort(info.id);
   }
 
   /**
@@ -396,7 +491,7 @@ export class HttpRequestBindings extends PlatformBindings {
         evaluateVariables: this.variablesEnabled,
         evaluateSystemVariables: this.systemVariablesEnabled,
       });
-      await this.transportApiConsole(processed.id, request, processed.request);
+      Events.Transport.transport(document.body, processed.id, processed.request, undefined, 'api-console');
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
@@ -411,22 +506,5 @@ export class HttpRequestBindings extends PlatformBindings {
       });
       ApiEvents.Request.apiResponse(document.body, info);
     }
-  }
-
-  /**
-   * @param {string} id
-   * @returns {Promise<void>}
-   */
-  async apiConsoleAbort(id) {
-    throw new Error('Not implemented');
-  }
-
-  /**
-   * @param {string} id
-   * @param {ApiConsoleRequest} sourceRequest
-   * @param {ArcBaseRequest} arcRequest
-   */
-  async transportApiConsole(id, sourceRequest, arcRequest) {
-    throw new Error(`Not implemented.`);
   }
 }

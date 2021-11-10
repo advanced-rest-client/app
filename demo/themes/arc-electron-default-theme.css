@@ -52,7 +52,6 @@ body {
   /* shadows */
   --box-shadow-6dp: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
 
-
   --anypoint-tabs-selection-bar-color: var(--primary-color);
 
   --api-navigation-list-item-selected-background-color: #e8e9ea;

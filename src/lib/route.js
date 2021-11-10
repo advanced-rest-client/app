@@ -6,7 +6,7 @@
 /**
  * @typedef RouteResult
  * @property {Route} route The matched route
- * @property {object=} params Captured parameters
+ * @property {Record<string, string|string[]>=} params Captured parameters
  */
 
 /**
@@ -29,14 +29,14 @@ export function testRoute(uri, pattern) {
 /**
  * @param {string} pattern The pattern to evaluate
  * @param {string} uri The path value of the current URL.
- * @return {object}
+ * @return {Record<string, string|string[]>}
  */
 export function parseParams(pattern, uri) {
   const r = getPattern(pattern);
   const match = r.exec(uri);
   // @ts-ignore
   const { groups } = match;
-  const result = {};
+  const result = /** @type Record<string, string|string[]> */ ({});
   if (groups) {
     Object.keys(groups).forEach((key) => {
       let value = /** @type String */ (groups[key]);

@@ -73,7 +73,7 @@ export class ApiParserBindings extends PlatformBindings {
    * @param {string=} mainFile API main file. If not set the program will try to find the best match.
    * @param {string=} md5 When set it will test data integrity with the MD5 hash
    * @param {string=} packaging Default to `zip`.
-   * @return {Promise<ApiParseResult>} Promise resolved to the AMF json-ld model.
+   * @returns {Promise<ApiParseResult>} Promise resolved to the AMF json-ld model.
    */
   async processApiLink(url, mainFile, md5, packaging) {
     throw new Error('Not yet implemented');
@@ -84,7 +84,7 @@ export class ApiParserBindings extends PlatformBindings {
    * 
    * @param {Buffer} buffer Buffer created from API file.
    * @param {AmfServiceProcessingOptions=} opts Processing options
-   * @return {Promise<ApiParseResult>} Promise resolved to the AMF json-ld model
+   * @returns {Promise<ApiParseResult>} Promise resolved to the AMF json-ld model
    */
   async processBuffer(buffer, opts) {
     throw new Error('Not yet implemented');
@@ -96,7 +96,7 @@ export class ApiParserBindings extends PlatformBindings {
    * zip file. Otherwise it processes it as a file.
    *
    * @param {File|Blob} file File to process.
-   * @return {Promise<ApiParseResult>} Promise resolved to the AMF json-ld model
+   * @returns {Promise<ApiParseResult>} Promise resolved to the AMF json-ld model
    */
   async processApiFile(file) {
     throw new Error('Not yet implemented');
@@ -116,7 +116,7 @@ export class ApiParserBindings extends PlatformBindings {
 
   /**
    * @param {string[]} candidates
-   * @return {Promise<string|undefined>}
+   * @returns {Promise<string|undefined>}
    */
   async selectApiMainFile(candidates) {
     throw new Error('Not yet implemented');
@@ -128,7 +128,7 @@ export class ApiParserBindings extends PlatformBindings {
    * @TODO: Handle authorization.
    *
    * @param {string} url URL to RAML zip asset.
-   * @return {Promise<ArrayBuffer>}
+   * @returns {Promise<ArrayBuffer>}
    */
   async downloadApiProject(url) {
     const response = await fetch(url);

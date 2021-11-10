@@ -4,8 +4,6 @@ export { RenderableMixin } from './src/mixins/RenderableMixin.js';
 
 export { BaseThemeManager } from './src/lib/themes/BaseThemeManager.js';
 export * as Route from './src/lib/route.js';
-export { ArcContextMenu } from './src/context-menu/ArcContextMenu.js';
-export { default as ArcContextCommands } from './src/context-menu/ArcContextMenuCommands.js';
 
 export { ApplicationScreen } from './src/pages/ApplicationScreen.js'
 export { AboutScreen } from './src/pages/AboutScreen.js';
@@ -33,7 +31,9 @@ export { GoogleDriveBindings } from './src/bindings/base/GoogleDriveBindings.js'
 export { OAuth2Bindings } from './src/bindings/base/OAuth2Bindings.js';
 export { ApiParserBindings } from './src/bindings/base/ApiParserBindings.js';
 export { HttpRequestBindings } from './src/bindings/base/HttpRequestBindings.js';
+export { NavigationBindings } from './src/bindings/base/NavigationBindings.js';
 
 // shortcuts
 export { MonacoLoader } from "@advanced-rest-client/monaco-support";
 export { LitElement, html, css, svg } from 'lit-element';
+export { ArcContextMenu, ArcContextMenuCommands } from '@advanced-rest-client/base';
