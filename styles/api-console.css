@@ -1,0 +1,41 @@
+.menu-title {
+  background-color: var(--arc-menu-title-background-color);
+  color: var(--arc-menu-title-color);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.api-pages {
+  margin-left: 24px;
+}
+
+nav {
+  background-color: var(--api-navigation-background-color, #fff);
+  color: var(--api-navigation-color, initial);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px #e5e5e5 solid;
+}
+
+main {
+  background: var(--secondary-background-color, #ffffff);
+}
+
+api-navigation {
+  flex: 1;
+}
+
+api-documentation {
+  max-width: 1900px;
+  padding: 00px 24px;
+  margin: 40px 0;
+}
+
+.api-version-selector {
+  --anypoint-dropdown-menu-background-color: var(--arc-toolbar-background);
+  --anypoint-dropdown-menu-label-color: var(--arc-toolbar-color);
+}

@@ -1,0 +1,94 @@
+body {
+  color: #000;
+  --error-color: #ff9090;
+  --accent-color: #2196f3;
+  --primary-text-color: #000;
+  --primary-color: #e91e63;
+  --primary-background-color: #ffffff;
+  --secondary-background-color: #ffffff;
+  --dark-divider-opacity: 0.12;
+  --api-divider-color: #e5e5e5;
+  
+  --anypoint-dropdown-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+  --anypoint-autocomplete-dropdown-shadow: var(--anypoint-dropdown-shadow);
+  --anypoint-button-emphasis-high-background-color: var(--accent-color);
+  
+  --arc-font-body1-font-size: 1rem;
+  --code-font-family: 'Roboto Mono', 'Consolas', 'Menlo', monospace;
+
+  --request-editor-url-area-background-color: #e4e4e4;
+  --url-input-editor-border-color: #e5e5ee;
+  
+  --action-button-background-color: var(--primary-color);
+  --action-button-background-image: none;
+  --action-button-color: #fff;
+  --action-button-transition: background-color 300ms linear;
+  --action-button-hover-background-color: #04b3f5;
+  --action-button-hover-color: #fff;
+  --action-button-disabled-background-color: #eaeaea;
+  --action-button-disabled-color: #a8a8a8;
+
+  --action-editor-opened-border-color: #2196f3;
+  --action-editor-opened-title-background-color: #0d47a1;
+  --action-editor-opened-title-color: #fff;
+
+  /* Toolbars */
+  --arc-menu-title-background-color: #0073ad;
+  --arc-menu-title-color: #fff;
+  --arc-toolbar-background: #0073ad;
+  --arc-toolbar-color: #fff;
+
+  /* Main navigation menu */
+  --arc-rail-menu-icon-color: #de1643;
+  --arc-menu-title-background-color: #0073ad;
+  --arc-menu-title-color: #fff;
+
+  /* List items */
+  /* --anypoint-item-before-background: #fff; */
+
+  /* Dividers */
+  --dark-divider-opacity: 0.14;
+
+  /* shadows */
+  --box-shadow-6dp: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+
+  --anypoint-tabs-selection-bar-color: var(--primary-color);
+
+  --api-navigation-list-item-selected-background-color: #e8e9ea;
+  --api-navigation-list-item-selected-color: #000;
+  --api-navigation-list-item-selected-icon-color: var(--primary-color);
+
+  --code-background-color: #f5f7f9;
+  --anypoint-icon-button-emphasis-low-color: var(--primary-color);
+
+  /* HTTP method colors */
+  --http-get-color: #008000;
+  --http-post-color: #2196F3;
+  --http-put-color: #FFA500;
+  --http-patch-color: #9C27B0;
+  --http-delete-color: #F44336;
+  --http-options-color: rgba(128, 128, 128, 0.74);
+  --http-head-color: rgba(128, 128, 128, 0.74);
+  --http-connect-color: rgba(128, 128, 128, 0.74);
+  --http-trace-color: rgba(128, 128, 128, 0.74);
+  --http-method-label-get-background-color: var(--http-get-color);
+  --http-method-label-get-color: #fff;
+  --http-method-label-post-background-color: var(--http-post-color);
+  --http-method-label-post-color: #fff;
+  --http-method-label-put-background-color: var(--http-put-color);
+  --http-method-label-put-color: #000;
+  --http-method-label-delete-background-color: var(--http-delete-color);
+  --http-method-label-delete-color: #fff;
+  --http-method-label-options-background-color: var(--http-options-color);
+  --http-method-label-options-background-color: var(--primary-text-color);
+  --http-method-label-patch-background-color: var(--http-patch-color);
+  --http-method-label-patch-color: #fff;
+  --http-method-label-head-background-color: var(--http-head-color);
+  --http-method-label-head-color: var(--primary-text-color);
+  --http-method-label-patch-background-color: var(--http-patch-color);
+  --http-method-label-patch-color: #fff;
+  --http-method-label-trace-background-color: var(--http-trace-color);
+  --http-method-label-trace-background-color: #fff;
+  --http-method-label-connect-background-color: var(--http-connect-color);
+  --http-method-label-connect-background-color: #fff;
+}

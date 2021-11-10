@@ -1,24 +1,30 @@
 {
   "cSpell.words": [
+    "arcworkspace",
     "authorizationchange",
     "checkedchange",
     "chipschange",
     "cnonce",
     "configchange",
     "formdata",
+    "gapi",
     "Hamac",
     "headerschange",
     "itemschange",
     "jsrsasign",
+    "keyval",
     "openedchange",
     "pageref",
     "payloadchange",
+    "prismjs",
     "queryheaders",
     "querystatuscodes",
     "reindex",
+    "Renderable",
     "requestactionschange",
     "responseactionschange",
     "Restapis",
+    "restclient",
     "saveas",
     "savehar",
     "selectedvalueschange",
@@ -28,6 +34,7 @@
     "urlchange",
     "urldecode",
     "urlencode",
-    "valuechange"
+    "valuechange",
+    "webservice"
   ]
 }

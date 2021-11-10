@@ -7,7 +7,7 @@ To learn about each components group see docs in the `docs/` folder.
 ## Development
 
 ```sh
-git clone https://github.com/@advanced-rest-client/app
+git clone https://github.com/advanced-rest-client/app
 cd app
 npm install
 ```
