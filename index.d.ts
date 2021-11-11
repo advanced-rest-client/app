@@ -36,6 +36,7 @@ export { MenuBindings } from './src/bindings/base/MenuBindings';
 export { NavigationBindings } from './src/bindings/base/NavigationBindings';
 export { OAuth2Bindings } from './src/bindings/base/OAuth2Bindings';
 export { PlatformBindings } from './src/bindings/base/PlatformBindings';
+export { PopupMenuBindings } from './src/bindings/base/PopupMenuBindings';
 export { ThemeBindings } from './src/bindings/base/ThemeBindings';
 export { WorkspaceBindings } from './src/bindings/base/WorkspaceBindings';
 

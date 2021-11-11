@@ -8,25 +8,45 @@ import { PlatformBindings } from './PlatformBindings.js';
 
 /**
  * The base bindings for the popup menu.
+ * These to be used in the **main** application window from where the menu can be detached.
+ * 
+ * @todo 1: In the child class implement an event listener that handles the menu opened state
+ * and informs the UI via the DOM events. Use `popupMenuOpened()` and `popupMenuClosed()`
+ * to notify the current window about a menu opened/closed state.
+ * 
+ * @todo 2: Implement an event listener from the main IO thread (in Electron) that 
+ * runs the logic that informs this window that a navigation ocurred.
  */
 export class MenuBindings extends PlatformBindings {
   async initialize() {
-    // from the elements
     window.addEventListener(EventTypes.Navigation.popupMenu, this.popupMenuHandler.bind(this));
-    // to the platform (Electron, web)
-    window.addEventListener(EventTypes.Menu.popup, this.executePopupHandler.bind(this));
   }
 
   /**
+   * A handler for the menu popup request coming from the `<arc-menu>` element.
+   * Communicates with the IO thread (in Electron) to run a new window with a popup.
+   * 
    * @param {ARCMenuPopupEvent} e
    */
   popupMenuHandler(e) {
     const { menu } = e;
     const sizing = this.getArcMenuSize();
-    Events.Menu.popup(document.body, menu, sizing);
+    this.detachMenu(menu, sizing);
   }
 
   /**
+   * Informs the IO thread (in Electron) or otherwise background thread that the user 
+   * requested to detach the menu from the main window into a separate window.
+   * 
+   * @param {string} menu
+   * @param {MenuSizing} sizing
+   */
+  async detachMenu(menu, sizing) {
+    throw new Error('Not yet implemented.');
+  }
+
+  /**
+   * Gathers the ARC menu size so the navigation opened in the new window has the same size.
    * @returns {MenuSizing}
    */
   getArcMenuSize() {
@@ -42,23 +62,6 @@ export class MenuBindings extends PlatformBindings {
       height: rect.height,
       width: rect.width
     };
-  }
-
-  /**
-   * @param {CustomEvent} e
-   */
-  executePopupHandler(e) {
-    const { menu, sizing } = e.detail;
-    e.detail.result = this.executePopup(menu, sizing);
-  }
-
-  /**
-   * Sends the information to the IO thread to detach a menu from the main window.
-   * @param {string} menu The name of the menu.
-   * @param {MenuSizing} sizing The size of the created menu window.
-   */
-  async executePopup(menu, sizing) {
-    throw new Error('Not yet implemented.');
   }
 
   /**
@@ -80,7 +83,7 @@ export class MenuBindings extends PlatformBindings {
   /**
    * Dispatches a DOM event informing the UI that a navigation ocurred in the popup menu.
    * @param {string} menu
-   * @param {...any[]} args
+   * @param {...any} args
    */
   popupMenuNavigate(menu, ...args) {
     switch (menu) {
@@ -90,6 +93,8 @@ export class MenuBindings extends PlatformBindings {
       case 'project': Events.Navigation.navigateProject(document.body, ...args); break;
       // @ts-ignore
       case 'navigate': Events.Navigation.navigate(document.body, ...args); break;
+      // @ts-ignore
+      case 'api': Events.Navigation.navigateRestApi(document.body, ...args); break;
       default:
     }
   }

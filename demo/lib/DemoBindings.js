@@ -26,7 +26,6 @@ export class DemoBindings {
     this.oauth2 = new OAuth2BindingsWeb();
     this.apiParser = new DemoApiParserBindings();
     this.http = new HttpProxyBindings();
-    this.http = new HttpProxyBindings();
     this.menu = new DemoMenuBindings();
   }
 

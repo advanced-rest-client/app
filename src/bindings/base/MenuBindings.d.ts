@@ -6,20 +6,34 @@ import { PlatformBindings } from './PlatformBindings.js';
 
 /**
  * The base bindings for the popup menu.
+ * These to be used in the **main** application window from where the menu can be detached.
+ * 
+ * @todo 1: In the child class implement an event listener that handles the menu opened state
+ * and informs the UI via the DOM events. Use `popupMenuOpened()` and `popupMenuClosed()`
+ * to notify the current window about a menu opened/closed state.
+ * 
+ * @todo 2: Implement an event listener from the main IO thread (in Electron) that 
+ * runs the logic that informs this window that a navigation ocurred.
  */
 export class MenuBindings extends PlatformBindings {
   initialize(): Promise<void>;
-  popupMenuHandler(e: ARCMenuPopupEvent): void;
-  getArcMenuSize(): Menu.MenuSizing;
-  executePopupHandler(e: CustomEvent): void;
-
   /**
-   * Sends the information to the IO thread to detach a menu from the main window.
-   * @param menu The name of the menu.
-   * @param sizing The size of the created menu window.
+   * A handler for the menu popup request coming from the `<arc-menu>` element.
+   * Communicates with the IO thread (in Electron) to run a new window with a popup.
    */
-  executePopup(menu: string, sizing: Menu.MenuSizing): Promise<void>;
-
+  popupMenuHandler(e: ARCMenuPopupEvent): void;
+  /**
+   * Informs the IO thread (in Electron) or otherwise background thread that the user 
+   * requested to detach the menu from the main window into a separate window.
+   * 
+   * @param {string} menu
+   * @param {MenuSizing} sizing
+   */
+  detachMenu(menu: string, sizing: Menu.MenuSizing): Promise<void>;
+  /**
+   * Gathers the ARC menu size so the navigation opened in the new window has the same size.
+   */
+  getArcMenuSize(): Menu.MenuSizing;
   /**
    * Dispatches a DOM event informing the UI that a menu has been opened.
    */

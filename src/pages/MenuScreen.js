@@ -1,9 +1,6 @@
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable class-methods-use-this */
 import { html } from 'lit-html';
-import { EventTypes, Events } from '@advanced-rest-client/events'
-import { ProjectModel, RequestModel, RestApiModel } from '@advanced-rest-client/idb-store'
-import * as Constants from '@advanced-rest-client/base/src/Constants.js';
+import { EventTypes, Events } from '@advanced-rest-client/events';
 import { ApplicationScreen } from './ApplicationScreen.js';
 import '@advanced-rest-client/base/define/history-menu.js';
 import '@advanced-rest-client/base/define/saved-menu.js';
@@ -15,20 +12,12 @@ import '@advanced-rest-client/base/define/arc-menu.js';
 /** @typedef {import('lit-html').TemplateResult} TemplateResult */
 /** @typedef {import('@advanced-rest-client/events').Config.ARCConfig} ARCConfig */
 /** @typedef {import('@advanced-rest-client/events').ConfigStateUpdateEvent} ConfigStateUpdateEvent */
-/** @typedef {import('@advanced-rest-client/events').ARCRequestNavigationEvent} ARCRequestNavigationEvent */
-/** @typedef {import('@advanced-rest-client/events').ARCProjectNavigationEvent} ARCProjectNavigationEvent */
-/** @typedef {import('@advanced-rest-client/events').ARCNavigationEvent} ARCNavigationEvent */
-/** @typedef {import('@advanced-rest-client/events').ARCRestApiNavigationEvent} ARCRestApiNavigationEvent */
 
 export const configStateChangeHandler = Symbol('configStateChangeHandler');
-export const navigateRequestHandler = Symbol('navigateRequestHandler');
-export const navigateProjectHandler = Symbol('navigateProjectHandler');
-export const navigateHandler = Symbol('navigateHandler');
-export const themeActivatedHandler = Symbol('themeActivatedHandler');
-export const navigateRestApiHandler = Symbol('navigateRestApiHandler');
 
 /**
  * A screen that is rendered in the popup menu in the Advanced REST Client.
+ * Note, the navigation handlers are in the PopupMenuBindings.
  */
 export class MenuScreen extends ApplicationScreen {
   constructor() {
@@ -38,13 +27,10 @@ export class MenuScreen extends ApplicationScreen {
     );
     this.type = '';
     this.historyEnabled = true;
-    this.requestModel = new RequestModel();
-    this.projectModel = new ProjectModel();
-    this.restApiModel = new RestApiModel();
+    this.initModels();
   }
 
   async initialize() {
-    this.initModels();
     this.initType();
     this.initDomEvents();
     await this.loadTheme();
@@ -54,12 +40,6 @@ export class MenuScreen extends ApplicationScreen {
   initType() {
     const init = this.collectInitOptions();
     this.type = init.type;
-  }
-
-  initModels() {
-    this.requestModel.listen(this.eventTarget);
-    this.projectModel.listen(this.eventTarget);
-    this.restApiModel.listen(this.eventTarget);
   }
 
   async initSettings() {
@@ -80,12 +60,7 @@ export class MenuScreen extends ApplicationScreen {
   }
 
   initDomEvents() {
-    window.addEventListener(EventTypes.Theme.State.activated, this[themeActivatedHandler].bind(this));
     window.addEventListener(EventTypes.Config.State.update, this[configStateChangeHandler].bind(this));
-    window.addEventListener(EventTypes.Navigation.navigateRequest, this[navigateRequestHandler].bind(this));
-    window.addEventListener(EventTypes.Navigation.navigateProject, this[navigateProjectHandler].bind(this));
-    window.addEventListener(EventTypes.Navigation.navigate, this[navigateHandler].bind(this));
-    window.addEventListener(EventTypes.Navigation.navigateRestApi, this[navigateRestApiHandler].bind(this));
   }
 
   /**
@@ -102,13 +77,6 @@ export class MenuScreen extends ApplicationScreen {
   }
 
   /**
-   * @param {CustomEvent} e 
-   */
-  [themeActivatedHandler](e) {
-    this.anypoint = e.detail.id === Constants.anypointTheme;
-  }
-
-  /**
    * @param {ConfigStateUpdateEvent} e
    */
   [configStateChangeHandler](e) {
@@ -118,44 +86,6 @@ export class MenuScreen extends ApplicationScreen {
     } if (key === 'history.enabled') {
       this.historyEnabled = value;
     }
-  }
-
-  /**
-   * @param {ARCRequestNavigationEvent} e 
-   */
-  [navigateRequestHandler](e) {
-    const { requestId, requestType, action } = e;
-    Events.Menu.navigate(this.eventTarget, 'request', requestId, requestType, action);
-  }
-
-  /**
-   * @param {ARCProjectNavigationEvent} e
-   */
-  [navigateProjectHandler](e) {
-    const { id, action, route } = e;
-    Events.Menu.navigate(this.eventTarget, 'project', id, action, route);
-  }
-
-  /**
-   * @param {ARCNavigationEvent} e
-   */
-  [navigateHandler](e) {
-    const allowed = [
-      'exchange-search',
-      'history',
-      'saved',
-    ];
-    if (allowed.includes(e.route)) {
-      Events.Menu.navigate(this.eventTarget, 'navigate', e.route);
-    }
-  }
-
-  /**
-   * @param {ARCRestApiNavigationEvent} e 
-   */
-  [navigateRestApiHandler](e) {
-    const { api, action, version } = e;
-    Events.Menu.navigate(this.eventTarget, 'api', api, version, action);
   }
 
   appTemplate() {

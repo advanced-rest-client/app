@@ -19,7 +19,7 @@ export class DemoMenuBindings extends MenuBindings {
    * @param {string} menu The name of the menu.
    * @param {MenuSizing} sizing The size of the created menu window.
    */
-  async executePopup(menu, sizing) {
+  async detachMenu(menu, sizing) {
     const { width, height } = sizing;
     const url = `popup-menu.html?type=${menu}`;
     const ref = window.open(url, menu, `width=${width},height=${height},resizable`);
@@ -52,6 +52,7 @@ export class DemoMenuBindings extends MenuBindings {
    * @param {any} data 
    */
   proxyNavigation(data) {
+    console.log(data);
     switch (data.type) {
       case 'project': this.popupMenuNavigate(data.type, data[0], data[1]); break;
       case 'request': this.popupMenuNavigate(data.type, data[0], data[1], data[2]); break;
