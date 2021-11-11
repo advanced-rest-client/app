@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "ÁÄÂÀÃÅČÇĆĎÉĚËÈÊẼĔȆÍÌÎÏŇÑÓÖÒÔÕØŘŔŠŤÚŮÜÙÛÝŸ",
     "arcworkspace",
     "authorizationchange",
     "checkedchange",
@@ -37,6 +38,7 @@
     "urldecode",
     "urlencode",
     "valuechange",
-    "webservice"
+    "webservice",
+    "Žáäâàãåčçćďéěëèêẽĕȇíìîïňñóöòôõøðřŕšťúůüùûýÿžþ"
   ]
 }

@@ -393,7 +393,7 @@ export class ApiConsoleScreen extends ApplicationScreen {
    * @returns {boolean} True when this model can be stored in the data store.
    */
   computeCanSave(baseUri, apiVersion) {
-    if (!baseUri || !apiVersion) {
+    if (!baseUri || baseUri === 'http://' || !apiVersion) {
       return false;
     }
     return true;
@@ -418,10 +418,50 @@ export class ApiConsoleScreen extends ApplicationScreen {
   }
 
   /**
+   * Creates a data store key for the API.
+   * Primarily, it uses the base URI so the same API with different version can be recognized.
+   * Secondly, it tries to use the API title turned into a slug.
+   * What all this fails it uses the `apiId`,
+   * 
+   * @return {string} 
+   */
+  computeStoreKey() {
+    const { baseUri, apiTitle, apiId } = this;
+    if (baseUri && baseUri !== 'http://') {
+      return baseUri;
+    }
+    if (apiTitle) {
+      const result = this.slug(apiTitle);
+      if (result) {
+        return result;
+      }
+    }
+    return apiId;
+  }
+
+  /**
+   * @param {string} text
+   * @returns {string} 
+   */
+  slug(text) {
+    let str = text.replace(/^\s+|\s+$/g, '');
+    str = str.toLowerCase();
+    const from = "ÁÄÂÀÃÅČÇĆĎÉĚËÈÊẼĔȆÍÌÎÏŇÑÓÖÒÔÕØŘŔŠŤÚŮÜÙÛÝŸŽáäâàãåčçćďéěëèêẽĕȇíìîïňñóöòôõøðřŕšťúůüùûýÿžþÞĐđßÆa·/_,:;";
+    const to   = "AAAAAACCCDEEEEEEEEIIIINNOOOOOORRSTUUUUUYYZaaaaaacccdeeeeeeeeiiiinnooooooorrstuuuuuyyzbBDdBAa------";
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0, l = from.length; i < l; i++) {
+      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    }
+    str = str.replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '-') .replace(/-+/g, '-');
+    return str;
+  }
+
+  /**
    * Stores the API in the data store.
    */
   async saveApi() {
-    const { baseUri, apiVersion, amfType, apiTitle='Unnamed API', apiId } = this;
+    const { apiVersion, amfType, apiTitle='Unnamed API', apiId } = this;
+    const key = this.computeStoreKey();
     let { indexItem } = this;
     if (indexItem) {
       indexItem.versions.push(apiVersion);
@@ -429,7 +469,7 @@ export class ApiConsoleScreen extends ApplicationScreen {
       indexItem.title = apiTitle;
     } else {
       indexItem = {
-        _id: baseUri,
+        _id: key,
         title: apiTitle,
         order: 0,
         latest: apiVersion,
@@ -442,7 +482,7 @@ export class ApiConsoleScreen extends ApplicationScreen {
     this.isStored = true;
     await Events.Model.RestApi.dataUpdate(document.body, {
       data: JSON.stringify(this.amf),
-      indexId: baseUri,
+      indexId: key,
       version: apiVersion,
       amfVersion: '5.0.0',
     });
@@ -478,12 +518,18 @@ export class ApiConsoleScreen extends ApplicationScreen {
     }
   }
 
+  /**
+   * Removes the API from the store.
+   */
   async delete() {
     const { indexItem } = this;
     await Events.Model.RestApi.delete(document.body, indexItem._id);
     navigatePage('app.html');
   }
 
+  /**
+   * Removes a version of the API from the store.
+   */
   async deleteVersion() {
     const { indexItem, apiVersion } = this;
     await Events.Model.RestApi.versionDelete(document.body, indexItem._id, apiVersion);
