@@ -1,10 +1,5 @@
-import { ARCRequestNavigationEvent, ARCProjectNavigationEvent, ARCNavigationEvent, ARCRestApiNavigationEvent } from '@advanced-rest-client/events';
+import { ARCRequestNavigationEvent, ARCProjectNavigationEvent, ARCNavigationEvent, ARCRestApiNavigationEvent, ARCHelpTopicEvent } from '@advanced-rest-client/events';
 import { PlatformBindings } from './PlatformBindings.js';
-
-/** @typedef {import('@advanced-rest-client/events').ARCRequestNavigationEvent} ARCRequestNavigationEvent */
-/** @typedef {import('@advanced-rest-client/events').ARCProjectNavigationEvent} ARCProjectNavigationEvent */
-/** @typedef {import('@advanced-rest-client/events').ARCNavigationEvent} ARCNavigationEvent */
-/** @typedef {import('@advanced-rest-client/events').ARCRestApiNavigationEvent} ARCRestApiNavigationEvent */
 
 /**
  * These bindings are to be attached to the popup menu window.
@@ -16,6 +11,7 @@ export class PopupMenuBindings extends PlatformBindings {
   navigateProjectHandler(e: ARCProjectNavigationEvent): void;
   navigateHandler(e: ARCNavigationEvent): void;
   navigateRestApiHandler(e: ARCRestApiNavigationEvent): void;
+  navigateHelpTopicHandler(e: ARCHelpTopicEvent): void;
   /**
    * Sends the information to the IO thread that this window is closed
    * and the menu should return to the arc-menu in all opened windows.

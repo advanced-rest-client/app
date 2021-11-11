@@ -7,6 +7,7 @@ import { PlatformBindings } from './PlatformBindings.js';
 /** @typedef {import('@advanced-rest-client/events').ARCProjectNavigationEvent} ARCProjectNavigationEvent */
 /** @typedef {import('@advanced-rest-client/events').ARCNavigationEvent} ARCNavigationEvent */
 /** @typedef {import('@advanced-rest-client/events').ARCRestApiNavigationEvent} ARCRestApiNavigationEvent */
+/** @typedef {import('@advanced-rest-client/events').ARCHelpTopicEvent} ARCHelpTopicEvent */
 
 /**
  * These bindings are to be attached to the popup menu window.
@@ -18,6 +19,7 @@ export class PopupMenuBindings extends PlatformBindings {
     window.addEventListener(EventTypes.Navigation.navigateProject, this.navigateProjectHandler.bind(this));
     window.addEventListener(EventTypes.Navigation.navigate, this.navigateHandler.bind(this));
     window.addEventListener(EventTypes.Navigation.navigateRestApi, this.navigateRestApiHandler.bind(this));
+    window.addEventListener(EventTypes.Navigation.helpTopic, this.navigateHelpTopicHandler.bind(this));
   }
 
   /**
@@ -56,6 +58,14 @@ export class PopupMenuBindings extends PlatformBindings {
   navigateRestApiHandler(e) {
     const { api, action, version } = e;
     this.propagateNavigation('api', api, version, action);
+  }
+
+  /**
+   * @param {ARCHelpTopicEvent} e
+   */
+  navigateHelpTopicHandler(e) {
+    const { topic } = e;
+    this.propagateNavigation('help', topic);
   }
 
   /**

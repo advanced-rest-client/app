@@ -52,12 +52,14 @@ export class DemoMenuBindings extends MenuBindings {
    * @param {any} data 
    */
   proxyNavigation(data) {
-    console.log(data);
     switch (data.type) {
       case 'project': this.popupMenuNavigate(data.type, data[0], data[1]); break;
-      case 'request': this.popupMenuNavigate(data.type, data[0], data[1], data[2]); break;
-      case 'api': this.popupMenuNavigate(data.type, data[0], data[1], data[2]); break;
-      case 'navigate': this.popupMenuNavigate(data.type, data.route, data.opts); break;
+      case 'request': 
+      case 'api':
+      case 'navigate': 
+        this.popupMenuNavigate(data.type, data[0], data[1], data[2]); 
+        break;
+      case 'help': this.popupMenuNavigate(data.type, data[0]); break;
       default: 
     }
   }

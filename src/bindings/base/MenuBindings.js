@@ -95,6 +95,7 @@ export class MenuBindings extends PlatformBindings {
       case 'navigate': Events.Navigation.navigate(document.body, ...args); break;
       // @ts-ignore
       case 'api': Events.Navigation.navigateRestApi(document.body, ...args); break;
+      case 'help': Events.Navigation.helpTopic(document.body, args[0]); break;
       default:
     }
   }
