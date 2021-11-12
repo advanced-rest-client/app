@@ -4,6 +4,7 @@ body {
   --accent-color: #2196f3;
   --primary-text-color: #000;
   --primary-color: #e91e63;
+  --secondary-text-color: rgba(0, 0, 0, 0.74);
   --primary-background-color: #ffffff;
   --secondary-background-color: #ffffff;
   --dark-divider-opacity: 0.12;

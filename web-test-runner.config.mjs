@@ -11,6 +11,22 @@ export default /** @type TestRunnerConfig */ ({
     }
   },
 
+  middleware: [
+    function rewriteIndex(context, next) {
+      const isThemes = context.url.startsWith('/demo/themes/');
+      const isFonts = isThemes && context.url.includes('/fonts/');
+      if (isThemes && !isFonts) {
+        const newLocation = context.url.replace('@advanced-rest-client/', '');
+        context.url = `${newLocation}.css`;
+      } else if (isFonts) {
+        const newLocation = context.url.replace(/@advanced-rest-client\/[^/]+\//, '');
+        context.url = newLocation;
+      }
+
+      return next();
+    },
+  ],
+
   testRunnerHtml: testFramework =>
   `<html>
     <body>

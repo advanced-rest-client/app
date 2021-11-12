@@ -1,7 +1,10 @@
 import { DemoBindings } from '../lib/DemoBindings.js';
 import { AboutScreen } from '../../index.js';
 
-const bindings = new DemoBindings();
-bindings.initialize();
-const page = new AboutScreen();
-page.initialize();
+(async () => {
+  const bindings = new DemoBindings();
+  await bindings.initialize();
+
+  const page = new AboutScreen();
+  await page.initialize();
+})();

@@ -95,7 +95,7 @@
     "format": "npm run format:eslint",
     "test": "web-test-runner test/**/*.test.js --coverage --node-resolve --playwright --browsers chromium webkit",
     "test:all": "web-test-runner --config web-test-runner.config.mjs test/**/*.test.js --coverage --playwright --browsers chromium firefox webkit",
-    "test:watch": "web-test-runner --config web-test-runner.config.mjs --watch",
+    "test:watch": "web-test-runner --config web-test-runner.config.mjs --watch --playwright --browsers chromium",
     "gen:wc": "wca analyze \"*.js\" --outFile custom-elements.json",
     "prepare": "husky install && node dev/prepare.mjs",
     "bundle": "node tasks/esbuild.js"

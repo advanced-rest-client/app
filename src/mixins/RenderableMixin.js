@@ -87,11 +87,17 @@ const mxFunction = (base) => {
     }
 
     [renderPage]() {
+      const root = document.querySelector('#app');
+      if (!root) {
+        // eslint-disable-next-line no-console
+        console.warn(`The <div id="app"></div> is not in the document.`);
+        return;
+      }
       if (!this.firstRendered) {
         this.firstRendered = true;
         setTimeout(() => this.firstRender());
       }
-      render(this.appTemplate(), document.querySelector('#app'), { eventContext: this });
+      render(this.appTemplate(), root, { eventContext: this });
       this[resolveUpdatePromise]();
       this.updated();
     }

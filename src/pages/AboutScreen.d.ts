@@ -16,7 +16,6 @@ export const updateNotAvailableHandler: unique symbol;
 export const updateErrorHandler: unique symbol;
 export const downloadingHandler: unique symbol;
 export const downloadedHandler: unique symbol;
-export const themeActivatedHandler: unique symbol;
 
 export class AboutScreen extends ApplicationScreen {
   get updateDownloaded(): boolean;
@@ -27,32 +26,35 @@ export class AboutScreen extends ApplicationScreen {
    * page of the update status label
    */
   updateStatePage: number;
-   /** 
-    * State of auto update setting.
-    */
+  /** 
+   * State of auto update setting.
+   */
   autoUpdate: boolean;
-   /** 
-    * Associated message with current error code.
-    */
+  /** 
+   * Associated message with current error code.
+   */
   errorMessage: string;
   errorCode: string;
-   /**
-    * Current release channel.
-    */
-  releaseChannel: string;
-   /**
-    * Current release channel.
-    */
+  /**
+   * Whether to allow updating the application with a pre-release version.
+   */
+  allowPreRelease: boolean;
+  /**
+   * Current release channel.
+   */
   upgradeInfo: UpdateInfo;
-   /**
-    * Current application version info.
-    */
+  /**
+   * Current application version info.
+   */
   versionInfo: Application.AppVersionInfo;
 
   constructor();
   initialize(): Promise<void>;
+  /**
+   * Reads the application configuration and sets up variables.
+   */
+  setupConfig(): Promise<void>;
   listen(): void;
-  [themeActivatedHandler](e: CustomEvent): void;
   [checkingUpdateHandler](): void;
   [updateAvailableHandler](e: CustomEvent): void;
   [updateNotAvailableHandler](): void;
@@ -75,16 +77,12 @@ export class AboutScreen extends ApplicationScreen {
    * @param {MouseEvent} e
    */
   linkHandler(e: MouseEvent): void;
-  /**
-   * Checks if `channel` is a valid channel signature.
-   */
-  isValidChannel(channel: string): boolean;
   autoChangeHandler(e: Event): Promise<void>;
-  releaseChannelHandler(e: Event): Promise<void>;
+  preReleaseChangeHandler(e: Event): Promise<void>;
   appTemplate(): TemplateResult;
   titleTemplate(): TemplateResult;
   updatesSettingsTemplate(): TemplateResult;
   channelsTemplate(): TemplateResult;
-  errorTemplate(): TemplateResult|string;
+  errorTemplate(): TemplateResult | string;
   authorTemplate(): TemplateResult;
 }

@@ -1,7 +1,6 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-param-reassign */
 import { html } from 'lit-html';
-import * as Constants from '@advanced-rest-client/base/src/Constants.js';
 import '@anypoint-web-components/awc/anypoint-dropdown-menu.js';
 import '@anypoint-web-components/awc/anypoint-listbox.js';
 import '@anypoint-web-components/awc/anypoint-item.js';
@@ -25,7 +24,6 @@ export const updateNotAvailableHandler = Symbol('updateNotAvailableHandler');
 export const updateErrorHandler = Symbol('updateErrorHandler');
 export const downloadingHandler = Symbol('downloadingHandler');
 export const downloadedHandler = Symbol('downloadedHandler');
-export const themeActivatedHandler = Symbol('themeActivatedHandler');
 
 export class AboutScreen extends ApplicationScreen {
   get updateDownloaded() {
@@ -46,6 +44,7 @@ export class AboutScreen extends ApplicationScreen {
       case 2: return html`Downloading update...`;
       case 3: return html`Ready to install`;
       case 4: return html`Update error`;
+      case 5: return html`Update available`;
       default: return html`ARC is up to date <span class="heart">❤</span>`;
     }
   }
@@ -54,7 +53,7 @@ export class AboutScreen extends ApplicationScreen {
     super();
 
     this.initObservableProperties(
-      'autoUpdate', 'updateStatePage', 'errorMessage', 'releaseChannel', 'errorCode', 'upgradeInfo', 'versionInfo',
+      'autoUpdate', 'updateStatePage', 'errorMessage', 'allowPreRelease', 'errorCode', 'upgradeInfo', 'versionInfo',
     );
 
     /**
@@ -75,12 +74,12 @@ export class AboutScreen extends ApplicationScreen {
      */
     this.errorCode = undefined;
     /**
-     * Current release channel.
-     * @type {string}
+     * Whether to allow updating the application with a pre-release version.
+     * @type {boolean}
      */
-    this.releaseChannel = 'latest';
+    this.allowPreRelease = false;
     /**
-     * Current release channel.
+     * Info object returned by the auto-updated.
      * @type {UpdateInfo}
      */
     this.upgradeInfo = undefined;
@@ -96,6 +95,16 @@ export class AboutScreen extends ApplicationScreen {
 
   async initialize() {
     await this.loadTheme();
+    await this.setupConfig();
+    this.versionInfo = await this.loadVersionInfo();
+    this.listen();
+    this.render();
+  }
+
+  /**
+   * Reads the application configuration and sets up variables.
+   */
+  async setupConfig() {
     let cnf = /** @type ARCConfig */ ({});
     try {
       cnf = (await Events.Config.readAll(this.eventTarget)) || {};
@@ -104,12 +113,17 @@ export class AboutScreen extends ApplicationScreen {
       throw e;
     }
     const { updater={} } = cnf;
-    const { auto, channel } = updater;
-    this.releaseChannel = channel || 'latest';
-    this.autoUpdate = auto;
-    this.versionInfo = await this.loadVersionInfo();
-    this.listen();
-    this.render();
+    const { auto, allowPreRelease } = updater;
+    if (typeof allowPreRelease === 'boolean') {
+      this.allowPreRelease = allowPreRelease;
+    } else {
+      this.allowPreRelease = false;
+    }
+    if (typeof auto === 'boolean') {
+      this.autoUpdate = auto;
+    } else {
+      this.autoUpdate = false;
+    }
   }
   
   listen() {
@@ -120,14 +134,6 @@ export class AboutScreen extends ApplicationScreen {
     eventTarget.addEventListener(EventTypes.Updater.State.autoUpdateError, this[updateErrorHandler].bind(this));
     eventTarget.addEventListener(EventTypes.Updater.State.downloadProgress, this[downloadingHandler].bind(this));
     eventTarget.addEventListener(EventTypes.Updater.State.updateDownloaded, this[downloadedHandler].bind(this));
-    window.addEventListener(EventTypes.Theme.State.activated, this[themeActivatedHandler].bind(this));
-  }
-
-  /**
-   * @param {CustomEvent} e 
-   */
-  [themeActivatedHandler](e) {
-    this.anypoint = e.detail.id === Constants.anypointTheme;
   }
 
   [checkingUpdateHandler]() {
@@ -140,9 +146,7 @@ export class AboutScreen extends ApplicationScreen {
   [updateAvailableHandler](e) {
     const info = /** @type UpdateInfo */ (e.detail);
     this.upgradeInfo = info;
-    if (this.updateStatePage !== 2) {
-      this.updateStatePage = 2;
-    }
+    this.updateStatePage = 5;
   }
 
   [updateNotAvailableHandler]() {
@@ -226,15 +230,6 @@ export class AboutScreen extends ApplicationScreen {
   }
 
   /**
-   * Checks if `channel` is a valid channel signature.
-   * @param {string} channel
-   * @returns {boolean}
-   */
-  isValidChannel(channel) {
-    return ['beta', 'alpha', 'latest'].indexOf(channel) !== -1;
-  }
-
-  /**
    * @param {Event} e
    */
   async autoChangeHandler(e) {
@@ -253,11 +248,17 @@ export class AboutScreen extends ApplicationScreen {
   /**
    * @param {Event} e
    */
-  async releaseChannelHandler(e) {
-    const list = /** @type AnypointListboxElement */ (e.target);
-    const value = /** @type string */ (list.selected);
-    this.releaseChannel = value;
-    await Events.Config.update(this.eventTarget, 'updater.channel', value);
+  async preReleaseChangeHandler(e) {
+    const button = /** @type AnypointSwitch */ (e.target);
+    if (this.allowPreRelease === undefined && button.checked === false) {
+      this.allowPreRelease = button.checked;
+      return;
+    }
+    if (button.checked === this.allowPreRelease) {
+      return;
+    }
+    this.allowPreRelease = button.checked;
+    await Events.Config.update(this.eventTarget, 'updater.allowPreRelease', button.checked);
   }
 
   appTemplate() {
@@ -283,7 +284,7 @@ export class AboutScreen extends ApplicationScreen {
         </div>
       </div>
       <div class="version-meta">
-        <p class="version">Version: ${versionInfo.appVersion}</p>
+        <p class="version text-selectable">Version: ${versionInfo.appVersion}</p>
         <a
           href="https://github.com/advanced-rest-client/arc-electron/releases/tag/v${versionInfo.appVersion}"
           @click="${this.linkHandler}"
@@ -300,7 +301,6 @@ export class AboutScreen extends ApplicationScreen {
       updateProgress,
       updateDownloaded,
       anypoint,
-      autoUpdate,
       updateLabel,
     } = this;
     return html`
@@ -312,68 +312,54 @@ export class AboutScreen extends ApplicationScreen {
             emphasis="high"
             ?anypoint="${anypoint}"
             @click="${this.updateInstall}"
+            data-button="update-install"
           >Restart and install</anypoint-button>` :
           html`<anypoint-button
             emphasis="high"
             ?disabled="${updateProgress}"
             ?anypoint="${anypoint}"
             @click="${this.updateCheck}"
+            data-button="update-check"
           >Check for updates</anypoint-button>`}
       </div>
-      <div class="update-settings">
-        <anypoint-switch 
-          .checked="${autoUpdate}"
-          @change="${this.autoChangeHandler}"
-        >
-          Automatically download and install updates
-        </anypoint-switch>
-      </div>
-      ${this.channelsTemplate()}
+      ${this.autoUpdateSwitchTemplate()}
+      ${this.preReleaseSwitchTemplate()}
     </section>`;
   }
 
-  channelsTemplate() {
-    const {
-      anypoint,
-      releaseChannel
-    } = this;
-    return html`<div class="release-channel">
-      <anypoint-dropdown-menu
-        dynamicAlign
-        horizontalAlign="left"
-        ?anypoint="${anypoint}"
-        class="channel-selector"
+  /**
+   * @returns {TemplateResult} The template for the auto update switch button
+   */
+  autoUpdateSwitchTemplate() {
+    return html`
+    <div class="update-settings">
+      <anypoint-switch 
+        .checked="${this.autoUpdate}"
+        @change="${this.autoChangeHandler}"
+        data-button="auto-update"
       >
-        <label slot="label">Release channel</label>
-        <anypoint-listbox
-          slot="dropdown-content"
-          attrForItemTitle="data-label"
-          attrforselected="data-channel"
-          .selected="${releaseChannel}"
-          @selectedchange="${this.releaseChannelHandler}"
-          ?anypoint="${anypoint}"
-        >
-          <anypoint-item data-channel="latest" data-label="Stable">
-            <anypoint-item-body twoline>
-              <div>Stable</div>
-              <div data-secondary>Default channel. Tested and targeted for production environment.</div>
-            </anypoint-item-body>
-          </anypoint-item>
-          <anypoint-item data-channel="beta" data-label="Beta">
-            <anypoint-item-body twoline>
-              <div>Beta</div>
-              <div data-secondary>Next release. Tested but may contain bugs.</div>
-            </anypoint-item-body>
-          </anypoint-item>
-          <anypoint-item data-channel="alpha" data-label="Unstable">
-            <anypoint-item-body twoline>
-              <div>Unstable</div>
-              <div data-secondary>Development version. May not be fully tested and contain bugs!</div>
-            </anypoint-item-body>
-          </anypoint-item>
-        </anypoint-listbox>
-      </anypoint-dropdown-menu>
-    </div>`;
+        Automatically download and install updates
+      </anypoint-switch>
+    </div>
+    `;
+  }
+
+  /**
+   * @returns {TemplateResult} The template for the allow pre-release switch button
+   */
+  preReleaseSwitchTemplate() {
+    return html`
+    <div class="update-settings">
+      <anypoint-switch 
+        .checked="${this.allowPreRelease}"
+        @change="${this.preReleaseChangeHandler}"
+        data-button="allow-pre-release"
+      >
+        Install pre-release version
+      </anypoint-switch>
+      <p class="context-info">When checked it installs versions that are marked as pre release.</p>
+    </div>
+    `;
   }
 
   errorTemplate() {
@@ -383,14 +369,14 @@ export class AboutScreen extends ApplicationScreen {
     const { errorMessage, errorCode } = this;
     return html`
     <section class="error-code">
-      <p>${errorMessage}</p>
-      ${errorCode ? html`<p>${errorCode}</p>` : ''}
+      <p class="error-message">${errorMessage}</p>
+      ${errorCode ? html`<p class="error-code">${errorCode}</p>` : ''}
     </section>`;
   }
 
   authorTemplate() {
     return html`
-    <section class="author-line">
+    <section class="author-line text-selectable">
       <p>Coded by <a href="https://www.linkedin.com/in/pawelpsztyc/" @click="${this.linkHandler}">Pawel Psztyc</a>.</p>
       <div class="branding">
         With great support of MuleSoft, a Salesforce company.

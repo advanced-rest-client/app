@@ -1,6 +1,8 @@
 import { Config } from '@advanced-rest-client/events';
 import { ConfigurationBindings } from '../base/ConfigurationBindings.js';
 
+export const settingsKey: string;
+
 /**
  * Web platform bindings for the configuration (settings) related logic.
  */

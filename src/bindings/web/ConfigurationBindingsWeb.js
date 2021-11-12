@@ -6,7 +6,7 @@ import { ConfigurationBindings } from '../base/ConfigurationBindings.js';
 
 /** @typedef {import('@advanced-rest-client/events').Config.ARCConfig} ARCConfig */
 
-const settingsKey = 'ArcAppSettingBindings';
+export const settingsKey = 'ArcAppSettingBindings';
 
 /**
  * Web platform bindings for the configuration (settings) related logic.
