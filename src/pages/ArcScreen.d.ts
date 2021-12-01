@@ -28,7 +28,7 @@ export class ArcScreen extends ApplicationScreen {
    * A list of detached menu panels.
    */
   menuPopup: string[];
-  
+
   get workspaceElement(): ArcRequestWorkspaceElement;
 
   /**
@@ -85,39 +85,35 @@ export class ArcScreen extends ApplicationScreen {
    * @returns Whether the http editor should automatically encode parameters.
    */
   get workspaceAutoEncode(): boolean;
-  get systemVariables(): Readonly<{[key: string]: string;}>;
-  set systemVariables(value: Readonly<{[key: string]: string;}>);
+  get systemVariables(): Readonly<{ [key: string]: string; }>;
+  set systemVariables(value: Readonly<{ [key: string]: string; }>);
   /** 
    * @type Whether the project is being restored from the metadata store.
    */
   initializing: boolean;
   /** 
-  * @type A loading state information.
-  */
+   * @type A loading state information.
+   */
   loadingStatus: string;
   /** 
-  * When set the navigation element is detached from the main application window.
-  */
+   * When set the navigation element is detached from the main application window.
+   */
   navigationDetached: boolean;
   /** 
-  * The current state of checking for update.
-  */
-  updateState: string;
-  /** 
-  * The name of the currently selected environment. Null for the default.
-  */
+   * The name of the currently selected environment. Null for the default.
+   */
   currentEnvironment: string;
   /** 
-  * The currently selected navigation group.
-  */
+   * The currently selected navigation group.
+   */
   navigationSelected: number;
   requestDetailsOpened: boolean;
   requestMetaOpened: boolean;
   metaRequestId: string;
   metaRequestType: string;
   /**
-  * Current application version info.
-  */
+   * Current application version info.
+   */
   versionInfo: Application.AppVersionInfo;
   constructor();
   /**
@@ -206,91 +202,91 @@ export class ArcScreen extends ApplicationScreen {
   /**
    * @returns The template for the application menu, when needed.
    */
-  applicationMenuTemplate(): TemplateResult|string;
+  applicationMenuTemplate(): TemplateResult | string;
   /**
    * @returns The template for any code to be added to the application.
    */
-  applicationUtilitiesTemplate(): TemplateResult|string;
+  applicationUtilitiesTemplate(): TemplateResult | string;
   /**
    * @returns The template for the header
    */
-  headerTemplate(): TemplateResult|string;
+  headerTemplate(): TemplateResult | string;
   /**
    * @returns The template for the toolbar actions.
    */
-  toolbarActionsTemplate(): TemplateResult|string;
+  toolbarActionsTemplate(): TemplateResult | string;
   /**
    * @returns The template for the environment selector and the overlay.
    */
-  environmentTemplate(): TemplateResult|string;
+  environmentTemplate(): TemplateResult | string;
   /**
    * @returns The template for the application main navigation area
    */
-  navigationTemplate(): TemplateResult|string;
+  navigationTemplate(): TemplateResult | string;
   /**
    * @returns The template for the ARC navigation
    */
-  arcNavigationTemplate(): TemplateResult|string;
+  arcNavigationTemplate(): TemplateResult | string;
   /**
    * @param route The current route
    * @returns The template for the page content
    */
-  pageTemplate(route: string): TemplateResult|string;
+  pageTemplate(route: string): TemplateResult | string;
   /**
    * @param visible Whether the workspace is rendered in the view
    */
-  workspaceTemplate(visible: boolean): TemplateResult|string;
+  workspaceTemplate(visible: boolean): TemplateResult | string;
   /**
    * @param route The current route
    * @returns The template for the history screen
    */
-  historyPanelTemplate(route: string): TemplateResult|string;
+  historyPanelTemplate(route: string): TemplateResult | string;
   /**
    * @param route The current route
    * @returns The template for the history screen
    */
-  savedPanelTemplate(route: string): TemplateResult|string;
+  savedPanelTemplate(route: string): TemplateResult | string;
   /**
    * @param route The current route
    * @returns The template for client certificates screen
    */
-  clientCertScreenTemplate(route: string): TemplateResult|string;
+  clientCertScreenTemplate(route: string): TemplateResult | string;
   /**
    * @param route The current route
    * @returns The template for the data export screen
    */
-  dataExportScreenTemplate(route: string): TemplateResult|string;
+  dataExportScreenTemplate(route: string): TemplateResult | string;
   /**
    * @param route The current route
    * @returns The template for the cookie manager
    */
-  cookieManagerScreenTemplate(route: string): TemplateResult|string;
+  cookieManagerScreenTemplate(route: string): TemplateResult | string;
   /**
    * @param route The current route
    * @returns The template for the application settings
    */
-  settingsScreenTemplate(route: string): TemplateResult|string;
+  settingsScreenTemplate(route: string): TemplateResult | string;
   /**
    * @returns The template for the request metadata info dialog
    */
-  requestDetailTemplate(): TemplateResult|string;
+  requestDetailTemplate(): TemplateResult | string;
   /**
    * @returns The template for the request metadata editor dialog
    */
-  requestMetaTemplate(): TemplateResult|string;
+  requestMetaTemplate(): TemplateResult | string;
   /**
    * @param route The current route
    * @returns The template for the host rules mapping element
    */
-  hostRulesTemplate(route: string): TemplateResult|string;
+  hostRulesTemplate(route: string): TemplateResult | string;
   /**
    * @param route The current route
    * @returns The template for the host rules mapping element
    */
-  exchangeSearchTemplate(route: string): TemplateResult|string;
+  exchangeSearchTemplate(route: string): TemplateResult | string;
   /**
    * @param route The current route
    * @returns The template for the ARC legacy projects.
    */
-  arcLegacyProjectTemplate(route: string): TemplateResult|string;
+  arcLegacyProjectTemplate(route: string): TemplateResult | string;
 }

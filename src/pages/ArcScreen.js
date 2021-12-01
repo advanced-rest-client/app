@@ -273,7 +273,7 @@ export class ArcScreen extends ApplicationScreen {
     super();
     this.initObservableProperties(
       'route', 'routeParams', 'initializing', 
-      'navigationDetached', 'updateState', 
+      'navigationDetached',
       'currentEnvironment',
       'navigationSelected',
       'requestDetailsOpened', 'requestMetaOpened', 'metaRequestId', 'metaRequestType',
@@ -290,11 +290,6 @@ export class ArcScreen extends ApplicationScreen {
      * When set the navigation element is detached from the main application window.
      */
     this.navigationDetached = false;
-    /** 
-     * The current state of checking for update.
-     * @type {string}
-     */
-    this.updateState = undefined;
     /** 
      * The name of the currently selected environment. Null for the default.
      */
