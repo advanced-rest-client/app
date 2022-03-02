@@ -1,7 +1,7 @@
 {
   "name": "@advanced-rest-client/app",
   "description": "Advanced REST Client application sources.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "Apache-2.0",
   "main": "index.js",
   "module": "index.js",
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@advanced-rest-client/anypoint": "^1.0.1",
-    "@advanced-rest-client/base": "^0.1.7",
+    "@advanced-rest-client/base": "^0.1.10",
     "@advanced-rest-client/events": "^0.2.29",
     "@advanced-rest-client/google": "^1.0.0",
     "@advanced-rest-client/highlight": "^2.0.1",
@@ -52,8 +52,8 @@
     "@api-components/amf-web-api": "^0.1.0",
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
-    "@commitlint/cli": "^15.0.0",
-    "@commitlint/config-conventional": "^15.0.0",
+    "@commitlint/cli": "^16.2.1",
+    "@commitlint/config-conventional": "^16.2.1",
     "@open-wc/eslint-config": "^7.0.0",
     "@open-wc/testing": "^3.0.2",
     "@types/esm": "^3.2.0",
@@ -80,7 +80,7 @@
     "jexl": "^2.3.0",
     "koa-proxies": "^0.12.1",
     "lint-staged": "^12.1.2",
-    "sinon": "^12.0.1",
+    "sinon": "^13.0.1",
     "typescript": "^4.5.2",
     "typescript-lit-html-plugin": "^0.9.0",
     "uglify-js": "^3.14.4"
