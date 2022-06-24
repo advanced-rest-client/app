@@ -6,11 +6,9 @@ import { ArcDataExport, ArcDataImport } from '@advanced-rest-client/idb-store'
 import { set } from 'idb-keyval';
 import { v4 } from '@advanced-rest-client/uuid';
 import { Utils, ModulesRegistry, RequestCookies, ArcContextMenu, ArcContextMenuCommands } from "@advanced-rest-client/base";
-import '@anypoint-web-components/awc/bottom-sheet.js';
-import '@anypoint-web-components/awc/anypoint-button.js';
-import '@anypoint-web-components/awc/anypoint-icon-button.js';
-import '@advanced-rest-client/icons/arc-icon.js';
-import '@advanced-rest-client/anypoint/define/exchange-search.js';
+import '@anypoint-web-components/awc/dist/define/bottom-sheet.js';
+import '@anypoint-web-components/awc/dist/define/anypoint-button.js';
+import '@anypoint-web-components/awc/dist/define/anypoint-icon-button.js';
 import '@advanced-rest-client/base/define/arc-request-workspace.js';
 import '@advanced-rest-client/base/define/arc-menu.js';
 import '@advanced-rest-client/base/define/project-screen.js';
@@ -24,10 +22,12 @@ import '@advanced-rest-client/base/define/client-certificates-panel.js';
 import '@advanced-rest-client/base/define/saved-panel.js';
 import '@advanced-rest-client/base/define/history-panel.js';
 import '@advanced-rest-client/base/define/variables-overlay.js';
+import '../../define/arc-icon.js';
+import '../../define/exchange-search.js';
 import { ApplicationScreen } from "./ApplicationScreen.js";
 import { findRoute, navigate, navigatePage } from "../lib/route.js";
 
-/** @typedef {import('lit-element').TemplateResult} TemplateResult */
+/** @typedef {import('lit').TemplateResult} TemplateResult */
 /** @typedef {import('@advanced-rest-client/events').Config.ARCConfig} ARCConfig */
 /** @typedef {import('@advanced-rest-client/events').ArcState.ARCState} ARCState */
 /** @typedef {import('@advanced-rest-client/events').ARCRequestNavigationEvent} ARCRequestNavigationEvent */

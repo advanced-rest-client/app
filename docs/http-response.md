@@ -11,7 +11,7 @@ An element to render request timings information from HAR 1.2  timings object. T
 ### Example
 
 ```js
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 import '@advanced-rest-client/app/define/equest-timings.js';
 
 class SampleElement extends LitElement {

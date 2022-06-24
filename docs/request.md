@@ -35,7 +35,7 @@ html`
 A mixin to create an element that renders list of saved items.
 
 ```javascript
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 import { SavedListMixin, listTemplate, ListStyles } from '@advanced-rest-client/requests-list';
 
 class ArcSavedMenuElement extends SavedListMixin(LitElement) {
@@ -60,7 +60,7 @@ window.customElements.define('saved-menu', ArcSavedMenuElement);
 A mixin to create an element that renders list of history items.
 
 ```javascript
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 import { HistoryListMixin, listTemplate, ListStyles } from '@advanced-rest-client/requests-list';
 
 class ArcHistoryMenuElement extends HistoryListMixin(LitElement) {

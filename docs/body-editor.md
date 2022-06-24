@@ -23,7 +23,7 @@ Also, see notes for the raw editor to see the list of requirements.
 ### Example
 
 ```js
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 import '@advanced-rest-client/app/define/body-editor.js';
 
 class SampleElement extends LitElement {

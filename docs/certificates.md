@@ -34,7 +34,7 @@ A web component that extends the `@advanced-rest-client/app/authorization-method
 #### In a LitElement
 
 ```js
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 import '@advanced-rest-client/authorization/cc-authorization-method.js';
 
 class SampleElement extends LitElement {

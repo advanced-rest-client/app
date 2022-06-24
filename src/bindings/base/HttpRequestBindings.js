@@ -173,12 +173,9 @@ export class HttpRequestBindings extends PlatformBindings {
     return proxy.url;
   }
 
-  /**
-   * @param {import('jexl')} Jexl
-   */
-  constructor(Jexl) {
+  constructor() {
     super();
-    this.factory = new RequestFactory(window, Jexl);
+    this.factory = new RequestFactory(window);
     /** 
      * @type {Map<string, ConnectionInfo>}
      */

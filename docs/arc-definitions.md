@@ -107,7 +107,7 @@ console.log(status); // Status code definition for 201
 ### In a LitElement
 
 ```js
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 import '@advanced-rest-client/app/define/arc-definitions.js';
 
 class SampleElement extends LitElement {

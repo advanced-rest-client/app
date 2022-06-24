@@ -7,7 +7,7 @@ Advanced REST Client main navigation. This component contains all navigation ele
 ### In a LitElement
 
 ```js
-import { LitElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
 import '@advanced-rest-client/arc-menu/arc-menu.js';
 
 class SampleElement extends LitElement {

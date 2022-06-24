@@ -10,8 +10,7 @@ import { HttpRequestBindings } from "../../src/bindings/base/HttpRequestBindings
 
 export class HttpProxyBindings extends HttpRequestBindings {
   constructor() {
-    // @ts-ignore
-    super(window.Jexl);
+    super();
   }
 
   /**

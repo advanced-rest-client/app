@@ -5,6 +5,7 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "module": "index.js",
+  "type": "module",
   "author": {
     "name": "Pawel Uchida-Psztyc",
     "email": "pawel.psztyc@gmail.com"
@@ -21,69 +22,42 @@
     "email": "arc@mulesoft.com"
   },
   "dependencies": {
-    "@advanced-rest-client/anypoint": "^1.0.1",
-    "@advanced-rest-client/base": "^0.1.10",
-    "@advanced-rest-client/events": "^0.2.29",
-    "@advanced-rest-client/google": "^1.0.0",
-    "@advanced-rest-client/highlight": "^2.0.1",
-    "@advanced-rest-client/icons": "^4.0.0",
-    "@advanced-rest-client/libs": "^1.0.2",
-    "@advanced-rest-client/monaco-support": "^1.0.1",
-    "@advanced-rest-client/oauth": "^0.1.0",
-    "@advanced-rest-client/uuid": "^4.0.0",
-    "@anypoint-web-components/awc": "^1.0.7",
-    "@api-client/context-menu": "^0.2.0",
-    "@api-components/amf-components": "^1.0.0-beta.2",
+    "@anypoint-web-components/anypoint-signin": "^9.0.0",
+    "@anypoint-web-components/awc": "^3.0.12",
+    "@api-client/context-menu": "^0.4.1",
+    "@api-client/core": "^0.7.6",
     "@github/time-elements": "^3.1.2",
-    "@material/mwc-snackbar": "^0.25.3",
-    "@open-wc/dedupe-mixin": "^1.3.0",
-    "idb-keyval": "^6.0.3",
-    "lit-element": "^2.5.1",
-    "lit-html": "^1.4.1",
-    "monaco-editor": "^0.29.1",
-    "prismjs": "^1.25.0"
+    "@material/mwc-snackbar": "^0.26.1",
+    "@open-wc/dedupe-mixin": "^1.3.1",
+    "idb-keyval": "^6.2.0",
+    "lit": "^2.2.6",
+    "monaco-editor": "^0.33.0",
+    "prismjs": "^1.28.0"
   },
   "devDependencies": {
-    "@advanced-rest-client/arc-demo-helper": "^5.0.2",
-    "@advanced-rest-client/arc-mock": "^5.0.0",
-    "@advanced-rest-client/arc-proxy": "^0.1.0",
-    "@advanced-rest-client/electron": "^0.1.0",
-    "@advanced-rest-client/idb-store": "^1.0.0",
-    "@api-components/amf-web-api": "^0.1.0",
-    "@babel/core": "^7.16.0",
-    "@babel/preset-env": "^7.16.4",
-    "@commitlint/cli": "^16.2.1",
-    "@commitlint/config-conventional": "^16.2.1",
+    "@api-components/amf-web-api": "^0.1.4",
+    "@commitlint/cli": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.2",
+    "@esm-bundle/chai": "^4.3.4-fix.0",
     "@open-wc/eslint-config": "^7.0.0",
-    "@open-wc/testing": "^3.0.2",
-    "@types/esm": "^3.2.0",
-    "@types/fs-extra": "^9.0.13",
-    "@types/gapi": "^0.0.41",
-    "@types/jexl": "^2.3.0",
+    "@open-wc/testing": "^3.1.6",
+    "@types/gapi": "^0.0.42",
     "@types/pouchdb": "^6.4.0",
-    "@web/dev-server": "^0.1.26",
-    "@web/test-runner": "^0.13.20",
-    "@web/test-runner-playwright": "^0.8.8",
-    "babel-plugin-minify-mangle-names": "^0.5.0",
-    "browserify": "^17.0.0",
-    "electron-updater": "^4.6.1",
-    "esbuild": "^0.14.1",
-    "eslint": "^8.3.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-lit-a11y": "^2.2.0",
-    "eslint-plugin-wc": "^1.3.2",
-    "esm": "^3.2.25",
-    "fs-extra": "^10.0.0",
-    "get-port": "^6.0.0",
-    "husky": "^7.0.2",
-    "jexl": "^2.3.0",
-    "koa-proxies": "^0.12.1",
-    "lint-staged": "^12.1.2",
-    "sinon": "^13.0.1",
-    "typescript": "^4.5.2",
-    "typescript-lit-html-plugin": "^0.9.0",
-    "uglify-js": "^3.14.4"
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
+    "@web/dev-server": "^0.1.32",
+    "@web/test-runner": "^0.13.31",
+    "@web/test-runner-playwright": "^0.8.9",
+    "chalk": "^5.0.1",
+    "esbuild": "^0.14.47",
+    "eslint": "^8.18.0",
+    "eslint-config-prettier": "^8.5.0",
+    "get-port": "^6.1.2",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.2",
+    "sinon": "^14.0.0",
+    "typescript": "^4.7.4",
+    "typescript-lit-html-plugin": "^0.9.0"
   },
   "scripts": {
     "start": "web-dev-server --app-index demo/index.html --node-resolve --open --watch --root-dir .",
@@ -96,45 +70,8 @@
     "test:all": "web-test-runner --config web-test-runner.config.mjs test/**/*.test.js --coverage --playwright --browsers chromium firefox webkit",
     "test:watch": "web-test-runner --config web-test-runner.config.mjs --watch --playwright --browsers chromium",
     "gen:wc": "wca analyze \"*.js\" --outFile custom-elements.json",
-    "prepare": "husky install && node dev/prepare.mjs",
+    "prepare": "husky install",
     "bundle": "node tasks/esbuild.js"
-  },
-  "eslintConfig": {
-    "env": {
-      "es2021": true
-    },
-    "extends": [
-      "@open-wc/eslint-config",
-      "eslint-config-prettier"
-    ],
-    "parserOptions": {
-      "ecmaVersion": 2021,
-      "sourceType": "module",
-      "requireConfigFile": false
-    },
-    "overrides": [
-      {
-        "files": [
-          "demo/**/*.js",
-          "test/**/*.js",
-          "test/*.js",
-          "dev/**/*.js",
-          "dev/**/*.mjs",
-          "**/demo/**/*.html"
-        ],
-        "rules": {
-          "no-console": "off",
-          "no-unused-expressions": "off",
-          "no-plusplus": "off",
-          "no-continue": "off",
-          "no-param-reassign": "off",
-          "class-methods-use-this": "off",
-          "import/no-extraneous-dependencies": "off",
-          "prefer-destructuring": "off",
-          "no-template-curly-in-string": "off"
-        }
-      }
-    ]
   },
   "husky": {
     "hooks": {

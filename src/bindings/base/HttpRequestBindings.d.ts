@@ -1,7 +1,6 @@
 import { TransportRequestSource, ArcRequest, ArcResponse, Config, ApiTransportEvent, ConfigStateUpdateEvent } from '@advanced-rest-client/events';
 import { RequestFactory } from '@advanced-rest-client/base';
 import { ApiRequestEvent, AbortRequestEvent, ApiConsoleRequest } from '@api-components/amf-components';
-import Jexl from 'jexl'
 import { PlatformBindings } from './PlatformBindings.js';
 
 export interface ConnectionFactory {
@@ -70,7 +69,7 @@ export class HttpRequestBindings extends PlatformBindings {
   factory: RequestFactory;
   connections: Map<string, ConnectionInfo>;
   config: Config.ARCConfig;
-  constructor(jexl: typeof Jexl);
+  constructor();
   initialize(): Promise<void>;
   makeRequestHandler(e: CustomEvent): Promise<void>;
   abortRequestHandler(e: CustomEvent): void;

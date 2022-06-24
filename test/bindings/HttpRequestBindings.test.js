@@ -6,8 +6,7 @@ describe('Bindings', () => {
     /** @type HttpRequestBindings */
     let instance;
     before(async () => {
-      // @ts-ignore
-      instance = new HttpRequestBindings(window.Jexl);
+      instance = new HttpRequestBindings();
       await instance.initialize();
     });
 

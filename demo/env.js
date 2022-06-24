@@ -4,4 +4,5 @@ export default {
   amfService: {
     path: '',
   },
+  exchangeApiPort: 0,
 };
